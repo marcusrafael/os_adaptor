@@ -20,5 +20,14 @@ class AdaptorDnfView(APIView):
 
 class AdaptorLocalView(APIView):
     def post(self, request, *args, **kwargs):
-        resp = adaptor.policy2local(request.data)
+        resp = {}
+        if (not "format" in request.data or not "dnf_policy" in request.data):
+            resp['detail'] = "Missing argument"
+            return Response(resp, status=412)
+        elif (request.data["format"] == "openstack"):
+            resp = adaptor.policy2local(request.data["dnf_policy"])
+            return Response(resp)
+        else:
+            resp['detail'] = "Policy Format not Supported."
+            return Response(resp, status=415)
         return Response(resp)

@@ -21,7 +21,7 @@ def parse_conds(attr, value, policy, conds, rules):
                                                                                    #     (it can have rules again into the reference)
             else:                                                                  # If the rules don't refer to any other rule...
                 at, vl = v.split(':')                                              # Split the "rule" in "attribute":"value"
-                entry = {'attr': at, 'op':'=', 'value': vl}   # Create a new condition entry
+                entry = {'attribute': at, 'operator':'=', 'value': vl}   # Create a new condition entry
                 if entry not in conds:                                             # If the entry is not in the condition list...
                     conds = conds + [entry]                                        # Add it to the list
 
@@ -30,8 +30,8 @@ def parse_conds(attr, value, policy, conds, rules):
         left = attr[:attr.find(':')]            # Split attribute by the first colon (:) occurence (service:action)
         right = attr[attr.find(':')+1:]
 
-        entry_l = {'attr': 'service', 'op':'=', 'value': left}  # Create a new condition entry for the service
-        entry_r = {'attr': 'action', 'op':'=', 'value': right}  # Create a new condition entry for the action
+        entry_l = {'attribute': 'service', 'operator':'=', 'value': left}  # Create a new condition entry for the service
+        entry_r = {'attribute': 'action', 'operator':'=', 'value': right}  # Create a new condition entry for the action
 
         if (entry_l not in conds):     # If the service condition is not in the list...
             conds = conds + [entry_l]  # Add it to the list
@@ -53,7 +53,7 @@ def parse_rules(attr, value, conds, rules):
     action = -1
     i = 0;
     for c in conds:
-        at = c['attr'].replace('\%','\\\%').replace('\.','\\\.')
+        at = c['attribute'].replace('\%','\\\%').replace('\.','\\\.')
         vl = c['value'].replace('\%','\\\%').replace('\.','\\\.')
         value = value.replace(at+':'+vl, 'c'+str(i))
         if c['value'] == left:
@@ -105,14 +105,14 @@ def to_dnf(conds, rules):
 
     return rules
 
-def create_and_rules_and_conditions(external_policy):
+def policy2dnf(policy):
 
     # DNF JSON object
     dnf_policy = {}
     and_rules = []
 
-    # Parses external_policy content.
-    conds, rules = parse(external_policy)
+    # Parses policy content.
+    conds, rules = parse(policy)
 
     # Tranform rules to DNF
     rules = to_dnf(conds,rules)
@@ -120,10 +120,11 @@ def create_and_rules_and_conditions(external_policy):
     # Create and_rules in an DNF JSON (memory)
     for r in rules.items():
 
-        # Only consider policy rules
+        # Only consider namespaced rules
         if ':' in r[0]:
             r1 = str(r[1]).strip()
             r1 = re.sub(' ', '', r1)
+
             # Add the conditions
             if "Or(" == r1[0:3]:
                 s = r1[3:-1]
@@ -132,17 +133,21 @@ def create_and_rules_and_conditions(external_policy):
                 count = 0
                 for a in ands:
                     # Construct the conditions
-                    cs = s.split(",")
+                    cs = a.split(",")
                     conditions = []
                     for c in cs:
                         c = re.sub('[,()c]','',c)
                         if (c != "") and c is not None:
                             c = int(float(c))
                             cd = conds[c]
+                            if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
+                                cd['type'] = "v"
+                            else:
+                                cd['type'] = "c"
+                            cd['description'] = cd['attribute']+cd['operator']+cd['value']
                             conditions.append(cd)
                     # Create the AND Rule
                     data = {
-                             #"policy": instance,
                              "description": r[0]+":"+str(count),
                              "enabled": True,
                              "conditions": conditions
@@ -161,10 +166,14 @@ def create_and_rules_and_conditions(external_policy):
                     if (c != "") and c is not None:
                         c = int(float(c))
                         cd = conds[c]
+                        if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
+                            cd['type'] = "v"
+                        else:
+                            cd['type'] = "c"
+                        cd['description'] = cd['attribute']+cd['operator']+cd['value']
                         conditions.append(cd)
                 # Insert the AND Rule
                 data = {
-                         #"policy": instance,
                          "description": r[0],
                          "enabled": True,
                          "conditions": conditions
@@ -182,11 +191,15 @@ def create_and_rules_and_conditions(external_policy):
                 if (c != "") and c is not None:
                     c = int(float(c))
                     cd = conds[c]
+                    if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
+                        cd['type'] = "v"
+                    else:
+                        cd['type'] = "c"
+                    cd['description'] = cd['attribute']+cd['operator']+cd['value']
                     conditions.append(cd)
 
                 # Insert the AND Rule for the current policy rule
                 data = {
-                         #"policy": instance,
                          "description": r[0],
                          "enabled": True,
                          "conditions": conditions
@@ -195,39 +208,33 @@ def create_and_rules_and_conditions(external_policy):
     dnf_policy['and_rules'] = and_rules
     return dnf_policy
 
-def export_openstack_policy(policy_id, filters):
+def policy2local(dnf_policy):
     policy = {}
-    and_rules = models.And_rule.objects.filter(policy = policy_id).all()
-    for and_rule in and_rules: # For each and_rule
-        if and_rule.enabled:  # If it is enabled
-            service = ""
-            action  = ""
-            condition = ""
-            # TODO: Check if Operator is = (equals). If it is != (not equals), append not in front of value.
-            for cond in and_rule.conditions.all():     # Check all Conditions
-                if cond.attribute == "service":        # Retrieve the Service
-                    service = cond.value         
-                elif cond.attribute == "action":       # Retrieve the Action
-                    action = cond.value
-                else:                                  # Retrieve the other Conditions (combining with "and"s)
-                    if condition == "":
-                        condition = cond.attribute + ":" + cond.value
+    if 'and_rules' in dnf_policy: # If there is no and_rules, just return an empty policy
+        for and_rule in dnf_policy['and_rules']: # For each and_rule
+            enabled = True
+            if 'enabled' in and_rule:
+                enabled = and_rule['enabled']
+            if enabled:  # If it is enabled
+                service = ""
+                action  = ""
+                condition = ""
+                # TODO: Check if Operator is = (equals). If it is != (not equals), append not in front of value.
+                for cond in and_rule['conditions']:    # Check all Conditions
+                    if 'attribute' in cond:
+                        if cond['attribute'] == "service":    # Retrieve the Service
+                            service = cond['value']
+                        elif cond['attribute'] == "action":   # Retrieve the Action
+                            action = cond['value']
+                        else:                              # Retrieve the other Conditions (combining with "and"s)
+                            if condition == "":
+                                condition = cond['attribute'] + ":" + cond['value']
+                            else:
+                                condition = condition + " and " + cond['attribute'] + ":" + cond['value']
                     else:
-                        condition = condition + " and " + cond.attribute + ":" + cond.value
+                        print(cond)
 
-            # Only imput policy if service & action matches with filters parameter
-            # Cases:
-            # 1) service:action
-            # 2) service:None
-            # 3) None:action
-            # 4) None:None (no filter)
-            filter = False
-            if (filters['service'] == service or filters['service'] is None) \
-               and (filters['action'] == action or filters['action'] is None):
-                filter = True
-
-            # If filter matches, insert the policy. Otherwise, go to the other policy entry
-            if filter:
+                # Insert the and_rule in the policy
                 if service+":"+action in policy:           # Set the policy entry. If already exists, combine with "or"s
                     if condition.find("and") == -1:
                         policy[service+":"+action] = policy[service+":"+action] + " or " + condition
@@ -239,124 +246,3 @@ def export_openstack_policy(policy_id, filters):
                     else:
                         policy[service+":"+action] = "(" + condition + ")"
     return policy
-
-# This function returns all actions that are allowed when the attributes from
-# request matches and there is no other required from the same type.
-# Other attributes are left as conditions
-def actions(queryset, attributes):
-    # Cases:
-
-    # 1) condition = "role:match" ==> Granted (G)                               Role_match     and not Other_role and not Other_cond
-    # 2) condition = "" ==> Granted (G)                                         not Role_match and not Other_role and not Other_cond
-
-    # 3) condition = "role:match and xxxx" ==> Granted with condition (C)       Role_match     and not Other_role and     Other_cond
-    # 4) condition = "..." ==> Granted with condition (C)                       not Role_match and not Other_role and     Other_cond
-
-    # 5) condition = "role:not_match" ==> Not Granted (N)                       not Role_match and     Other_role and not Other_cond     
-    # 6) condition = "role:not_match and ..." ==> Not Granted (N)               not Role_match and     Other_role and     Other_cond
-
-    # if Granted or ... ==> Granted
-    # elif Granted_with_cond or ... ==> Granted_with_cond
-    # else Not Granted
-
-    attributes = json.loads(attributes)    #{"role": ["admin"], "attr2": [--list--]}
-
-    resp = {}
-    access = {}
-    for and_rule in queryset:
-        if and_rule.enabled:
-
-            attr_match = False
-            wrong_attr = False
-            other_cond = False
-
-            service = ""
-            action = ""
-            condition = ""
-
-            # Find out the Case
-            for cond in and_rule.conditions.all():
-                if cond.attribute == "service":
-                    service = cond.value
-                elif cond.attribute == "action":
-                    action = cond.value
-                elif cond.attribute in attributes:
-                    if cond.type == "c":
-                        if type(attributes[cond.attribute]) is list:
-                            match = (cond.value in attributes[cond.attribute])
-                        else: #string
-                            match = (cond.value == attributes[cond.attribute])
-                        if match:
-                            attr_match = True
-                        else:
-                            wrong_attr = True
-                    else:
-                        other_cond = True
-                        attr_match = True
-                        if condition == "":
-                            condition = cond.attribute + ":" + cond.value
-                        else:
-                            condition = condition + " and " + cond.attribute + ":" + cond.value
-                else:
-                    other_cond = True
-                    if condition == "":
-                        condition = cond.attribute + ":" + cond.value
-                    else:
-                       condition = condition + " and " + cond.attribute + ":" + cond.value
-            
-            # Cases 1 and 2 (Granted):
-            if not wrong_attr and not other_cond:
-                resp[service+":"+action] = ""
-
-            # Cases 3 and 4 (Granted with Conditions):
-            elif not wrong_attr and other_cond and attr_match:
-                if service+":"+action not in resp:      # This is the first policy
-                    if condition.find("and") == -1:        # Includes the case: condition == ""
-                        resp[service+":"+action] = condition
-                    else:
-                        resp[service+":"+action] = "(" + condition + ")"
-
-                elif resp[service+":"+action] != "":   # The policy was not yet granted - combine with or
-                    if condition.find("and") == -1:
-                        resp[service+":"+action] = resp[service+":"+action] + " or " + condition
-                    else:
-                        resp[service+":"+action] = resp[service+":"+action] + " or (" + condition + ")"
-#                else:  # If the policy was already granted, do nothing
-#                    pass
-
-            # Cases 5 and 6 (Not Granted) ==> wrong_attr
-#            else: # If policy is not granted, do nothing.
-#                pass
-    return resp
-
-# This function returns all actions that are allowed when the attributes from
-# request matches and there is no other required.
-def actions_2(queryset, attributes):
-
-    attributes = json.loads(attributes)    #{"role": ["admin"], "attr2": [--list--]}
-
-    resp = []
-    for and_rule in queryset:
-        if and_rule.enabled:
-
-            other = False # Other unmatched condition(s) found
-
-            service = ""
-            action = ""
-
-            for cond in and_rule.conditions.all():
-                if cond.attribute == "service":
-                    service = cond.value
-                elif cond.attribute == "action":
-                    action = cond.value
-                elif cond.attribute in attributes:
-                    if cond.value not in attributes[cond.attribute]:
-                        other = True
-                else:
-                    other = True
-            
-            if not other:
-                if service+":"+action not in resp:
-                    resp = resp + [service+":"+action]
-
-    return resp

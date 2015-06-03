@@ -3,9 +3,10 @@ import json
 
 def policy2dnf(policy):
     resp = {}
-    resp['dnf_policy'] = openstack_parser.create_and_rules_and_conditions(policy)
+    resp['dnf_policy'] = openstack_parser.policy2dnf(policy)
     return resp
 
-def policy2local(data):
-    resp = data
+def policy2local(dnf_policy):
+    resp = {}
+    resp['policy'] = openstack_parser.policy2local(dnf_policy)
     return resp
