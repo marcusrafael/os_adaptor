@@ -3,11 +3,11 @@ Installation Guide
 
 1. Clone the repository
 
-$ git clone https://github.com/ioram7/cfas.git -b papai
+$ git clone https://github.com/ioram7/os_adaptor.git
 
-2. Enter cfas folder
+2. Enter os_adaptor folder
 
-$ cd cfas
+$ cd os_adaptor
 
 3. Create a virtual environment and activate it
 
@@ -22,17 +22,7 @@ $ pip3 install markdown
 $ pip3 install django-filter
 $ pip3 install pyeda
 $ pip3 install pyparsing
-$ pip3 install git+https://github.com/multiplay/mysql-connector-python
 
-5. Update settings according to your environment (eg. DATABASE properties)
+5. Start the server
 
-$ vi cfas/settings.py
-
-6. Set up the database
-
-$ python manage.py migrate
-$ python manage.py createsuperuser
-
-7. Start the server
-
-$ env/bin/python manage.py runserver 0.0.0.0:8000
+$ env/bin/python manage.py runserver 0.0.0.0:8001
