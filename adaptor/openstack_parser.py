@@ -1,6 +1,7 @@
 from pyeda.inter import *
 import json
 import re
+import copy
 
 # Return the oposite operator
 def oposite_operator(operator):
@@ -137,8 +138,6 @@ def policy2dnf(policy):
     # Create and_rules in an DNF JSON (memory)
     for r in rules.items():
 
-        print(r) # ('identity:create_user', And(c0, ~c1, c2, c3))
-
         # Only consider namespaced rules
         if ':' in r[0]:
             r1 = str(r[1]).strip()
@@ -162,7 +161,7 @@ def policy2dnf(policy):
                             c = re.sub('~','',c)              # Remove the negation symbol (~)
                         if (c != "") and c is not None:
                             c = int(float(c))
-                            cd = conds[c]
+                            cd = copy.copy(conds[c])
                             if not_cond:
                                 cd['operator'] = oposite_operator(cd['operator'])
                             if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
@@ -194,7 +193,7 @@ def policy2dnf(policy):
                         c = re.sub('~','',c)              # Remove the negation symbol (~)
                     if (c != "") and c is not None:
                         c = int(float(c))
-                        cd = conds[c]
+                        cd = copy.copy(conds[c])
                         if not_cond:
                             cd['operator'] = oposite_operator(cd['operator'])
                         if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
@@ -226,7 +225,7 @@ def policy2dnf(policy):
                 # Construct the conditions
                 if (c != "") and c is not None:
                     c = int(float(c))
-                    cd = conds[c]
+                    cd = copy.copy(conds[c])
                     if not_cond:
                         cd['operator'] = oposite_operator(cd['operator'])
                     if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
@@ -257,8 +256,11 @@ def policy2local(dnf_policy):
                 service = ""
                 action  = ""
                 condition = ""
-                # TODO: Check if Operator is = (equals). If it is != (not equals), append not in front of value.
                 for cond in and_rule['conditions']:    # Check all Conditions
+                    not_cond = ""
+                    if 'operator' in cond:
+                        if cond['operator'] == "!=":
+                            not_cond = "not "
                     if 'attribute' in cond:
                         if cond['attribute'] == "service":    # Retrieve the Service
                             service = cond['value']
@@ -266,9 +268,9 @@ def policy2local(dnf_policy):
                             action = cond['value']
                         else:                              # Retrieve the other Conditions (combining with "and"s)
                             if condition == "":
-                                condition = cond['attribute'] + ":" + cond['value']
+                                condition = not_cond + cond['attribute'] + ":" + cond['value']
                             else:
-                                condition = condition + " and " + cond['attribute'] + ":" + cond['value']
+                                condition = condition + " and " + not_cond + cond['attribute'] + ":" + cond['value']
                     else:
                         print(cond)
 
