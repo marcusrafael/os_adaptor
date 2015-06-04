@@ -2,6 +2,23 @@ from pyeda.inter import *
 import json
 import re
 
+# Return the oposite operator
+def oposite_operator(operator):
+    if operator == "=":
+        return "!="
+    elif operator == "!=":
+        return "="
+    elif operator == ">":
+        return "<="
+    elif operator == "<":
+        return ">="
+    elif operator == ">=":
+        return "<"
+    elif operator == "<=":
+        return ">"
+    else:
+        return "not "+operator
+
 # Extract a list of conditions from the policy JSON object
 def parse_conds(attr, value, policy, conds, rules):
     # Add the regular conditions (from the values) and create the rules array
@@ -120,6 +137,8 @@ def policy2dnf(policy):
     # Create and_rules in an DNF JSON (memory)
     for r in rules.items():
 
+        print(r) # ('identity:create_user', And(c0, ~c1, c2, c3))
+
         # Only consider namespaced rules
         if ':' in r[0]:
             r1 = str(r[1]).strip()
@@ -137,9 +156,15 @@ def policy2dnf(policy):
                     conditions = []
                     for c in cs:
                         c = re.sub('[,()c]','',c)
+                        not_cond = False                # Start considering not a negation
+                        if c[0] == "~":                 # If this is a negation
+                            not_cond = True                   # Mark as negation
+                            c = re.sub('~','',c)              # Remove the negation symbol (~)
                         if (c != "") and c is not None:
                             c = int(float(c))
                             cd = conds[c]
+                            if not_cond:
+                                cd['operator'] = oposite_operator(cd['operator'])
                             if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                                 cd['type'] = "v"
                             else:
@@ -163,9 +188,15 @@ def policy2dnf(policy):
                 conditions = []
                 for c in cs:
                     c = re.sub('[,()c]','',c)
+                    not_cond = False                # Start considering not a negation
+                    if c[0] == "~":                 # If this is a negation
+                        not_cond = True                   # Mark as negation
+                        c = re.sub('~','',c)              # Remove the negation symbol (~)
                     if (c != "") and c is not None:
                         c = int(float(c))
                         cd = conds[c]
+                        if not_cond:
+                            cd['operator'] = oposite_operator(cd['operator'])
                         if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                             cd['type'] = "v"
                         else:
@@ -187,10 +218,17 @@ def policy2dnf(policy):
                 c = c.strip(',').strip('(').strip(')').strip('c')
                 print(c)
 
+                not_cond = False                # Start considering not a negation
+                if c[0] == "~":                 # If this is a negation
+                    not_cond = True                   # Mark as negation
+                    c = re.sub('~','',c)              # Remove the negation symbol (~)
+
                 # Construct the conditions
                 if (c != "") and c is not None:
                     c = int(float(c))
                     cd = conds[c]
+                    if not_cond:
+                        cd['operator'] = oposite_operator(cd['operator'])
                     if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                         cd['type'] = "v"
                     else:
