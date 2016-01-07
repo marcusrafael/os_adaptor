@@ -3,6 +3,22 @@ import json
 import re
 import copy
 
+def semantic2ontology(dnf_policy):
+    print("IN")
+    ret = dnf_policy
+    for ar in ret['and_rules']:
+        print(ar['description'])
+        for c in ar['conditions']:
+            print(c['attribute'])
+            print(c['operator'])
+            print(c['value'])
+    return ret
+
+def semantic2local(policy):
+    print("IN")
+    ret = policy
+    return ret
+
 # Return the oposite operator
 def oposite_operator(operator):
     if operator == "=":
@@ -289,3 +305,4 @@ def policy2local(dnf_policy):
                     else:
                         policy[service+":"+action] = "(" + condition + ")"
     return policy
+
