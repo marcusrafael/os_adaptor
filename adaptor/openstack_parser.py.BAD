@@ -1,7 +1,6 @@
 from pyeda.inter import *
 import json
 import re
-import copy
 
 # Return the oposite operator
 def oposite_operator(operator):
@@ -25,21 +24,29 @@ def parse_conds(attr, value, policy, conds, rules):
     # Add the regular conditions (from the values) and create the rules array
     if (':' in attr) and (attr not in rules):  # If it is a policy rule and there is no rule entry...
         rules[attr] = value                    # Add an entry into the rules array for the value
-    value = value.replace('not', '')           # Remove all the 'not's from the value
     if(attr != '' and value != ''):            # Ignore empty lines
-        values = re.split(" and | or ", value) # Use ' and ' or ' or ' to split the value
-        for v in values:                       # Loop for all "rules" in value 
-            v = v.strip('(').strip(')')        # Remove the parentheses in the rule
-            v = v.replace(' ', '')             # Remove all spaces in the rule
-            if v[:5] == 'rule:':               # If the rules refers to another rule...
-                newv = policy[v[5:]]           # Replace the "rule" by its reference
+        values = re.split(" and | or ", value)     # Use ' and ' or ' or ' to split the value
+        for v in values:                           # Loop for all "rules" in value 
+            not_cond = False                           # Start considering this condition is not negated
+            v = v.strip('(').strip(')')                # Remove the parentheses in the rule
+            v = v.replace(' ', '')                     # Remove all spaces in the rule
+            if "rule:" in v:                           # If the rules refers to another rule...
+                rule_pos = v.find("rule")
+                newv = policy[v[rule_pos+5:]]                                      # Replace the "rule" by its reference
+                print(newv)
                 if ':' in attr:                                                    # If it is a police rule...
-                    rules[attr] = rules[attr].replace(v, newv)                     # Replace the rule in the rules array
-                conds, rules = parse_conds(attr, newv, policy, conds, rules)  # Recursive call with the new "rule" as value 
+                    rules[attr] = rules[attr].replace(v, newv)                         # Replace the rule in the rules array
+                conds, rules = parse_conds(attr, newv, policy, conds, rules)       # Recursive call with the new "rule" as value 
                                                                                    #     (it can have rules again into the reference)
             else:                                                                  # If the rules don't refer to any other rule...
+                if "not" in v:                             # If condition has a not
+                    not_cond = True                            # Mark it
+                    v = v.replace('not', '')                   # Remove all the 'not's from the value
+                op = "="
+                if not_cond:
+                    op = oposite_operator(op)
                 at, vl = v.split(':')                                              # Split the "rule" in "attribute":"value"
-                entry = {'attribute': at, 'operator':'=', 'value': vl}   # Create a new condition entry
+                entry = {'attribute': at, 'operator':op, 'value': vl}              # Create a new condition entry
                 if entry not in conds:                                             # If the entry is not in the condition list...
                     conds = conds + [entry]                                        # Add it to the list
 
@@ -118,10 +125,7 @@ def to_dnf(conds, rules):
 
     # Define expression based on subject rules and convert them to DNF
     for rk, rv in rules.items():
-        #print(rv)
-        #print(type(rv))
         gbl[rk] = eval(rv)
-        #print(type(gbl[rk]))
         rules[rk] = gbl[rk].to_dnf()
 
     return rules
@@ -158,15 +162,9 @@ def policy2dnf(policy):
                     conditions = []
                     for c in cs:
                         c = re.sub('[,()c]','',c)
-                        not_cond = False                # Start considering not a negation
-                        if c[0] == "~":                 # If this is a negation
-                            not_cond = True                   # Mark as negation
-                            c = re.sub('~','',c)              # Remove the negation symbol (~)
                         if (c != "") and c is not None:
                             c = int(float(c))
-                            cd = copy.copy(conds[c])
-                            if not_cond:
-                                cd['operator'] = oposite_operator(cd['operator'])
+                            cd = conds[c]
                             if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                                 cd['type'] = "v"
                             else:
@@ -190,15 +188,9 @@ def policy2dnf(policy):
                 conditions = []
                 for c in cs:
                     c = re.sub('[,()c]','',c)
-                    not_cond = False                # Start considering not a negation
-                    if c[0] == "~":                 # If this is a negation
-                        not_cond = True                   # Mark as negation
-                        c = re.sub('~','',c)              # Remove the negation symbol (~)
                     if (c != "") and c is not None:
                         c = int(float(c))
-                        cd = copy.copy(conds[c])
-                        if not_cond:
-                            cd['operator'] = oposite_operator(cd['operator'])
+                        cd = conds[c]
                         if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                             cd['type'] = "v"
                         else:
@@ -220,17 +212,10 @@ def policy2dnf(policy):
                 c = c.strip(',').strip('(').strip(')').strip('c')
                 print(c)
 
-                not_cond = False                # Start considering not a negation
-                if c[0] == "~":                 # If this is a negation
-                    not_cond = True                   # Mark as negation
-                    c = re.sub('~','',c)              # Remove the negation symbol (~)
-
                 # Construct the conditions
                 if (c != "") and c is not None:
                     c = int(float(c))
-                    cd = copy.copy(conds[c])
-                    if not_cond:
-                        cd['operator'] = oposite_operator(cd['operator'])
+                    cd = conds[c]
                     if cd['value'].find("%(") == 0 and cd['value'].rfind(")s") == len(cd['value']) - 2:
                         cd['type'] = "v"
                     else:
@@ -259,11 +244,8 @@ def policy2local(dnf_policy):
                 service = ""
                 action  = ""
                 condition = ""
+                # TODO: Check if Operator is = (equals). If it is != (not equals), append not in front of value.
                 for cond in and_rule['conditions']:    # Check all Conditions
-                    not_cond = ""
-                    if 'operator' in cond:
-                        if cond['operator'] == "!=":
-                            not_cond = "not "
                     if 'attribute' in cond:
                         if cond['attribute'] == "service":    # Retrieve the Service
                             service = cond['value']
@@ -271,9 +253,9 @@ def policy2local(dnf_policy):
                             action = cond['value']
                         else:                              # Retrieve the other Conditions (combining with "and"s)
                             if condition == "":
-                                condition = not_cond + cond['attribute'] + ":" + cond['value']
+                                condition = cond['attribute'] + ":" + cond['value']
                             else:
-                                condition = condition + " and " + not_cond + cond['attribute'] + ":" + cond['value']
+                                condition = condition + " and " + cond['attribute'] + ":" + cond['value']
                     else:
                         print(cond)
 
