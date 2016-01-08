@@ -1,21 +1,68 @@
+from adaptor import models
+from adaptor import serializers
 from pyeda.inter import *
 import json
 import re
 import copy
 
+# Return the Attribute object given a name and if the attribute is or not in the ontology
+def get_attribute(attr, ont):
+    attributes = models.Attribute.objects.filter(ontology = ont).all()
+    for attribute in attributes:
+        if attribute.name == attr:
+            return attribute
+    return None
+
+# Return the Operator object given a name and if the operator is or not in the ontology
+def get_operator(op, ont):
+    operators = models.Operator.objects.filter(ontology = ont).all()
+    for operator in operators:
+        if operator.name == op:
+            return operator
+    return None
+
+# Return the Value object given a name and the attribute id
+def get_value(val, attr_id):
+    values = models.Value.objects.filter(attribute_id = attr_id).all()
+    for value in values:
+        if value.name == val:
+            return value
+    return None
+
 def semantic2ontology(dnf_policy):
-    print("IN")
     ret = dnf_policy
+    lv = None
+    ontology = {}
+    # Iterate through the and rules.
     for ar in ret['and_rules']:
         print(ar['description'])
+        # Iterate through the conditions.
         for c in ar['conditions']:
-            print(c['attribute'])
-            print(c['operator'])
-            print(c['value'])
+            print(c['description'])
+            ontology['attribute'] = False
+            ontology['operator'] = False
+            ontology['value'] = False
+            # Retrieve attribute (if found)
+            la = get_attribute(c['attribute'], False)
+            lo = get_operator(c['operator'], False)
+            if la is not None:
+                #print(la.name)
+                #print(la.id)
+                ontology['attribute'] = True
+                lv = get_value(c['value'], la.id)
+            if lo is not None:
+                ontology['operator'] = True
+                #print(lo.name)
+            if lv is not None:
+                ontology['value'] = True
+                #print(lv.name)
+            if ontology['attribute'] and ontology['operator'] and ontology['value']:
+                print("ok")
+            else:
+                print("--")
     return ret
 
 def semantic2local(policy):
-    print("IN")
     ret = policy
     return ret
 
