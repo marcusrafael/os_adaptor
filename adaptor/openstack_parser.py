@@ -81,7 +81,7 @@ def semantic2ontology(dnf_policy):
     for ar in ret['and_rules']:
         new_conds = []
 #        print(json.dumps(ar))
-        print(ar['description'])
+#        print(ar['description'])
         ar_ontology = True
         # Iterate through the conditions.
         for c in ar['conditions']:
@@ -116,15 +116,30 @@ def semantic2ontology(dnf_policy):
                     ov_list = map_val(lv)
                     for ov in ov_list:
                         if ov.attribute in oa_list:
+                            # Set new attribute JSON object
+                            new_att = {}
+                            new_att['name'] = ov.attribute.name
+                            new_att['description'] = ov.attribute.description
+                            if ov.attribute.apf:
+                                new_att['policy'] = ov.attribute.apf.name
+                            else:
+                                new_att['policy'] = None
+                            new_att['cloud_technology'] = None
+#                            print(json.dumps(new_att))
+
+                            # Set new operator JSON object
+                            new_op = {}
+                            new_op['name'] = oo_list[0].name
+                            new_op['description'] = oo_list[0].description
+                            new_op['cloud_technology'] = None
+#                            print(json.dumps(new_op))
+
                             new_c = {}
                             new_c['description'] = c['description']
-                            new_c['type'] = c['type']
-#                            print("   ", ov.name)
+#                            new_c['type'] = c['type']
+                            new_c['attribute'] = new_att
+                            new_c['operator'] = new_op
                             new_c['value'] = ov.name
-#                            print("   ", oo_list[0].name)
-                            new_c['operator'] = oo_list[0].name
-#                            print("   ", ov.attribute.name)
-                            new_c['attribute'] = ov.attribute.name
                             new_conds.append(new_c)
 #                            print(json.dumps(new_c))
                         else:
