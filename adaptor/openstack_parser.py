@@ -7,59 +7,156 @@ import copy
 
 # Return the Attribute object given a name and if the attribute is or not in the ontology
 def get_attribute(attr, ont):
-    attributes = models.Attribute.objects.filter(ontology = ont).all()
-    for attribute in attributes:
-        if attribute.name == attr:
-            return attribute
-    return None
+    attribute = None
+    try:
+        attribute = models.Attribute.objects.get(ontology = ont, name = attr)
+    except:
+        pass
+    return attribute
 
 # Return the Operator object given a name and if the operator is or not in the ontology
 def get_operator(op, ont):
-    operators = models.Operator.objects.filter(ontology = ont).all()
-    for operator in operators:
-        if operator.name == op:
-            return operator
-    return None
+    operator = None
+    try:
+        operator = models.Operator.objects.get(ontology = ont, name = op)
+    except:
+        pass
+    return operator
 
 # Return the Value object given a name and the attribute id
-def get_value(val, attr_id):
-    values = models.Value.objects.filter(attribute_id = attr_id).all()
-    for value in values:
-        if value.name == val:
-            return value
-    return None
+def get_value(val, attr):
+    value = None
+    try:
+        value = models.Value.objects.get(attribute_id = attr.id, name = val)
+    except:
+        pass
+    return value
+
+# Receive an attribute (loc/ont) and return its equivalent(s) (ont/loc)
+def map_attr(attr):
+    attributes = []
+    if attr.ontology:
+        attribute_map = models.AttributeMapping.objects.filter(apf_attribute = attr.id).all()
+        for a_map in attribute_map:
+            attributes.append(a_map.local_attribute)
+    else:
+        attribute_map = models.AttributeMapping.objects.filter(local_attribute = attr.id).all()
+        for a_map in attribute_map:
+            attributes.append(a_map.apf_attribute)
+    return attributes
+
+# Receive an operator (loc/ont) and return its equivalent(s) (ont/loc)
+def map_op(op):
+    operators = []
+    if op.ontology:
+        operator_map = models.OperatorMapping.objects.filter(apf_operator = op.id).all()
+        for o_map in operator_map:
+            operators.append(o_map.local_operator)
+    else:
+        operator_map = models.OperatorMapping.objects.filter(local_operator = op.id).all()
+        for o_map in operator_map:
+            operators.append(o_map.apf_operator)
+    return operators
+
+# Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
+def map_val(val):
+    values = []
+    if val.attribute.ontology:
+        value_map = models.ValueMapping.objects.filter(apf_value = val.id).all()
+        for v_map in value_map:
+            values.append(v_map.local_value)
+    else:
+        value_map = models.ValueMapping.objects.filter(local_value = val.id).all()
+        for v_map in value_map:
+            values.append(v_map.apf_value)
+    return values
 
 def semantic2ontology(dnf_policy):
     ret = dnf_policy
-    lv = None
-    ontology = {}
+    local_and_rules = []
+    ont_and_rules = []
+    cond_ontology = {}
+    ar_ontology = True
     # Iterate through the and rules.
     for ar in ret['and_rules']:
+        new_conds = []
+#        print(json.dumps(ar))
         print(ar['description'])
+        ar_ontology = True
         # Iterate through the conditions.
         for c in ar['conditions']:
-            print(c['description'])
-            ontology['attribute'] = False
-            ontology['operator'] = False
-            ontology['value'] = False
-            # Retrieve attribute (if found)
-            la = get_attribute(c['attribute'], False)
-            lo = get_operator(c['operator'], False)
-            if la is not None:
-                #print(la.name)
-                #print(la.id)
-                ontology['attribute'] = True
-                lv = get_value(c['value'], la.id)
-            if lo is not None:
-                ontology['operator'] = True
-                #print(lo.name)
-            if lv is not None:
-                ontology['value'] = True
-                #print(lv.name)
-            if ontology['attribute'] and ontology['operator'] and ontology['value']:
-                print("ok")
+#            print(c['description'], end=""),
+            cond_ontology['attribute'] = True
+            cond_ontology['operator'] = True
+            cond_ontology['value'] = True
+
+            # Retrieve attribute, operator and value
+            lo = get_operator(c['operator'], False)   # Get equivalent op obj
+            la = get_attribute(c['attribute'], False) # Get equivalent att obj
+            lv = None
+
+            if not lo :
+                cond_ontology['operator'] = False     # Operator not found
+
+            if not la :
+                cond_ontology['attribute'] = False    # Attribute not found
             else:
-                print("--")
+                lv = get_value(c['value'], la)        # Get equivalent val obj
+
+            if not lv:
+                cond_ontology['value'] = False        # Values not found in ont
+
+            # All found!
+            if cond_ontology['operator'] and cond_ontology['attribute'] and cond_ontology['value']:
+                oo_list = map_op(lo)
+                if len(oo_list) != 1:
+                    print("Zero or multiple operators are not accepted.")
+                else:
+                    oa_list = map_attr(la)
+                    ov_list = map_val(lv)
+                    for ov in ov_list:
+                        if ov.attribute in oa_list:
+                            new_c = {}
+                            new_c['description'] = c['description']
+                            new_c['type'] = c['type']
+#                            print("   ", ov.name)
+                            new_c['value'] = ov.name
+#                            print("   ", oo_list[0].name)
+                            new_c['operator'] = oo_list[0].name
+#                            print("   ", ov.attribute.name)
+                            new_c['attribute'] = ov.attribute.name
+                            new_conds.append(new_c)
+#                            print(json.dumps(new_c))
+                        else:
+                            print("Value not accepted for these attributes")
+            else:
+                ar_ontology = False
+                
+        # AR
+        if ar_ontology:
+            ar['conditions'] = new_conds
+            ont_and_rules.append(ar)
+        else:
+            local_and_rules.append(ar)
+
+    print(json.dumps(ont_and_rules, indent=2))
+#    print(json.dumps(local_and_rules, indent=2))
+    print(len(ont_and_rules))
+    print(len(local_and_rules))
+
+#---
+#def expand_and_rule_without_hierarchy(and_rule):
+#    and_rules = []
+#    and_rule_serializer = serializers.And_ruleSerializer(and_rule)
+#    andr = copy.copy(and_rule_serializer.data)
+#    conditions = []
+#    for cond in and_rule.conditions.all():     # Check all Conditions
+#        cond_serializer = serializers.ConditionSerializer(cond)
+#        conditions.append(cond_serializer.data)
+#    andr['conditions'] = conditions
+#    and_rules.append(andr)
+#    return(and_rules)
+#---
     return ret
 
 def semantic2local(policy):
