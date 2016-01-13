@@ -32,7 +32,7 @@ class ApfSerializer(serializers.ModelSerializer):
 class AttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Attribute
-        fields = ('id', 'tenant', 'apf', 'ontology', 'name', 'description')
+        fields = ('id', 'tenant', 'apf', 'ontology', 'enumerated', 'name', 'description')
 
 class OperatorSerializer(serializers.ModelSerializer):
     class Meta:

@@ -18,6 +18,7 @@ class Attribute(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     ontology = models.BooleanField(default=False)
+    enumerated = models.BooleanField(default=False)
 
 class Operator(models.Model):
     tenant = models.ForeignKey(Tenant, null=True)

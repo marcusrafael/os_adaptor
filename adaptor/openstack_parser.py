@@ -73,93 +73,163 @@ def map_val(val):
 
 def semantic2ontology(dnf_policy):
     ret = dnf_policy
-    local_and_rules = []
-    ont_and_rules = []
-    cond_ontology = {}
-    ar_ontology = True
+    local_and_rules = []                      # List of and rules that are cloud specific
+    ont_and_rules = []                        # List of and rules on the ontology
     # Iterate through the and rules.
     for ar in ret['and_rules']:
-        new_conds = []
-#        print(json.dumps(ar))
-#        print(ar['description'])
-        ar_ontology = True
-        # Iterate through the conditions.
-        for c in ar['conditions']:
-#            print(c['description'], end=""),
-            cond_ontology['attribute'] = True
-            cond_ontology['operator'] = True
-            cond_ontology['value'] = True
+        new_conds = []                        # Reset NewConditions list
+        ar_ontology = True                    # Reset AndRuleInOntology flag
 
-            # Retrieve attribute, operator and value
+        for c in ar['conditions']:            # Iterate through the conditions.
+            cond_ontology = {}                # Reset OnOntology flagssss
+
+            ######################  Retrieve operator  ###################
+
+            cond_ontology['operator'] = True          # Set initial ontology flag
+
             lo = get_operator(c['operator'], False)   # Get equivalent op obj
-            la = get_attribute(c['attribute'], False) # Get equivalent att obj
-            lv = None
 
             if not lo :
-                cond_ontology['operator'] = False     # Operator not found
-
-            if not la :
-                cond_ontology['attribute'] = False    # Attribute not found
+                # Operator not found
+                cond_ontology['operator'] = False     
             else:
-                lv = get_value(c['value'], la)        # Get equivalent val obj
-
-            if not lv:
-                cond_ontology['value'] = False        # Values not found in ont
-
-            # All found!
-            if cond_ontology['operator'] and cond_ontology['attribute'] and cond_ontology['value']:
+                # Operator found: map
                 oo_list = map_op(lo)
                 if len(oo_list) != 1:
-                    print("Zero or multiple operators are not accepted.")
-                else:
-                    oa_list = map_attr(la)
-                    ov_list = map_val(lv)
-                    for ov in ov_list:
-                        if ov.attribute in oa_list:
-                            # Set new attribute JSON object
-                            new_att = {}
-                            new_att['name'] = ov.attribute.name
-                            new_att['description'] = ov.attribute.description
-                            if ov.attribute.apf:
-                                new_att['policy'] = ov.attribute.apf.name
-                            else:
-                                new_att['policy'] = None
-                            new_att['cloud_technology'] = None
-#                            print(json.dumps(new_att))
+                    # Multiple operators found: Error
+                    cond_ontology['operator'] = False     
+                    print("Multiple operators are not accepted.")
 
-                            # Set new operator JSON object
-                            new_op = {}
-                            new_op['name'] = oo_list[0].name
-                            new_op['description'] = oo_list[0].description
-                            new_op['cloud_technology'] = None
-#                            print(json.dumps(new_op))
-
-                            new_c = {}
-                            new_c['description'] = c['description']
-#                            new_c['type'] = c['type']
-                            new_c['attribute'] = new_att
-                            new_c['operator'] = new_op
-                            new_c['value'] = ov.name
-                            new_conds.append(new_c)
-#                            print(json.dumps(new_c))
-                        else:
-                            print("Value not accepted for these attributes")
+            # Set new operator JSON object
+            new_op = {}
+            if cond_ontology['operator']:
+                new_op['name'] = oo_list[0].name
+                new_op['description'] = oo_list[0].description
+                new_op['cloud_technology'] = None
             else:
-                ar_ontology = False
-                
-        # AR
-        if ar_ontology:
-            ar['conditions'] = new_conds
-            ont_and_rules.append(ar)
+                new_op['name'] = c['operator']
+                new_op['description'] = None
+                new_op['cloud_technology'] = 'openstack'
+
+            ######################  Retrieve attribute & value  ###################
+
+            cond_ontology['attribute'] = True       # Set initial ontology flags
+            cond_ontology['value'] = True
+            oa_list = []
+            ov_list = []
+
+            la = get_attribute(c['attribute'], False) # Get equivalent att obj
+            if la:
+                oa_list = map_attr(la)                # Attribute found: map
+                lv = get_value(c['value'], la)        # Get equivalent val obj
+                if lv:
+                    ov_list = map_val(lv)             # Value found: map
+
+            ###################### Create Mapped Conditions ########################
+
+            if oa_list and ov_list:                              # Attribute found - Value found
+                for ov in ov_list:
+                    new_att = {}
+                    if ov.attribute in oa_list:                  # Attribute corresponds to value
+                        new_value = ov.name
+
+                        new_att['name'] = ov.attribute.name
+                        new_att['description'] = ov.attribute.description
+                        new_att['cloud_technology'] = None
+                        if ov.attribute.apf:
+                            new_att['policy'] = ov.attribute.apf.name
+                        else:
+                            new_att['policy'] = None
+
+                    else:                                        # Attribute doesn't correspond to value
+                        cond_ontology['value'] = False           # This is odd. If the value corresponded to the local attribute
+                        new_value = c['value']                   # its mapped equivalent should be mapped to an ontology attribute
+                                                                 # Solution: Set Attribute and Value as cloud specific, and log warning.
+                        cond_ontology['attribute'] = False
+                        new_att['name'] = c['attribute']
+                        new_att['description'] = None
+                        new_att['cloud_technology'] = 'openstack'
+                        new_att['policy'] = None
+
+                        print("Warning: local attribute/value match, but Ontology equivalents doesn't!")
+                        
+                    # Set condition and add to the list
+                    new_c = {}
+                    new_c['description'] = c['description']
+                    new_c['attribute'] = new_att
+                    new_c['operator'] = new_op
+                    new_c['value'] = new_value
+                    new_conds.append(new_c)
+
+            elif oa_list and not ov_list:                        # Attribute found - Value not found
+                for oa in oa_list:
+                    new_value = c['value']
+                    new_att = {}
+                    new_att['name'] = oa.name
+                    new_att['description'] = oa.description
+                    new_att['cloud_technology'] = None
+                    if oa.enumerated:                               # Attribute is enumerated, value should be on the ontology!
+                        cond_ontology['value'] = False              # Else... Attribute is not enumerated, can accept infinite values!
+                    if oa.apf:
+                        new_att['policy'] = oa.apf.name
+                    else:
+                        new_att['policy'] = None
+
+                    # Set condition and add to the list
+                    new_c = {}
+                    new_c['description'] = c['description']
+                    new_c['attribute'] = new_att
+                    new_c['operator'] = new_op
+                    new_c['value'] = new_value
+                    new_conds.append(new_c)
+
+            else:                                                  # Attribute and value not found
+                cond_ontology['value'] = False
+                new_value = c['value']
+
+                cond_ontology['attribute'] = False
+                new_att['name'] = c['attribute']
+                new_att['description'] = None
+                new_att['cloud_technology'] = 'openstack'
+                new_att['policy'] = None
+
+                # Set condition and add to the list
+                new_c = {}
+                new_c['description'] = c['description']
+                new_c['attribute'] = new_att
+                new_c['operator'] = new_op
+                new_c['value'] = new_value
+                new_conds.append(new_c)
+
+            # If attribute, operator or value are not on the ontology, the and rule is also not on
+            if not cond_ontology['operator'] or not cond_ontology['attribute'] or not cond_ontology['value']:
+                 ar_ontology = False
+
+        # if ar_ontology:
+        #     print(json.dumps(new_conds, indent=2))
+        #     print(ar['description'])
+        #     for c in ar['conditions']:
+        #         print("    ", c['description'])
+
+        ar['conditions'] = new_conds             # Copy conditions to And Rule
+        new_ar = copy.deepcopy(ar)               # Create new object (copy)
+
+        # if ar_ontology:
+        #     print(json.dumps(ar, indent=2))
+
+        if ar_ontology:                          # Attach new object to list
+            ont_and_rules.append(new_ar)
         else:
-            local_and_rules.append(ar)
+            local_and_rules.append(new_ar)
 
     print(json.dumps(ont_and_rules, indent=2))
-#    print(json.dumps(local_and_rules, indent=2))
+    # print(json.dumps(local_and_rules, indent=2))
     print(len(ont_and_rules))
     print(len(local_and_rules))
 
-#---
+    return ret
+
+#---   Example of Serializer
 #def expand_and_rule_without_hierarchy(and_rule):
 #    and_rules = []
 #    and_rule_serializer = serializers.And_ruleSerializer(and_rule)
@@ -172,7 +242,6 @@ def semantic2ontology(dnf_policy):
 #    and_rules.append(andr)
 #    return(and_rules)
 #---
-    return ret
 
 def semantic2local(policy):
     ret = policy

@@ -16,7 +16,7 @@ class AttributeSerializer(serializers.ModelSerializer):
 #    apf = serializers.PrimaryKeyRelatedField(null=True, read_only=True, allow_null=True) 
     class Meta:
         model = models.Attribute
-        fields = ('id', 'tenant', 'apf', 'ontology', 'name', 'description')
+        fields = ('id', 'tenant', 'apf', 'ontology', 'enumerated', 'name', 'description')
 
 class OperatorSerializer(serializers.ModelSerializer):
     class Meta:
