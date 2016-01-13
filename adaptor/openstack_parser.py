@@ -1,6 +1,7 @@
 from adaptor import models
 from adaptor import serializers
 from pyeda.inter import *
+# from parse import *
 import json
 import re
 import copy
@@ -71,12 +72,52 @@ def map_val(val):
             values.append(v_map.apf_value)
     return values
 
-def semantic2ontology(dnf_policy):
-    ret = dnf_policy
+# Receive a value and return a list of variables
+def parse_variables(value, ont):
+    vars = []
+
+    if ont:
+        var = re.compile('\$\(([^\)]*)\)')
+        vars = var.findall(value)
+    else:
+        var = re.compile('%\(([^\)]*)\)s')
+        vars = var.findall(value)
+
+    return vars
+
+# Receive a list of variables, map them in the ontology and replace them with correct syntax
+def parse_value(value, ont):
+    ret = value
+
+    vars = parse_variables(value, ont)
+
+    for v in vars:
+        att = get_attribute(v, ont)
+        if att:
+            oa_list = map_attr(att)
+            if oa_list:
+                for oa in oa_list:
+                    if ont:
+                        ret = ret.replace("$("+v+")", "%("+oa.name+")s")
+                    else:
+                        ret = ret.replace("%("+v+")s", "$("+oa.name+")")
+            else:
+                print("Variable "+v+"has no equivalent.")
+                ret = None
+        else:
+            print("Variable "+v+" is not valid.")
+            ret = None
+
+    return ret
+
+# Perform semantic mapping in DNF policy to Ontology
+def semantic2ontology(dnf_policy):     
+    # print(parse_value("%(path)s/%(user_id)s", False))
+
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
     # Iterate through the and rules.
-    for ar in ret['and_rules']:
+    for ar in dnf_policy['and_rules']:
         new_conds = []                        # Reset NewConditions list
         ar_ontology = True                    # Reset AndRuleInOntology flag
 
@@ -149,7 +190,10 @@ def semantic2ontology(dnf_policy):
                         new_att['name'] = c['attribute']
                         new_att['description'] = None
                         new_att['cloud_technology'] = 'openstack'
-                        new_att['policy'] = None
+                        if la.apf:
+                            new_att['policy'] = la.apf.name
+                        else:
+                            new_att['policy'] = None
 
                         print("Warning: local attribute/value match, but Ontology equivalents doesn't!")
                         
@@ -163,17 +207,27 @@ def semantic2ontology(dnf_policy):
 
             elif oa_list and not ov_list:                        # Attribute found - Value not found
                 for oa in oa_list:
-                    new_value = c['value']
                     new_att = {}
-                    new_att['name'] = oa.name
-                    new_att['description'] = oa.description
-                    new_att['cloud_technology'] = None
-                    if oa.enumerated:                               # Attribute is enumerated, value should be on the ontology!
-                        cond_ontology['value'] = False              # Else... Attribute is not enumerated, can accept infinite values!
-                    if oa.apf:
-                        new_att['policy'] = oa.apf.name
-                    else:
-                        new_att['policy'] = None
+                    if not oa.enumerated:                           # Attribute not enumerated can accept infinite values.
+                        new_value = parse_value(c['value'], False)  # Try to find variables in it, and map them
+                        if new_value:                               # Variable found
+                            new_att['cloud_technology'] = None
+                            new_att['name'] = oa.name
+                            new_att['description'] = oa.description
+                            if oa.apf:
+                                new_att['policy'] = oa.apf.name
+                            else:
+                                new_att['policy'] = None
+                    if not new_att:                                 # Attribute is enumerated, but value is not on the ontology OR Variable not found
+                        cond_ontology['value'] = False
+                        new_value = c['value']
+                        new_att['cloud_technology'] = 'openstack'
+                        new_att['name'] = c['attribute']
+                        new_att['description'] = None
+                        if la.apf:
+                            new_att['policy'] = la.apf.name
+                        else:
+                            new_att['policy'] = None
 
                     # Set condition and add to the list
                     new_c = {}
@@ -222,10 +276,13 @@ def semantic2ontology(dnf_policy):
         else:
             local_and_rules.append(new_ar)
 
-    print(json.dumps(ont_and_rules, indent=2))
-    # print(json.dumps(local_and_rules, indent=2))
+    # print(json.dumps(ont_and_rules, indent=2))
+    # # print(json.dumps(local_and_rules, indent=2))
     print(len(ont_and_rules))
     print(len(local_and_rules))
+
+    ret = {}
+    ret['and_rules'] = ont_and_rules + local_and_rules
 
     return ret
 
