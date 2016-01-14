@@ -302,6 +302,94 @@ def semantic2ontology(dnf_policy):
 
 def semantic2local(policy):
     ret = policy
+
+    for ar in policy['and_rules']:
+        new_conds = []
+        for c in ar['conditions']:
+            ########################## Operator ####################
+            lo = None
+            op = c['operator']
+            if op['cloud_technology'] != 'openstack':   
+                oo = get_operator(op['name'], True)
+                if oo:
+                    lo_list = map_op(oo)
+                    if len(lo_list) == 1:
+                        lo = lo_list[0].name
+                    else:
+                        print("Error: Operator "+op['name']+" could not be mapped to Openstack.")
+                else:
+                    print("Error: Details for operator "+op['name']+" could not be retrieved.")
+            else:
+                lo = op['name']
+
+            ####################### Attribute and Value ######################
+            conds = {}                                  # Initialize variable that will group conditions
+            if lo:  # If operator was translated to Openstack
+                a = c['attribute']
+                v = c['value']
+
+                lla = {}
+                if a['cloud_technology'] != 'openstack':    # Ontology attribute
+                    oa = get_attribute(a['name'], True)
+                    if oa:
+                        la_list = map_attr(oa)
+                        for la in la_list:
+                            if la.name not in lla:
+                                lla[la.name] = []
+                            else:
+                                print("Error: Attribute "+la.name+" was already mapped!")
+
+                            llv = []
+                            if oa.enumerated:                       # Attribute accept enumerated values
+                                ov = get_value(v, oa)
+                                if ov:
+                                    lv_list = map_val(ov)
+                                    for lv in lv_list:
+                                        if lv.attribute.name == la.name:
+                                            llv.append(lv.name)
+                                        else:
+                                            print("Error: Value "+v+" match to the attribute "+lv.attribute.name+" instead of "+la.name+".")
+                                    if not lv_list:
+                                        print("Error: Value "+v+" could not be converted to Openstack for the enumerated attribute "+la.name+".")
+                                else:
+                                    print("Error: Could not find details for value "+v+" of the enumerated attribute "+la.name+".")
+
+                            else:                                   # Attribute accept infinite values
+                                llv.append(parse_value(v,True))
+
+                            lla[la.name] = llv
+
+                        if not la_list:
+                            print("Error: Could not map attribute "+a['name']+" to Openstack.")
+                    else:
+                        print("Error: Could not find details for attribute "+a['name']+".")
+
+                else:                                       # Openstack attribute/value
+                    if a['name'] not in lla:
+                        llv = []
+                        llv.append(v)
+                        lla[a['name']] = llv
+                    else:
+                        print("Error: Attribute "+la.name+" was already mapped!")
+
+                print(c['description'])
+                print(lla)
+                print(lo)
+                print(llv)
+
+
+
+
+            #                 if la.name not in conds:
+            #                     conds[la.name] = []
+            #                     c = {}
+            #                     c['attribute'] = oa
+            #                     c['operator'] = lo
+
+            #                     conds[la.name].append(c)
+
+            #     else:                                       # Openstack attribute
+
     return ret
 
 # Return the oposite operator
