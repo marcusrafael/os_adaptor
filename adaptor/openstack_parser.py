@@ -228,7 +228,7 @@ def semantic2ontology(dnf_policy):
                         new_c['operator'] = new_op
                         new_c['value'] = new_value
                         new_conds.append(new_c)
-                        
+
                         # print(c['description'])
                         # print(oa.name)
                         # print(new_c)
@@ -396,12 +396,57 @@ def semantic2local(policy):
                 cond['operator'] = lo
                 new_conds.append(cond)
 
-        print("-----")
-        print(ar['description'])
-        print(new_conds)
-        # for cond in new_conds:
-        #     print(cond)
-        print("-----")
+# identity:get_role:1
+# {'operator': '=', 'description': 'is_admin=1',       'attval': {'is_admin': ['1']}}
+# {'operator': '=', 'description': 'service=identity', 'attval': {'service': ['identity']}}
+# {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_service', 'get_user', 'get_group', 'list_users_in_group', 'check_user_in_group', 'get_role']}}
+# {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_role', 'list_roles', 'create_role', 'update_role', 'delete_role']}}
+
+        # print("-----")
+        # print(ar['description'])
+        # print(new_conds)
+        cond_op = {}
+        for cond in new_conds:
+            if cond['operator'] not in cond_op:
+                cond_op[cond['operator']] = {}
+            for k, v in cond['attval'].items():
+                # print(cond['attval'])
+                if k not in cond_op[cond['operator']]:
+                    cond_op[cond['operator']][k] = v
+                else:
+                    vals = cond_op[cond['operator']][k]
+                    var = re.compile('%\(([^\)]*)\)s')
+                    # Find variables in vals and keep them separated
+                    vals_const = []
+                    vals_var = []
+                    for val in vals:
+                        if var.findall(val):
+                            vals_var.append(val)
+                        else:
+                            vals_const.append(val)
+                    # Find variabls in v and keep them separated
+                    v_const = []
+                    v_var = []
+                    for val in v:
+                        if var.findall(val):
+                            v_var.append(val)
+                        else:
+                            v_const.append(val)
+                    # print ("V", vals_var)
+                    # print ("C", vals_const)
+                    # print ("V", v_var)
+                    # print ("C", v_const)
+
+                    vars = list(set(vals_var) | set(v_var))
+                    consts = list(set(vals_const) & set(v_const))
+                    cond_op[cond['operator']][k] = vars + consts
+
+                    if len(cond_op[cond['operator']][k]) != 1:
+                        print(vals)
+                        print(v)
+                        print("    ", cond_op[cond['operator']][k])
+
+        # print("-----")
 
     return ret
 
