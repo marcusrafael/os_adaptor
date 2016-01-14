@@ -111,9 +111,7 @@ def parse_value(value, ont):
     return ret
 
 # Perform semantic mapping in DNF policy to Ontology
-def semantic2ontology(dnf_policy):     
-    # print(parse_value("%(path)s/%(user_id)s", False))
-
+def semantic2ontology(dnf_policy):
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
     # Iterate through the and rules.
@@ -121,8 +119,11 @@ def semantic2ontology(dnf_policy):
         new_conds = []                        # Reset NewConditions list
         ar_ontology = True                    # Reset AndRuleInOntology flag
 
+        # print("----")
+        # print(ar['description'])
+
         for c in ar['conditions']:            # Iterate through the conditions.
-            cond_ontology = {}                # Reset OnOntology flagssss
+            cond_ontology = {}                # Reset OnOntology flags
 
             ######################  Retrieve operator  ###################
 
@@ -205,29 +206,44 @@ def semantic2ontology(dnf_policy):
                     new_c['value'] = new_value
                     new_conds.append(new_c)
 
-            elif oa_list and not ov_list:                        # Attribute found - Value not found
+            elif oa_list and not ov_list:                           # Attribute found - Value not found
+                new_c = None
+
                 for oa in oa_list:
-                    new_att = {}
-                    if not oa.enumerated:                           # Attribute not enumerated can accept infinite values.
-                        new_value = parse_value(c['value'], False)  # Try to find variables in it, and map them
-                        if new_value:                               # Variable found
-                            new_att['cloud_technology'] = None
-                            new_att['name'] = oa.name
-                            new_att['description'] = oa.description
-                            if oa.apf:
-                                new_att['policy'] = oa.apf.name
-                            else:
-                                new_att['policy'] = None
-                    if not new_att:                                 # Attribute is enumerated, but value is not on the ontology OR Variable not found
-                        cond_ontology['value'] = False
-                        new_value = c['value']
-                        new_att['cloud_technology'] = 'openstack'
-                        new_att['name'] = c['attribute']
-                        new_att['description'] = None
-                        if la.apf:
-                            new_att['policy'] = la.apf.name
+                    new_value = parse_value(c['value'], False)      # Try to find variables in it, and map them
+                    if new_value and not oa.enumerated:             # If value is valid and attribute is not enumerated
+                        new_att = {}
+                        new_att['cloud_technology'] = None
+                        new_att['name'] = oa.name
+                        new_att['description'] = oa.description
+                        if oa.apf:
+                            new_att['policy'] = oa.apf.name
                         else:
                             new_att['policy'] = None
+
+                        # Set condition and add to the list
+                        new_c = {}
+                        new_c['description'] = c['description']
+                        new_c['attribute'] = new_att
+                        new_c['operator'] = new_op
+                        new_c['value'] = new_value
+                        new_conds.append(new_c)
+                        
+                        # print(c['description'])
+                        # print(oa.name)
+                        # print(new_c)
+
+                if not new_c:                                        # Error on Variable mapping or Attribute is enumerated (Else)
+                    cond_ontology['value'] = False
+                    new_value = c['value']
+                    new_att = {}
+                    new_att['cloud_technology'] = 'openstack'
+                    new_att['name'] = c['attribute']
+                    new_att['description'] = None
+                    if la.apf:
+                        new_att['policy'] = la.apf.name
+                    else:
+                        new_att['policy'] = None
 
                     # Set condition and add to the list
                     new_c = {}
@@ -237,7 +253,10 @@ def semantic2ontology(dnf_policy):
                     new_c['value'] = new_value
                     new_conds.append(new_c)
 
-            else:                                                  # Attribute and value not found
+                    # print(c['description'])
+                    # print(new_c)
+
+            else:                                                       # Attribute and value not found
                 cond_ontology['value'] = False
                 new_value = c['value']
 
@@ -269,7 +288,7 @@ def semantic2ontology(dnf_policy):
         new_ar = copy.deepcopy(ar)               # Create new object (copy)
 
         # if ar_ontology:
-        #     print(json.dumps(ar, indent=2))
+        #     print(json.dumps(new_ar, indent=2))
 
         if ar_ontology:                          # Attach new object to list
             ont_and_rules.append(new_ar)
@@ -323,7 +342,6 @@ def semantic2local(policy):
                 lo = op['name']
 
             ####################### Attribute and Value ######################
-            conds = {}                                  # Initialize variable that will group conditions
             if lo:  # If operator was translated to Openstack
                 a = c['attribute']
                 v = c['value']
@@ -364,7 +382,7 @@ def semantic2local(policy):
                     else:
                         print("Error: Could not find details for attribute "+a['name']+".")
 
-                else:                                       # Openstack attribute/value
+                else:                                       # Openstack attribute
                     if a['name'] not in lla:
                         llv = []
                         llv.append(v)
@@ -372,23 +390,18 @@ def semantic2local(policy):
                     else:
                         print("Error: Attribute "+la.name+" was already mapped!")
 
-                print(c['description'])
-                print(lla)
-                print(lo)
-                print(llv)
+                cond = {}
+                cond['description'] = c['description']
+                cond['attval'] = lla
+                cond['operator'] = lo
+                new_conds.append(cond)
 
-
-
-
-            #                 if la.name not in conds:
-            #                     conds[la.name] = []
-            #                     c = {}
-            #                     c['attribute'] = oa
-            #                     c['operator'] = lo
-
-            #                     conds[la.name].append(c)
-
-            #     else:                                       # Openstack attribute
+        print("-----")
+        print(ar['description'])
+        print(new_conds)
+        # for cond in new_conds:
+        #     print(cond)
+        print("-----")
 
     return ret
 
