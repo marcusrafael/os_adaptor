@@ -346,10 +346,14 @@ def semantic2local(policy):
                 a = c['attribute']
                 v = c['value']
 
+                ola = {}
                 lla = {}
                 if a['cloud_technology'] != 'openstack':    # Ontology attribute
                     oa = get_attribute(a['name'], True)
                     if oa:
+                        if oa.name not in ola:  # Keep track of Ontology attributes
+                            ola[oa.name] = []
+
                         la_list = map_attr(oa)
                         for la in la_list:
                             if la.name not in lla:
@@ -358,6 +362,7 @@ def semantic2local(policy):
                                 print("Error: Attribute "+la.name+" was already mapped!")
 
                             llv = []
+                            olv = []
                             if oa.enumerated:                       # Attribute accept enumerated values
                                 ov = get_value(v, oa)
                                 if ov:
@@ -365,6 +370,8 @@ def semantic2local(policy):
                                     for lv in lv_list:
                                         if lv.attribute.name == la.name:
                                             llv.append(lv.name)
+                                            olv.append(ov.name) # Keep track of Ontology values
+
                                         else:
                                             print("Error: Value "+v+" match to the attribute "+lv.attribute.name+" instead of "+la.name+".")
                                     if not lv_list:
@@ -376,6 +383,7 @@ def semantic2local(policy):
                                 llv.append(parse_value(v,True))
 
                             lla[la.name] = llv
+                            ola[oa.name] = olv
 
                         if not la_list:
                             print("Error: Could not map attribute "+a['name']+" to Openstack.")
@@ -393,6 +401,7 @@ def semantic2local(policy):
                 cond = {}
                 cond['description'] = c['description']
                 cond['attval'] = lla
+                cond['ont_attval'] = ola
                 cond['operator'] = lo
                 new_conds.append(cond)
 
@@ -402,17 +411,15 @@ def semantic2local(policy):
 # {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_service', 'get_user', 'get_group', 'list_users_in_group', 'check_user_in_group', 'get_role']}}
 # {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_role', 'list_roles', 'create_role', 'update_role', 'delete_role']}}
 
-        # print("-----")
-        # print(ar['description'])
-        # print(new_conds)
         cond_op = {}
         for cond in new_conds:
             if cond['operator'] not in cond_op:
                 cond_op[cond['operator']] = {}
+
             for k, v in cond['attval'].items():
-                # print(cond['attval'])
                 if k not in cond_op[cond['operator']]:
                     cond_op[cond['operator']][k] = v
+
                 else:
                     vals = cond_op[cond['operator']][k]
                     var = re.compile('%\(([^\)]*)\)s')
@@ -424,7 +431,7 @@ def semantic2local(policy):
                             vals_var.append(val)
                         else:
                             vals_const.append(val)
-                    # Find variabls in v and keep them separated
+                    # Find variables in v and keep them separated
                     v_const = []
                     v_var = []
                     for val in v:
@@ -432,21 +439,53 @@ def semantic2local(policy):
                             v_var.append(val)
                         else:
                             v_const.append(val)
-                    # print ("V", vals_var)
-                    # print ("C", vals_const)
-                    # print ("V", v_var)
-                    # print ("C", v_const)
 
                     vars = list(set(vals_var) | set(v_var))
                     consts = list(set(vals_const) & set(v_const))
-                    cond_op[cond['operator']][k] = vars + consts
 
-                    if len(cond_op[cond['operator']][k]) != 1:
-                        print(vals)
-                        print(v)
-                        print("    ", cond_op[cond['operator']][k])
+                    # This block eliminate conflicts when multiple Actions are selected.
+                    if len(consts) > 1:
+                        selected_cond = None
+                        if "update_user" in consts:
+                            if "action.parameter" in cond['ont_attval'].keys():
+                                if "password" in cond['ont_attval'].values():
+                                    selected_cond = "change_password"
+                            else:
+                                selected_cond = "update_user"
 
-        # print("-----")
+                        elif "get_group" in consts:
+                            if "action.parameter" in cond['ont_attval'].keys():
+                                if "user_list" in cond['ont_attval'].values():
+                                    selected_cond = "list_users_in_group"
+                                elif"user_list" in cond['ont_attval'].values():
+                                    selected_cond = "check_user_in_group"
+                            else:
+                                selected_cond = "get_group"
+
+                    # = action ['change_password', 'update_user']
+                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+                    # = action ['change_password', 'update_user']
+                    # = user_id ['%(user_id)s', '%(target.credential.user_id)s']
+                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+
+                        if not selected_cond:
+                            print(consts)
+                            print("Error: No valid action parameter were found.")
+                        else:
+                            consts = []
+                            consts.append(selected_cond)
+
+                    conds = vars + consts
+
+                    cond_op[cond['operator']][k] = conds
+
+        print("-----")
+        for op in cond_op:
+            # print(cond_op[op])
+            for k, v in cond_op[op].items():
+                # if len(v) != 1:
+                print(op, k, v)
 
     return ret
 
