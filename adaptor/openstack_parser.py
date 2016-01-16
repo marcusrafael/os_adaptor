@@ -319,11 +319,22 @@ def semantic2ontology(dnf_policy):
 #    return(and_rules)
 #---
 
-def semantic2local(policy):
-    ret = policy
+def split_values(values):
+    var = re.compile('%\(([^\)]*)\)s')
+    # Find variables in vals and keep them separated
+    consts = []
+    vars = []
+    for val in values:
+        if var.findall(val):
+            vars.append(val)
+        else:
+            consts.append(val)
+    return consts, vars
 
+def semantic2local(policy):
+    ars = []
     for ar in policy['and_rules']:
-        new_conds = []
+        cond_details = []
         for c in ar['conditions']:
             ########################## Operator ####################
             lo = None
@@ -403,7 +414,7 @@ def semantic2local(policy):
                 cond['attval'] = lla
                 cond['ont_attval'] = ola
                 cond['operator'] = lo
-                new_conds.append(cond)
+                cond_details.append(cond)
 
 # identity:get_role:1
 # {'operator': '=', 'description': 'is_admin=1',       'attval': {'is_admin': ['1']}}
@@ -412,80 +423,108 @@ def semantic2local(policy):
 # {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_role', 'list_roles', 'create_role', 'update_role', 'delete_role']}}
 
         cond_op = {}
-        for cond in new_conds:
-            if cond['operator'] not in cond_op:
-                cond_op[cond['operator']] = {}
+        for cond in cond_details:
+            op = cond['operator']
+            if op not in cond_op:
+                cond_op[op] = {}
+                cond_op[op]['ont'] = {} # Ontology data
+                cond_op[op]['loc'] = {} # Local data                
 
             for k, v in cond['attval'].items():
-                if k not in cond_op[cond['operator']]:
-                    cond_op[cond['operator']][k] = v
-
+                if k not in cond_op[op]['loc']:
+                    consts, vars = split_values(v)
+                    cond_item = {}
+                    cond_item['consts'] = consts
+                    cond_item['vars'] = vars
+                    cond_op[op]['loc'][k] = cond_item
                 else:
-                    vals = cond_op[cond['operator']][k]
-                    var = re.compile('%\(([^\)]*)\)s')
-                    # Find variables in vals and keep them separated
-                    vals_const = []
-                    vals_var = []
-                    for val in vals:
-                        if var.findall(val):
-                            vals_var.append(val)
-                        else:
-                            vals_const.append(val)
-                    # Find variables in v and keep them separated
-                    v_const = []
-                    v_var = []
-                    for val in v:
-                        if var.findall(val):
-                            v_var.append(val)
-                        else:
-                            v_const.append(val)
+                    consts, vars = split_values(v)
 
-                    vars = list(set(vals_var) | set(v_var))
-                    consts = list(set(vals_const) & set(v_const))
+                    stored_consts = cond_op[op]['loc'][k]['consts']
+                    stored_vars = cond_op[op]['loc'][k]['vars']
 
-                    # This block eliminate conflicts when multiple Actions are selected.
-                    if len(consts) > 1:
-                        selected_cond = None
-                        if "update_user" in consts:
-                            if "action.parameter" in cond['ont_attval'].keys():
-                                if "password" in cond['ont_attval'].values():
-                                    selected_cond = "change_password"
-                            else:
-                                selected_cond = "update_user"
+                    new_vars = list(set(stored_vars) | set(vars))
+                    new_consts = list(set(stored_consts) & set(consts))
 
-                        elif "get_group" in consts:
-                            if "action.parameter" in cond['ont_attval'].keys():
-                                if "user_list" in cond['ont_attval'].values():
-                                    selected_cond = "list_users_in_group"
-                                elif"user_list" in cond['ont_attval'].values():
-                                    selected_cond = "check_user_in_group"
-                            else:
-                                selected_cond = "get_group"
+                    cond_op[op]['loc'][k]['consts'] = new_consts
+                    cond_op[op]['loc'][k]['vars'] = new_vars
 
-                    # = action ['change_password', 'update_user']
-                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
-                    # = action ['change_password', 'update_user']
-                    # = user_id ['%(user_id)s', '%(target.credential.user_id)s']
-                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
-                    # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+            for k, v in cond['ont_attval'].items():
+                if k not in cond_op[op]['ont']:
+                    cond_op[op]['ont'][k] = list(set(v))
+                else:
+                    cond_op[op]['ont'][k] = list(set(v + cond_op[op]['ont'][k]))
 
-                        if not selected_cond:
-                            print(consts)
-                            print("Error: No valid action parameter were found.")
-                        else:
-                            consts = []
-                            consts.append(selected_cond)
-
-                    conds = vars + consts
-
-                    cond_op[cond['operator']][k] = conds
-
-        print("-----")
+        # This block eliminate conflicts when multiple Actions are selected.
         for op in cond_op:
-            # print(cond_op[op])
-            for k, v in cond_op[op].items():
-                # if len(v) != 1:
-                print(op, k, v)
+            for k, v in cond_op[op]['loc'].items():
+
+                consts = []
+                if 'consts' in cond_op[op]['loc'][k]:
+                    consts = cond_op[op]['loc'][k]['consts']
+                    
+                if len(consts) > 1:
+                    selected_cond = None
+
+                    if "update_user" in consts:
+                        if "action.parameter" in cond_op[op]['ont'].keys():
+                            if "password" in cond_op[op]['ont'].values():
+                                selected_cond = "change_password"
+                        else:
+                            selected_cond = "update_user"
+
+                    elif "get_group" in new_consts:
+                        if "action.parameter" in cond_op[op]['ont'].keys():
+                            if "user_list" in cond_op[op]['ont'].values():
+                                selected_cond = "list_users_in_group"
+                            elif"user_list" in cond_op[op]['ont'].values():
+                                selected_cond = "check_user_in_group"
+                        else:
+                            selected_cond = "get_group"
+
+                    if not selected_cond:
+                        print("Error: No valid action parameter were found.")
+                    else:
+                        new_consts = []
+                        new_consts.append(selected_cond)
+
+                    cond_op[op]['loc'][k]['consts'] = new_consts
+
+        # = action ['change_password', 'update_user']
+        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+        # = action ['change_password', 'update_user']
+        # = user_id ['%(user_id)s', '%(target.credential.user_id)s']
+        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+
+        new_conds = []
+        for op in cond_op:
+            for k, v in cond_op[op]['loc'].items():
+                if len(v['consts']) > 1:
+                    print ("Error: Attribute "+k+" has multiple values: ", v)
+                else:
+                    for const in v['consts']:
+                        cond = {}
+                        cond['attribute'] = k
+                        cond['operator'] = op
+                        cond['value'] = const
+                        cond['type'] = "c"
+                        cond['description'] = cond['attribute']+cond['operator']+cond['value']
+                        new_conds.append(cond)
+                    for var in v['vars']:
+                        cond = {}
+                        cond['attribute'] = k
+                        cond['operator'] = op
+                        cond['value'] = var
+                        cond['type'] = "v"
+                        cond['description'] = cond['attribute']+cond['operator']+cond['value']
+                        new_conds.append(cond)
+
+        ar['conditions'] = new_conds
+        ars.append(ar)
+
+    ret = {}
+    ret['and_rules'] = ars
 
     return ret
 
