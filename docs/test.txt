@@ -4,4 +4,4 @@
 curl -v -X POST -H "Content-Type: application/json" -d @keystone.json http://localhost:8001/policy2dnf/ | python -mjson.tool
 
 ## Policy2Local
-curl -v -X POST -H "Content-Type: application/json" -d @keystone_dnf.json http://localhost:8001/policy2local/ | python -mjson.tool
+curl -v -X POST -H "Content-Type: application/json" -d @keystone.dnf.ont.json http://localhost:8001/policy2local/ | python -mjson.tool
