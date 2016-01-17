@@ -144,7 +144,6 @@ def parse_value(value, ont):
 
     return ret
 
-
 # Check if a value contains an Openstack variable.
 def is_os_variable(val):
     ret = False
@@ -837,4 +836,3 @@ def policy2local(dnf_policy):
                     else:
                         policy[service+":"+action] = "(" + condition + ")"
     return policy
-

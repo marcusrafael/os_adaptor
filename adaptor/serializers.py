@@ -12,8 +12,8 @@ class ApfSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description')
 
 class AttributeSerializer(serializers.ModelSerializer):
-#    tenant = serializers.PrimaryKeyRelatedField(null=True, read_only=True, allow_null=True) 
-#    apf = serializers.PrimaryKeyRelatedField(null=True, read_only=True, allow_null=True) 
+   # tenant = serializers.PrimaryKeyRelatedField(null=True, read_only=True, allow_null=True) 
+   # apf = serializers.PrimaryKeyRelatedField(null=True, read_only=True, allow_null=True) 
     class Meta:
         model = models.Attribute
         fields = ('id', 'tenant', 'apf', 'ontology', 'enumerated', 'name', 'description')
@@ -47,4 +47,3 @@ class ValueMappingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ValueMapping
         fields = ('id', 'local_value', 'apf_value')
-

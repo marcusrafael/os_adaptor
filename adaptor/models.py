@@ -47,6 +47,3 @@ class OperatorMapping(models.Model):
 class ValueMapping(models.Model):
     local_value = models.ForeignKey(Value, related_name='local_value')
     apf_value = models.ForeignKey(Value, related_name='apf_value')
-
-
-
