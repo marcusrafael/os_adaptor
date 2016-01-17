@@ -106,7 +106,6 @@ def map_val2(val, att_list):
             values.append(v_map.apf_value)
     return values
 
-
 # Receive a value and return a list of variables
 def parse_variables(value, ont):
     vars = []
@@ -145,7 +144,89 @@ def parse_value(value, ont):
 
     return ret
 
-# Perform semantic mapping in DNF policy to Ontology
+
+# Check if a value contains an Openstack variable.
+def is_os_variable(val):
+    ret = False
+    var = re.compile('%\(([^\)]*)\)s')
+    vars = var.findall(val)
+    if len(vars) > 0:
+        ret = True
+    return ret
+
+# Split a list of values in two lists, the first containing the constant values, and the other containing the values with variables.
+def split_values(values):
+    var = re.compile('%\(([^\)]*)\)s')
+    # Find variables in vals and keep them separated
+    consts = []
+    vars = []
+    for val in values:
+        if var.findall(val):
+            vars.append(val)
+        else:
+            consts.append(val)
+    return consts, vars
+
+# Map conditions with attributes on the ontology that accept Enumerated values onto Openstack conditions
+def map_enumerated(new_conds):
+    ret = new_conds
+    for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
+        ar_attvals = {}
+        for att, vals in attvals.items():   # List of Atts and Values of one operator
+            loc_attvals = {}
+            la_list = map_attr(att)
+            for v in vals:                  # Values of one Att
+                candidates = map_val2(v, attvals.keys())     # Map the value and get the candidate values that satisfies the attributes from and_rule
+                for cd in candidates:
+                    if cd.attribute in la_list:              # Filter candidate values of different attributes
+                        if cd.attribute.name not in loc_attvals:
+                            loc_attvals[cd.attribute.name] = []
+                        loc_attvals[cd.attribute.name].append(cd.name)
+            for a, v in loc_attvals.items():
+                if a not in ar_attvals:
+                    ar_attvals[a] = v
+                else:
+                    ar_attvals[a] = list(set(v) & set(ar_attvals[a]))
+        
+        ret[op] = ar_attvals
+
+    return ret
+
+# Map conditions with attributes on the ontology that accept Infinite values onto Openstack conditions
+def map_infinite(new_conds):
+    ret = new_conds
+    for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
+        ar_attvals = {}
+        for att, vals in attvals.items():   # List of Atts and Values of one operator
+            loc_attvals = {}
+            la_list = map_attr(att)
+
+            for la in la_list:
+                if la.name not in ar_attvals:
+                    ar_attvals[la.name] = [] 
+                for v in vals:                  # Values of one Att
+                    lv = parse_value(v, True)
+                    if lv not in ar_attvals[la.name]:
+                        ar_attvals[la.name].append(lv)
+        
+        ret[op] = ar_attvals
+
+    return ret
+
+# Create a condition object to be added in an And Rule
+def create_condition(a, o, v):
+    cond = {}
+    cond['attribute'] = a
+    cond['operator'] = o
+    cond['value'] = v
+    if is_os_variable(v):
+        cond['type'] = "v"
+    else:
+        cond['type'] = "c"   
+    cond['description'] = cond['attribute']+cond['operator']+cond['value']
+    return cond
+
+# Perform policy semantic mapping from Openstack DNF to Ontology DNF
 def semantic2ontology(dnf_policy):
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
@@ -340,83 +421,7 @@ def semantic2ontology(dnf_policy):
 
     return ret
 
-def is_os_variable(val):
-    ret = False
-    var = re.compile('%\(([^\)]*)\)s')
-    vars = var.findall(val)
-    if len(vars) > 0:
-        ret = True
-    return ret
-
-def split_values(values):
-    var = re.compile('%\(([^\)]*)\)s')
-    # Find variables in vals and keep them separated
-    consts = []
-    vars = []
-    for val in values:
-        if var.findall(val):
-            vars.append(val)
-        else:
-            consts.append(val)
-    return consts, vars
-
-def map_enumerated(new_conds):
-    ret = new_conds
-    for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
-        ar_attvals = {}
-        for att, vals in attvals.items():   # List of Atts and Values of one operator
-            loc_attvals = {}
-            la_list = map_attr(att)
-            for v in vals:                  # Values of one Att
-                candidates = map_val2(v, attvals.keys())     # Map the value and get the candidate values that satisfies the attributes from and_rule
-                for cd in candidates:
-                    if cd.attribute in la_list:              # Filter candidate values of different attributes
-                        if cd.attribute.name not in loc_attvals:
-                            loc_attvals[cd.attribute.name] = []
-                        loc_attvals[cd.attribute.name].append(cd.name)
-            for a, v in loc_attvals.items():
-                if a not in ar_attvals:
-                    ar_attvals[a] = v
-                else:
-                    ar_attvals[a] = list(set(v) & set(ar_attvals[a]))
-        
-        ret[op] = ar_attvals
-
-    return ret
-
-def map_infinite(new_conds):
-    ret = new_conds
-    for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
-        ar_attvals = {}
-        for att, vals in attvals.items():   # List of Atts and Values of one operator
-            loc_attvals = {}
-            la_list = map_attr(att)
-
-            for la in la_list:
-                if la.name not in ar_attvals:
-                    ar_attvals[la.name] = [] 
-                for v in vals:                  # Values of one Att
-                    lv = parse_value(v, True)
-                    if lv not in ar_attvals[la.name]:
-                        ar_attvals[la.name].append(lv)
-        
-        ret[op] = ar_attvals
-
-    return ret
-
-def create_condition(a, o, v):
-    cond = {}
-    cond['attribute'] = a
-    cond['operator'] = o
-    cond['value'] = v
-    if is_os_variable(v):
-        cond['type'] = "v"
-    else:
-        cond['type'] = "c"   
-    cond['description'] = cond['attribute']+cond['operator']+cond['value']
-    return cond
-
-
+# Perform policy semantic mapping from Ontology DNF to Openstack DNF
 def semantic2local(policy):
     ars = []
     for ar in policy['and_rules']:
@@ -545,7 +550,6 @@ def semantic2local(policy):
     ret['and_rules'] = ars
 
     return ret
-
 
 # Return the oposite operator
 def oposite_operator(operator):
