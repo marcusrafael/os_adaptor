@@ -72,6 +72,41 @@ def map_val(val):
             values.append(v_map.apf_value)
     return values
 
+# Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
+def map_val2(val, att_list):
+    values = []
+    if val.attribute.ontology:
+        value_map = models.ValueMapping.objects.filter(apf_value = val.id).all()
+        mapped_vals = {}                   
+        if len(value_map) > 1:
+            for v_map in value_map:     # Mappings for one Value
+                value_map2 = models.ValueMapping.objects.filter(local_value = v_map.local_value.id).all()
+                cnt = len(value_map2)
+                if cnt not in mapped_vals:
+                    mapped_vals[cnt] = []
+                mapped_vals[cnt].append(value_map2)
+
+            for cnt in sorted(mapped_vals.keys(), reverse=True):       # itereate through the mapped vals in descending order
+                for mv_list in mapped_vals[cnt]:
+                    passed = True
+                    for mv in mv_list:
+                        if mv.apf_value.attribute not in att_list:    # Verify if the apf attributes are in the original list
+                            passed = False
+                    if passed:
+                        values.append(mv.local_value)               # If all apf_values are in the original list, add it as candidate
+                if len(values) > 0:     # If there is any mapped value with this number of local value candidates, don't get lower numbers
+                    break
+        else:
+            for v_map in value_map:
+                values.append(v_map.local_value)
+
+    else:
+        value_map = models.ValueMapping.objects.filter(local_value = val.id).all()
+        for v_map in value_map:
+            values.append(v_map.apf_value)
+    return values
+
+
 # Receive a value and return a list of variables
 def parse_variables(value, ont):
     vars = []
@@ -331,202 +366,353 @@ def split_values(values):
             consts.append(val)
     return consts, vars
 
-def semantic2local(policy):
-    ars = []
-    for ar in policy['and_rules']:
-        cond_details = []
-        for c in ar['conditions']:
-            ########################## Operator ####################
-            lo = None
-            op = c['operator']
-            if op['cloud_technology'] != 'openstack':   
-                oo = get_operator(op['name'], True)
-                if oo:
-                    lo_list = map_op(oo)
-                    if len(lo_list) == 1:
-                        lo = lo_list[0].name
-                    else:
-                        print("Error: Operator "+op['name']+" could not be mapped to Openstack.")
+def resolve_conflicts(new_conds):
+    ret = new_conds
+    for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
+        ar_attvals = {}
+        for att, vals in attvals.items():   # List of Atts and Values of one operator
+            loc_attvals = {}
+            la_list = map_attr(att)
+            for v in vals:                  # Values of one Att
+                candidates = map_val2(v, attvals.keys())     # Map the value and get the candidate values that satisfies the attributes from and_rule
+                for cd in candidates:
+                    if cd.attribute in la_list:              # Filter candidate values of different attributes
+                        if cd.attribute.name not in loc_attvals:
+                            loc_attvals[cd.attribute.name] = []
+                        loc_attvals[cd.attribute.name].append(cd.name)
+            for a, v in loc_attvals.items():
+                if a not in ar_attvals:
+                    ar_attvals[a] = v
                 else:
-                    print("Error: Details for operator "+op['name']+" could not be retrieved.")
-            else:
-                lo = op['name']
-
-            ####################### Attribute and Value ######################
-            if lo:  # If operator was translated to Openstack
-                a = c['attribute']
-                v = c['value']
-
-                ola = {}
-                lla = {}
-                if a['cloud_technology'] != 'openstack':    # Ontology attribute
-                    oa = get_attribute(a['name'], True)
-                    if oa:
-                        if oa.name not in ola:  # Keep track of Ontology attributes
-                            ola[oa.name] = []
-
-                        la_list = map_attr(oa)
-                        for la in la_list:
-                            if la.name not in lla:
-                                lla[la.name] = []
-                            else:
-                                print("Error: Attribute "+la.name+" was already mapped!")
-
-                            llv = []
-                            olv = []
-                            if oa.enumerated:                       # Attribute accept enumerated values
-                                ov = get_value(v, oa)
-                                if ov:
-                                    lv_list = map_val(ov)
-                                    for lv in lv_list:
-                                        if lv.attribute.name == la.name:
-                                            llv.append(lv.name)
-                                            olv.append(ov.name) # Keep track of Ontology values
-
-                                        else:
-                                            print("Error: Value "+v+" match to the attribute "+lv.attribute.name+" instead of "+la.name+".")
-                                    if not lv_list:
-                                        print("Error: Value "+v+" could not be converted to Openstack for the enumerated attribute "+la.name+".")
-                                else:
-                                    print("Error: Could not find details for value "+v+" of the enumerated attribute "+la.name+".")
-
-                            else:                                   # Attribute accept infinite values
-                                llv.append(parse_value(v,True))
-
-                            lla[la.name] = llv
-                            ola[oa.name] = olv
-
-                        if not la_list:
-                            print("Error: Could not map attribute "+a['name']+" to Openstack.")
-                    else:
-                        print("Error: Could not find details for attribute "+a['name']+".")
-
-                else:                                       # Openstack attribute
-                    if a['name'] not in lla:
-                        llv = []
-                        llv.append(v)
-                        lla[a['name']] = llv
-                    else:
-                        print("Error: Attribute "+la.name+" was already mapped!")
-
-                cond = {}
-                cond['description'] = c['description']
-                cond['attval'] = lla
-                cond['ont_attval'] = ola
-                cond['operator'] = lo
-                cond_details.append(cond)
-
-# identity:get_role:1
-# {'operator': '=', 'description': 'is_admin=1',       'attval': {'is_admin': ['1']}}
-# {'operator': '=', 'description': 'service=identity', 'attval': {'service': ['identity']}}
-# {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_service', 'get_user', 'get_group', 'list_users_in_group', 'check_user_in_group', 'get_role']}}
-# {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_role', 'list_roles', 'create_role', 'update_role', 'delete_role']}}
-
-        cond_op = {}
-        for cond in cond_details:
-            op = cond['operator']
-            if op not in cond_op:
-                cond_op[op] = {}
-                cond_op[op]['ont'] = {} # Ontology data
-                cond_op[op]['loc'] = {} # Local data                
-
-            for k, v in cond['attval'].items():
-                if k not in cond_op[op]['loc']:
-                    consts, vars = split_values(v)
-                    cond_item = {}
-                    cond_item['consts'] = consts
-                    cond_item['vars'] = vars
-                    cond_op[op]['loc'][k] = cond_item
-                else:
-                    consts, vars = split_values(v)
-
-                    stored_consts = cond_op[op]['loc'][k]['consts']
-                    stored_vars = cond_op[op]['loc'][k]['vars']
-
-                    new_vars = list(set(stored_vars) | set(vars))
-                    new_consts = list(set(stored_consts) & set(consts))
-
-                    cond_op[op]['loc'][k]['consts'] = new_consts
-                    cond_op[op]['loc'][k]['vars'] = new_vars
-
-            for k, v in cond['ont_attval'].items():
-                if k not in cond_op[op]['ont']:
-                    cond_op[op]['ont'][k] = list(set(v))
-                else:
-                    cond_op[op]['ont'][k] = list(set(v + cond_op[op]['ont'][k]))
-
-        # This block eliminate conflicts when multiple Actions are selected.
-        for op in cond_op:
-            for k, v in cond_op[op]['loc'].items():
-
-                consts = []
-                if 'consts' in cond_op[op]['loc'][k]:
-                    consts = cond_op[op]['loc'][k]['consts']
-                    
-                if len(consts) > 1:
-                    selected_cond = None
-
-                    if "update_user" in consts:
-                        if "action.parameter" in cond_op[op]['ont'].keys():
-                            if "password" in cond_op[op]['ont'].values():
-                                selected_cond = "change_password"
-                        else:
-                            selected_cond = "update_user"
-
-                    elif "get_group" in new_consts:
-                        if "action.parameter" in cond_op[op]['ont'].keys():
-                            if "user_list" in cond_op[op]['ont'].values():
-                                selected_cond = "list_users_in_group"
-                            elif"user_list" in cond_op[op]['ont'].values():
-                                selected_cond = "check_user_in_group"
-                        else:
-                            selected_cond = "get_group"
-
-                    if not selected_cond:
-                        print("Error: No valid action parameter were found.")
-                    else:
-                        new_consts = []
-                        new_consts.append(selected_cond)
-
-                    cond_op[op]['loc'][k]['consts'] = new_consts
-
-        # = action ['change_password', 'update_user']
-        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
-        # = action ['change_password', 'update_user']
-        # = user_id ['%(user_id)s', '%(target.credential.user_id)s']
-        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
-        # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
-
-        new_conds = []
-        for op in cond_op:
-            for k, v in cond_op[op]['loc'].items():
-                if len(v['consts']) > 1:
-                    print ("Error: Attribute "+k+" has multiple values: ", v)
-                else:
-                    for const in v['consts']:
-                        cond = {}
-                        cond['attribute'] = k
-                        cond['operator'] = op
-                        cond['value'] = const
-                        cond['type'] = "c"
-                        cond['description'] = cond['attribute']+cond['operator']+cond['value']
-                        new_conds.append(cond)
-                    for var in v['vars']:
-                        cond = {}
-                        cond['attribute'] = k
-                        cond['operator'] = op
-                        cond['value'] = var
-                        cond['type'] = "v"
-                        cond['description'] = cond['attribute']+cond['operator']+cond['value']
-                        new_conds.append(cond)
-
-        ar['conditions'] = new_conds
-        ars.append(ar)
-
-    ret = {}
-    ret['and_rules'] = ars
+                    ar_attvals[a] = list(set(v) & set(ar_attvals[a]))
+        
+        ret[op] = ar_attvals
 
     return ret
+
+def semantic2local(policy):
+    for ar in policy['and_rules']:
+        new_conds = {}
+        for c in ar['conditions']:
+            if c['operator']['cloud_technology'] != 'openstack':
+                oo = get_operator(c['operator']['name'], True)
+                if oo:
+                    if oo not in new_conds.keys():
+                        new_conds[oo] = {}
+
+                    if c['attribute']['cloud_technology'] != 'openstack':
+                        oa = get_attribute(c['attribute']['name'], True)
+                        if oa:
+                            if oa not in new_conds[oo].keys():
+                                new_conds[oo][oa] = []
+
+                            if oa.enumerated:
+                                ov = get_value(c['value'], oa)
+
+                                if ov:
+                                    if ov not in new_conds[oo][oa]:
+                                        new_conds[oo][oa].append(ov)
+
+                                else:
+                                    print("Error: Value "+c['value']+" details could not be retrieved.")
+                            else:
+                                pass # LOCAL VALUE - TO DO
+
+                        else:
+                            print("Error: Attribute "+c['attribute']['name']+" details could not be retrieved.")
+                    else:
+                        pass # LOCAL ATTRIBUTE - TO DO
+
+                else:
+                    print("Error: Operator "+c['operator']['name']+" details could not be retrieved.")
+            else:
+                pass # LOCAL OPERATOR - TO DO
+
+        new_conds = resolve_conflicts(new_conds)
+
+        for op, ar_attvals in new_conds.items():
+            print(ar['description'])
+            for k,v in ar_attvals.items():
+                print("   ", k, v)
+            print("---")
+
+    ret = policy
+    return ret
+
+
+    # # ars = []
+    # new_ar_elements = []
+    # for ar in policy['and_rules']:
+    #     # cond_details = []
+    #     new_cond_elements = {}
+    #     for c in ar['conditions']:
+
+            # ########################## Refactoring - New Area ##########################################
+
+            # ############################## Operator ##########################
+            # lo = None
+            # op = c['operator']
+            # if op['cloud_technology'] != 'openstack':   
+            #     oo = get_operator(op['name'], True)
+            #     if oo:
+            #         lo_list = map_op(oo)
+            #         if len(lo_list) == 1:
+            #             lo = lo_list[0].name
+            #         else:
+            #             print("Error: Operator "+op['name']+" could not be mapped to Openstack.")
+            #     else:
+            #         print("Error: Details for operator "+op['name']+" could not be retrieved.")
+            # else:
+            #     lo = op['name']
+
+            # if lo not in new_cond_elements:
+            #     new_cond_elements[lo] = {}
+            #     new_cond_elements[lo]['ont_attrs'] = {}
+            #     new_cond_elements[lo]['loc_attrs'] = {}
+
+            # ############################ Attributes ############################
+            # if lo:
+            #     la_list = None
+            #     oa = None
+            #     att = c['attribute']
+            #     if att['cloud_technology'] != 'openstack':    # Ontology Attribute
+            #         oa = get_attribute(att['name'], True)
+            #         if oa:
+            #             if oa not in new_cond_elements[lo]['ont_attrs']:
+            #                 new_cond_elements[lo]['ont_attrs'][oa.name] = []
+            #             la_list = map_attr(oa)
+            #             if len(la_list) == 0:
+            #                 print("Error: Attribute "+att['name']+" could not be mapped to Openstack.")
+            #         else:
+            #             print("Error: Details for attribute "+att['name']+" could not be retrieved.")
+            #     else:
+            #         la_list = []
+            #         la_list.append(att['name'])
+
+            #     for la in la_list:
+            #         if la.name not in new_cond_elements[lo]['loc_attrs']:
+            #             new_cond_elements[lo]['loc_attrs'][la.name] = []
+
+            # ############################# Values ################################
+            # lv_list = None
+            # val = c['value']
+            # if oa and oa.enumerated:   # Enumerated values needs to be retrieved from the Database
+            #     ov = get_value(val, oa)
+            #     if ov:
+            #         if ov not in new_cond_elements[lo]['ont_attrs'][oa.name]:
+            #             new_cond_elements[lo]['ont_attrs'][oa.name].append(ov.name)
+            #         lv_list = map_val(ov)
+            #         if len(lv_list) == 0:
+            #             print("Error: Value "+val+" could not be mapped to Openstack.")
+            #     else:
+            #         print("Error: Details for value "+val+" could not be retrieved.")
+            # else:
+            #     lv_list = []
+            #     lv_list.append(parse_value(val, True))
+
+            # for lv in lv_list:
+            #     if lv.attribute in la_list:
+            #         if lv.name not in new_cond_elements[lo]['loc_attrs'][lv.attribute.name]:
+            #             new_cond_elements[lo]['loc_attrs'][lv.attribute.name].append(lv.name)
+            #     else:
+            #         print("Error: Attribute "+lv.attribute.name+" of value "+lv.name+" is not valid for this condition.")
+            #         for la in la_list:
+            #             print("   ", la.name)
+
+            # print(new_cond_elements)
+
+        ############################# Summarize ################################
+
+        # new_conds_elements = {}
+
+        # for nce in new_cond_elements:
+        #     new_conds_elements['la_list'] = []
+        #     la_list = []
+        #     for la in nce['la_list']
+        #         print 
+
+        # new_ar_elements.append(new_conds_elements)
+
+    # print(new_ar_elements)
+
+            ########################## Refactoring - New Area / ##########################################
+
+
+#             ####################### Attribute and Value ######################
+#             if lo:  # If operator was translated to Openstack
+#                 a = c['attribute']
+#                 v = c['value']
+
+#                 ola = {}
+#                 lla = {}
+#                 if a['cloud_technology'] != 'openstack':    # Ontology attribute
+#                     oa = get_attribute(a['name'], True)
+#                     if oa:
+#                         if oa.name not in ola:  # Keep track of Ontology attributes
+#                             ola[oa.name] = []
+
+#                         la_list = map_attr(oa)
+#                         for la in la_list:
+#                             if la.name not in lla:
+#                                 lla[la.name] = []
+#                             else:
+#                                 print("Error: Attribute "+la.name+" was already mapped!")
+
+#                             llv = []
+#                             olv = []
+#                             if oa.enumerated:                       # Attribute accept enumerated values
+#                                 ov = get_value(v, oa)
+#                                 if ov:
+#                                     lv_list = map_val(ov)
+#                                     for lv in lv_list:
+#                                         if lv.attribute.name == la.name:
+#                                             llv.append(lv.name)
+#                                             olv.append(ov.name) # Keep track of Ontology values
+
+#                                         else:
+#                                             print("Error: Value "+v+" match to the attribute "+lv.attribute.name+" instead of "+la.name+".")
+#                                     if not lv_list:
+#                                         print("Error: Value "+v+" could not be converted to Openstack for the enumerated attribute "+la.name+".")
+#                                 else:
+#                                     print("Error: Could not find details for value "+v+" of the enumerated attribute "+la.name+".")
+
+#                             else:                                   # Attribute accept infinite values
+#                                 llv.append(parse_value(v,True))
+
+#                             lla[la.name] = llv
+#                             ola[oa.name] = olv
+
+#                         if not la_list:
+#                             print("Error: Could not map attribute "+a['name']+" to Openstack.")
+#                     else:
+#                         print("Error: Could not find details for attribute "+a['name']+".")
+
+#                 else:                                       # Openstack attribute
+#                     if a['name'] not in lla:
+#                         llv = []
+#                         llv.append(v)
+#                         lla[a['name']] = llv
+#                     else:
+#                         print("Error: Attribute "+la.name+" was already mapped!")
+
+#                 cond = {}
+#                 cond['description'] = c['description']
+#                 cond['attval'] = lla
+#                 cond['ont_attval'] = ola
+#                 cond['operator'] = lo
+#                 cond_details.append(cond)
+
+# # identity:get_role:1
+# # {'operator': '=', 'description': 'is_admin=1',       'attval': {'is_admin': ['1']}}
+# # {'operator': '=', 'description': 'service=identity', 'attval': {'service': ['identity']}}
+# # {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_service', 'get_user', 'get_group', 'list_users_in_group', 'check_user_in_group', 'get_role']}}
+# # {'operator': '=', 'description': 'action=get_role',  'attval': {'action': ['get_role', 'list_roles', 'create_role', 'update_role', 'delete_role']}}
+
+#         cond_op = {}
+#         for cond in cond_details:
+#             op = cond['operator']
+#             if op not in cond_op:
+#                 cond_op[op] = {}
+#                 cond_op[op]['ont'] = {} # Ontology data
+#                 cond_op[op]['loc'] = {} # Local data                
+
+#             for k, v in cond['attval'].items():
+#                 if k not in cond_op[op]['loc']:
+#                     consts, vars = split_values(v)
+#                     cond_item = {}
+#                     cond_item['consts'] = consts
+#                     cond_item['vars'] = vars
+#                     cond_op[op]['loc'][k] = cond_item
+#                 else:
+#                     consts, vars = split_values(v)
+
+#                     stored_consts = cond_op[op]['loc'][k]['consts']
+#                     stored_vars = cond_op[op]['loc'][k]['vars']
+
+#                     new_vars = list(set(stored_vars) | set(vars))
+#                     new_consts = list(set(stored_consts) & set(consts))
+
+#                     cond_op[op]['loc'][k]['consts'] = new_consts
+#                     cond_op[op]['loc'][k]['vars'] = new_vars
+
+#             for k, v in cond['ont_attval'].items():
+#                 if k not in cond_op[op]['ont']:
+#                     cond_op[op]['ont'][k] = list(set(v))
+#                 else:
+#                     cond_op[op]['ont'][k] = list(set(v + cond_op[op]['ont'][k]))
+
+#         # This block eliminate conflicts when multiple Actions are selected.
+#         for op in cond_op:
+#             for k, v in cond_op[op]['loc'].items():
+
+#                 consts = []
+#                 if 'consts' in cond_op[op]['loc'][k]:
+#                     consts = cond_op[op]['loc'][k]['consts']
+                    
+#                 if len(consts) > 1:
+#                     selected_cond = None
+
+#                     if "update_user" in consts:
+#                         if "action.parameter" in cond_op[op]['ont'].keys():
+#                             if "password" in cond_op[op]['ont'].values():
+#                                 selected_cond = "change_password"
+#                         else:
+#                             selected_cond = "update_user"
+
+#                     elif "get_group" in new_consts:
+#                         if "action.parameter" in cond_op[op]['ont'].keys():
+#                             if "user_list" in cond_op[op]['ont'].values():
+#                                 selected_cond = "list_users_in_group"
+#                             elif"user_list" in cond_op[op]['ont'].values():
+#                                 selected_cond = "check_user_in_group"
+#                         else:
+#                             selected_cond = "get_group"
+
+#                     if not selected_cond:
+#                         print("Error: No valid action parameter were found.")
+#                     else:
+#                         new_consts = []
+#                         new_consts.append(selected_cond)
+
+#                     cond_op[op]['loc'][k]['consts'] = new_consts
+
+#         # = action ['change_password', 'update_user']
+#         # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+#         # = action ['change_password', 'update_user']
+#         # = user_id ['%(user_id)s', '%(target.credential.user_id)s']
+#         # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+#         # = action ['get_group', 'check_user_in_group', 'list_users_in_group']
+
+#         new_conds = []
+#         for op in cond_op:
+#             for k, v in cond_op[op]['loc'].items():
+#                 if len(v['consts']) > 1:
+#                     print ("Error: Attribute "+k+" has multiple values: ", v)
+#                 else:
+#                     for const in v['consts']:
+#                         cond = {}
+#                         cond['attribute'] = k
+#                         cond['operator'] = op
+#                         cond['value'] = const
+#                         cond['type'] = "c"
+#                         cond['description'] = cond['attribute']+cond['operator']+cond['value']
+#                         new_conds.append(cond)
+#                     for var in v['vars']:
+#                         cond = {}
+#                         cond['attribute'] = k
+#                         cond['operator'] = op
+#                         cond['value'] = var
+#                         cond['type'] = "v"
+#                         cond['description'] = cond['attribute']+cond['operator']+cond['value']
+#                         new_conds.append(cond)
+
+#         ar['conditions'] = new_conds
+#         ars.append(ar)
+
+#     ret = {}
+#     ret['and_rules'] = ars
+
+#     return ret
 
 # Return the oposite operator
 def oposite_operator(operator):
