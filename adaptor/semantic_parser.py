@@ -502,12 +502,16 @@ def semantic2local(policy):
 
             for op, ar_attvals in new_conds_infinite.items():   # Add infinite atts
                 for k,v in ar_attvals.items():
+                    if op not in new_conds:
+                        new_conds[op] = {}
                     if k not in new_conds[op]:
                         new_conds[op][k] = []
                     new_conds[op][k] = new_conds[op][k] + v
 
             for op, ar_attvals in new_conds_local.items():      # Add local atts
                 for k,v in ar_attvals.items():
+                    if op not in new_conds:
+                        new_conds[op] = {}
                     if k not in new_conds[op]:
                         new_conds[op][k] = []
                     new_conds[op][k] = new_conds[op][k] + v
@@ -533,7 +537,7 @@ def semantic2local(policy):
 
             if cs_or:
                 for cso in cs_or:
-                    cs = cs.append(cso)
+                    cs.append(cso)
                     ar['conditions'] = cs
                     ars.append(ar)
 
