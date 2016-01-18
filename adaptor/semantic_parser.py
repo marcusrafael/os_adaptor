@@ -1,10 +1,11 @@
 from adaptor import models
 from adaptor import serializers
 from pyeda.inter import *
-# from parse import *
 import json
 import re
 import copy
+
+local_tech = "openstack"          # Constant that defines the cloud technology
 
 # Return the Attribute object given a name and if the attribute is or not in the ontology
 def get_attribute(attr, ont):
@@ -114,8 +115,14 @@ def parse_variables(value, ont):
         var = re.compile('\$\(([^\)]*)\)')
         vars = var.findall(value)
     else:
-        var = re.compile('%\(([^\)]*)\)s')
-        vars = var.findall(value)
+        if local_tech == "openstack":
+            var = re.compile('%\(([^\)]*)\)s')
+            vars = var.findall(value)
+        elif local_tech == "aws":
+            var = re.compile('\$\{([^\}]*)\}')
+            vars = var.findall(value)
+        else:
+            print("Error: Cloud technology "+local_tech+" is not supported.")
 
     return vars
 
@@ -132,9 +139,25 @@ def parse_value(value, ont):
             if oa_list:
                 for oa in oa_list:
                     if ont:
-                        ret = ret.replace("$("+v+")", "%("+oa.name+")s")
+                        ont_var = "$("+v+")"
+                        if local_tech == "openstack":
+                            loc_var = "%("+oa.name+")s"
+                        elif local_tech == "aws":
+                            loc_var = "${"+oa.name+"}"
+                        else:
+                            loc_var = ont_var
+                            print("Error: Cloud technology "+local_tech+" is not supported.")
+                        ret = ret.replace(ont_var, loc_var)
                     else:
-                        ret = ret.replace("%("+v+")s", "$("+oa.name+")")
+                        ont_var = "$("+oa.name+")"
+                        if local_tech == "openstack":
+                            loc_var = "%("+v+")s"
+                        elif local_tech == "aws":
+                            loc_var = "${"+v+"}"
+                        else:
+                            loc_var = ont_var
+                            print("Error: Cloud technology "+local_tech+" is not supported.")
+                        ret = ret.replace(loc_var, ont_var)
             else:
                 print("Variable "+v+"has no equivalent.")
                 ret = None
@@ -144,29 +167,52 @@ def parse_value(value, ont):
 
     return ret
 
-# Check if a value contains an Openstack variable.
-def is_os_variable(val):
+# Check if a value contains a local variable.
+def is_local_variable(val):
     ret = False
-    var = re.compile('%\(([^\)]*)\)s')
-    vars = var.findall(val)
-    if len(vars) > 0:
-        ret = True
+    unknown_tech = False
+
+    if local_tech == "openstack":
+        var = re.compile('%\(([^\)]*)\)s')
+    elif local_tech == "aws":
+        var = re.compile('\$\{([^\}]*)\}')
+    else:
+        print("Error: Cloud technology "+local_tech+" is not supported.")
+        unknown_tech = True
+
+    if not unknown_tech:
+        vars = var.findall(val)
+        if len(vars) > 0:
+            ret = True
+
     return ret
 
 # Split a list of values in two lists, the first containing the constant values, and the other containing the values with variables.
 def split_values(values):
-    var = re.compile('%\(([^\)]*)\)s')
-    # Find variables in vals and keep them separated
+    unknown_tech = False
+
+    if local_tech == "openstack":
+        var = re.compile('%\(([^\)]*)\)s')
+    elif local_tech == "aws":
+        var = re.compile('\$\{([^\}]*)\}')
+    else:
+        print("Error: Cloud technology "+local_tech+" is not supported.")
+        unknown_tech = True
+
     consts = []
     vars = []
-    for val in values:
-        if var.findall(val):
-            vars.append(val)
-        else:
-            consts.append(val)
+
+    if not unknown_tech:
+        # Find variables in vals and keep them separated
+        for val in values:
+            if var.findall(val):
+                vars.append(val)
+            else:
+                consts.append(val)
+
     return consts, vars
 
-# Map conditions with attributes on the ontology that accept Enumerated values onto Openstack conditions
+# Map conditions with attributes on the ontology that accept Enumerated values onto local conditions
 def map_enumerated(new_conds):
     ret = new_conds
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
@@ -191,7 +237,7 @@ def map_enumerated(new_conds):
 
     return ret
 
-# Map conditions with attributes on the ontology that accept Infinite values onto Openstack conditions
+# Map conditions with attributes on the ontology that accept Infinite values onto local conditions
 def map_infinite(new_conds):
     ret = new_conds
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
@@ -218,14 +264,14 @@ def create_condition(a, o, v):
     cond['attribute'] = a
     cond['operator'] = o
     cond['value'] = v
-    if is_os_variable(v):
+    if is_local_variable(v):
         cond['type'] = "v"
     else:
         cond['type'] = "c"   
     cond['description'] = cond['attribute']+cond['operator']+cond['value']
     return cond
 
-# Perform policy semantic mapping from Openstack DNF to Ontology DNF
+# Perform policy semantic mapping from Local DNF to Ontology DNF
 def semantic2ontology(dnf_policy):
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
@@ -266,7 +312,7 @@ def semantic2ontology(dnf_policy):
             else:
                 new_op['name'] = c['operator']
                 new_op['description'] = None
-                new_op['cloud_technology'] = 'openstack'
+                new_op['cloud_technology'] = local_tech
 
             ######################  Retrieve attribute & value  ###################
 
@@ -305,7 +351,7 @@ def semantic2ontology(dnf_policy):
                         cond_ontology['attribute'] = False
                         new_att['name'] = c['attribute']
                         new_att['description'] = None
-                        new_att['cloud_technology'] = 'openstack'
+                        new_att['cloud_technology'] = local_tech
                         if la.apf:
                             new_att['policy'] = la.apf.name
                         else:
@@ -352,7 +398,7 @@ def semantic2ontology(dnf_policy):
                     cond_ontology['value'] = False
                     new_value = c['value']
                     new_att = {}
-                    new_att['cloud_technology'] = 'openstack'
+                    new_att['cloud_technology'] = local_tech
                     new_att['name'] = c['attribute']
                     new_att['description'] = None
                     if la.apf:
@@ -378,7 +424,7 @@ def semantic2ontology(dnf_policy):
                 cond_ontology['attribute'] = False
                 new_att['name'] = c['attribute']
                 new_att['description'] = None
-                new_att['cloud_technology'] = 'openstack'
+                new_att['cloud_technology'] = local_tech
                 new_att['policy'] = None
 
                 # Set condition and add to the list
@@ -420,7 +466,7 @@ def semantic2ontology(dnf_policy):
 
     return ret
 
-# Perform policy semantic mapping from Ontology DNF to Openstack DNF
+# Perform policy semantic mapping from Ontology DNF to Local DNF
 def semantic2local(policy):
     ars = []
     for ar in policy['and_rules']:
@@ -430,7 +476,7 @@ def semantic2local(policy):
         new_conds_local = {}
         for c in ar['conditions']:
 
-            ##################### Operatot Mapping ##################
+            ##################### Operator Mapping ##################
             lo = None
 
             if c['operator']['cloud_technology'] is None:
@@ -440,11 +486,11 @@ def semantic2local(policy):
                     if len(lo_list) == 1:
                         lo = lo_list[0].name
                     else:
-                        print("Error: Operator "+c['operator']['name']+" could not be mapped to Openstack.")
+                        print("Error: Operator "+c['operator']['name']+" could not be mapped to "+local_tech+".")
                 else:
                     print("Error: Operator "+c['operator']['name']+" details could not be retrieved.")
 
-            elif  c['operator']['cloud_technology'] == 'openstack':
+            elif  c['operator']['cloud_technology'] == local_tech:
                 lo = c['operator']['name']
 
             else:
@@ -479,7 +525,7 @@ def semantic2local(policy):
                     else:
                         print("Error: Attribute "+c['attribute']['name']+" details could not be retrieved.")
 
-                elif c['attribute']['cloud_technology'] == 'openstack':
+                elif c['attribute']['cloud_technology'] == local_tech:
                     if lo not in new_conds_local.keys():
                         new_conds_local[lo] = {}
                     if c['attribute']['name'] not in new_conds_local[lo].keys():
