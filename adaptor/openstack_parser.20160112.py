@@ -5,6 +5,113 @@ import json
 import re
 import copy
 
+# Return the Attribute object given a name and if the attribute is or not in the ontology
+def get_attribute(attr, ont):
+    attribute = models.Attribute.objects.get(ontology = ont, attribute.name = attr)
+    return attribute
+
+# Return the Operator object given a name and if the operator is or not in the ontology
+def get_operator(op, ont):
+    operator = models.Operator.objects.get(ontology = ont, operator.name = op)
+    return operator
+
+# Return the Value object given a name and the attribute id
+def get_value(val, attr):
+    value = models.Value.objects.get(attribute_id = attr.id, value.name = val)
+    return value
+
+# Receive an attribute (loc/ont) and return its equivalent(s) (ont/loc)
+#def map_attr(attr, ont):
+#    attributes = []
+#    if ont:
+#        attribute_map = models.AttributeMapping.objects.filter(apf_id = attr.id).all()
+#        for a_map in attribute_map:
+#            attribute = models.Attribute.objects.get(id = a_map.local_id)
+#            attributes.append(attribute)
+#    else:
+#        attribute_map = models.AttributeMapping.objects.filter(local_id = attr.id).all()
+#        for a_map in attribute_map:
+#            attribute = models.Attribute.objects.get(id = a_map.apf_id)
+#            attributes.append(attribute)
+#    return attributes
+
+def semantic2ontology(dnf_policy):
+    ret = dnf_policy
+    local_and_rules = []
+    ont_and_rules = []
+    cond_ontology = {}
+    ar_ontology = True
+    # Iterate through the and rules.
+    for ar in ret['and_rules']:
+        new_conds = []
+        print(json.dumps(ar))
+        print(ar['description'])
+        ar_ontology = True
+        # Iterate through the conditions.
+        for c in ar['conditions']:
+            print(c['description']) #, end=""),
+            cond_ontology['attribute'] = True
+            cond_ontology['operator'] = True
+            cond_ontology['value'] = True
+
+    return ret
+
+            # Retrieve attribute (if found)
+#            lo = get_operator(c['operator'], False)   # Get equivalent op obj
+#            la = get_attribute(c['attribute'], False) # Get equivalent att obj
+
+#            if not lo :
+#                cond_ontology['operator'] = False     # Operator not found
+
+#            if not la :
+#                cond_ontology['attribute'] = False    # Attribute not found
+#            else:
+#                lv = get_value(c['value'], la)        # Get equivalent val obj
+#            if not lv:
+#                cond_ontology['value'] = False        # Values not found in ont
+
+#---
+#def expand_and_rule_without_hierarchy(and_rule):
+#    and_rules = []
+#    and_rule_serializer = serializers.And_ruleSerializer(and_rule)
+#    andr = copy.copy(and_rule_serializer.data)
+#    conditions = []
+#    for cond in and_rule.conditions.all():     # Check all Conditions
+#        cond_serializer = serializers.ConditionSerializer(cond)
+#        conditions.append(cond_serializer.data)
+#    andr['conditions'] = conditions
+#    and_rules.append(andr)
+#    return(and_rules)
+#---
+
+            # All found!
+#            if cond_ontology['operator'] and cond_ontology['attribute'] and cond_ontology['value']:
+#                new_c = {}
+#                print(lo[0].name)
+#                print("...ok")
+#                for v in lv:
+#                    print(v.name)
+#                    new_c = {}
+#                    new_c['value'] = v.name
+#                    new_c['operator'] = lo[0].name
+#                new_conds.append(new_c)
+#                print(v.name)
+#                print(json.dumps(new_c))
+#            else:
+#                ar_ontology = False
+#                print("...xx")
+#        if ar_ontology:
+#            print(ar['description'], end=""),
+#            print("...ok")
+#        else:
+#            print("...--")
+
+#    print(json.dumps(dnf_policy))
+
+def semantic2local(policy):
+    ret = policy
+    return ret
+
 # Return the oposite operator
 def oposite_operator(operator):
     if operator == "=":
@@ -291,3 +398,4 @@ def policy2local(dnf_policy):
                     else:
                         policy[service+":"+action] = "(" + condition + ")"
     return policy
+

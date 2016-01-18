@@ -5,6 +5,40 @@ import json
 import re
 import copy
 
+# Return the Attribute object given a name and if the attribute is or not in the ontology
+def get_attribute(attr, ont):
+    attribute = None
+    try:
+        attribute = models.Attribute.objects.get(ontology = ont, name = attr)
+    except:
+        pass
+    return attribute
+
+def semantic2ontology(dnf_policy):
+    ret = dnf_policy
+    local_and_rules = []
+    ont_and_rules = []
+    cond_ontology = {}
+    ar_ontology = True
+    # Iterate through the and rules.
+    for ar in ret['and_rules']:
+        new_conds = []
+        print(json.dumps(ar))
+        print(ar['description'])
+        ar_ontology = True
+        # Iterate through the conditions.
+        for c in ar['conditions']:
+            print(c['description']) #, end=""),
+            cond_ontology['attribute'] = True
+            cond_ontology['operator'] = True
+            cond_ontology['value'] = True
+
+    return ret
+
+def semantic2local(policy):
+    ret = policy
+    return ret
+
 # Return the oposite operator
 def oposite_operator(operator):
     if operator == "=":
@@ -291,3 +325,4 @@ def policy2local(dnf_policy):
                     else:
                         policy[service+":"+action] = "(" + condition + ")"
     return policy
+
