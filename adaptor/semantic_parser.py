@@ -293,7 +293,7 @@ def create_new_condition(desc, a, o, v):
     return new_c
 
 # Perform policy semantic mapping from Local DNF to Ontology DNF
-def semantic2ontology(dnf_policy):
+def semantic2ontology(dnf_policy, tenant, apf):
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
     # Iterate through the and rules.
@@ -417,7 +417,7 @@ def semantic2ontology(dnf_policy):
     return ret
 
 # Perform policy semantic mapping from Ontology DNF to Local DNF
-def semantic2local(policy):
+def semantic2local(policy, tenant, apf):
     ars = []
     for ar in policy['and_rules']:
         unknown_tech = False                # If this flag is true, the AR will be jumped
@@ -533,16 +533,19 @@ def semantic2local(policy):
                         for val in v:
                             cs_and.append(create_condition(k, op, val))
 
-            cs = copy.deepcopy(cs_and)
-
             if cs_or:
+                # print(cs_or)
                 for cso in cs_or:
-                    cs.append(cso)
-                    ar['conditions'] = cs
-                    ars.append(ar)
+                    ar_tmp = copy.copy(ar)
+                    cs_tmp = copy.copy(cs_and)
+                    cs_tmp.append(cso)
+                    # print("  ",cs)
+                    ar_tmp['conditions'] = cs_tmp
+                    ars.append(ar_tmp)
+                    # print("  ", ar_tmp)
 
             else:
-                ar['conditions'] = cs
+                ar['conditions'] = cs_and
                 ars.append(ar)
 
     ret = {}

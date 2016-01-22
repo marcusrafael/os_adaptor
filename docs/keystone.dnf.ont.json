@@ -1,5 +1,7 @@
 {
     "format": "openstack",
+    "tenant": "UFPE",
+    "apf": "BRGB",
     "dnf_policy": {
         "and_rules": [
             {

@@ -1,5 +1,7 @@
 {
     "format": "openstack",
+    "tenant": "UFPE",
+    "apf": "BRGB",
     "policy": 
 {
     "admin_required": "role:admin or is_admin:1",
