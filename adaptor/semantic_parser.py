@@ -7,22 +7,57 @@ import copy
 
 local_tech = 'openstack'          # Constant that defines the cloud technology
 
-# Return the Attribute object given a name and if the attribute is or not in the ontology
-def get_attribute(attr, ont):
-    attribute = None
+def get_tenant(ten):
+    tenant = None
     try:
-        attribute = models.Attribute.objects.get(ontology = ont, name = attr)
+        tenant = models.Tenant.objects.get(name=ten)
     except:
         pass
+    return tenant
+
+def get_apf(apf_nm):
+    apf = None
+    try:
+        apf = models.Apf.objects.get(name=apf_nm)
+    except:
+        pass
+    return apf
+
+# Return the Attribute object given a name and if the attribute is or not in the ontology
+def get_attribute(attr, att_apf, att_ten, ont):
+    attribute = None
+    try:
+        attribute = models.Attribute.objects.get(apf = att_apf.id, tenant = att_ten.id, ontology = ont, name = attr)
+    except:
+        try:
+            attribute = models.Attribute.objects.get(apf = None, tenant = att_ten.id, ontology = ont, name = attr)
+        except:
+            try:
+                attribute = models.Attribute.objects.get(apf = att_apf.id, tenant = None, ontology = ont, name = attr)
+            except:
+                try:
+                    attribute = models.Attribute.objects.get(apf = None, tenant = None, ontology = ont, name = attr)
+                except:
+                    # print("  ", attr, att_apf, ten, ont)
+                    pass
     return attribute
 
 # Return the Operator object given a name and if the operator is or not in the ontology
-def get_operator(op, ont):
+def get_operator(op, ont, op_apf, op_ten):
     operator = None
     try:
-        operator = models.Operator.objects.get(ontology = ont, name = op)
+        operator = models.Operator.objects.get(apf = op_apf.id, tenant = op_ten.id, ontology = ont, name = op)
     except:
-        pass
+        try:
+            operator = models.Operator.objects.get(apf = None, tenant = op_ten.id, ontology = ont, name = op)
+        except:
+            try:
+                operator = models.Operator.objects.get(apf = op_apf.id, tenant = None, ontology = ont, name = op)
+            except:
+                try:
+                    operator = models.Operator.objects.get(apf = None, tenant = None, ontology = ont, name = op)
+                except:
+                    pass
     return operator
 
 # Return the Value object given a name and the attribute id
@@ -35,29 +70,33 @@ def get_value(val, attr):
     return value
 
 # Receive an attribute (loc/ont) and return its equivalent(s) (ont/loc)
-def map_attr(attr):
+def map_attr(attr, apf, tenant):
     attributes = []
     if attr.ontology:
         attribute_map = models.AttributeMapping.objects.filter(apf_attribute = attr.id).all()
         for a_map in attribute_map:
-            attributes.append(a_map.local_attribute)
+            if (a_map.local_attribute.tenant is None or a_map.local_attribute.tenant == tenant) and (a_map.local_attribute.apf is None or a_map.local_attribute.apf  == apf):
+                attributes.append(a_map.local_attribute)
     else:
         attribute_map = models.AttributeMapping.objects.filter(local_attribute = attr.id).all()
         for a_map in attribute_map:
-            attributes.append(a_map.apf_attribute)
+            if (a_map.apf_attribute.tenant is None or a_map.apf_attribute.tenant == tenant) and (a_map.apf_attribute.apf is None or a_map.apf_attribute.apf  == apf):
+                attributes.append(a_map.apf_attribute)
     return attributes
 
 # Receive an operator (loc/ont) and return its equivalent(s) (ont/loc)
-def map_op(op):
+def map_op(op, apf, tenant):
     operators = []
     if op.ontology:
         operator_map = models.OperatorMapping.objects.filter(apf_operator = op.id).all()
         for o_map in operator_map:
-            operators.append(o_map.local_operator)
+            if (o_map.local_operator.tenant is None or o_map.local_operator.tenant == tenant) and (o_map.local_operator.apf is None or o_map.local_operator.apf  == apf):
+                operators.append(o_map.local_operator)
     else:
         operator_map = models.OperatorMapping.objects.filter(local_operator = op.id).all()
         for o_map in operator_map:
-            operators.append(o_map.apf_operator)
+            if (o_map.apf_operator.tenant is None or o_map.apf_operator.tenant == tenant) and (o_map.apf_operator.apf is None or o_map.apf_operator.apf  == apf):
+                operators.append(o_map.apf_operator)
     return operators
 
 # Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
@@ -127,15 +166,15 @@ def parse_variables(value, ont):
     return vars
 
 # Receive a list of variables, map them in the ontology and replace them with correct syntax
-def parse_value(value, ont):
+def parse_value(value, apf, tenant, ont):
     ret = value
 
     vars = parse_variables(value, ont)
 
     for v in vars:
-        att = get_attribute(v, ont)
+        att = get_attribute(v, apf, tenant, ont)
         if att:
-            oa_list = map_attr(att)
+            oa_list = map_attr(att, apf, tenant)
             if oa_list:
                 for oa in oa_list:
                     if ont:
@@ -213,13 +252,13 @@ def split_values(values):
     return consts, vars
 
 # Map conditions with attributes on the ontology that accept Enumerated values onto local conditions
-def map_enumerated(new_conds):
+def map_enumerated(new_conds, apf, tenant):
     ret = new_conds
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
         ar_attvals = {}
         for att, vals in attvals.items():   # List of Atts and Values of one operator
             loc_attvals = {}
-            la_list = map_attr(att)
+            la_list = map_attr(att, apf, tenant)
             for v in vals:                  # Values of one Att
                 candidates = map_val2(v, attvals.keys())     # Map the value and get the candidate values that satisfies the attributes from and_rule
                 for cd in candidates:
@@ -238,19 +277,19 @@ def map_enumerated(new_conds):
     return ret
 
 # Map conditions with attributes on the ontology that accept Infinite values onto local conditions
-def map_infinite(new_conds):
+def map_infinite(new_conds, apf, tenant):
     ret = new_conds
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
         ar_attvals = {}
         for att, vals in attvals.items():   # List of Atts and Values of one operator
             loc_attvals = {}
-            la_list = map_attr(att)
+            la_list = map_attr(att, apf, tenant)
 
             for la in la_list:
                 if la.name not in ar_attvals:
                     ar_attvals[la.name] = [] 
                 for v in vals:                  # Values of one Att
-                    lv = parse_value(v, True)
+                    lv = parse_value(v, la.apf, la.tenant, True)
                     if lv not in ar_attvals[la.name]:
                         ar_attvals[la.name].append(lv)
         
@@ -293,7 +332,17 @@ def create_new_condition(desc, a, o, v):
     return new_c
 
 # Perform policy semantic mapping from Local DNF to Ontology DNF
-def semantic2ontology(dnf_policy, tenant, apf):
+def semantic2ontology(dnf_policy, ten, apf_nm):
+    tenant = get_tenant(ten)
+    if not tenant:
+        print("Error: Tenant "+ten+" not found.")
+        return None 
+
+    apf = get_apf(apf_nm)
+    if not apf:
+        print("Error: APF "+apf_nm+" not found.")
+        return None
+
     local_and_rules = []                      # List of and rules that are cloud specific
     ont_and_rules = []                        # List of and rules on the ontology
     # Iterate through the and rules.
@@ -311,14 +360,14 @@ def semantic2ontology(dnf_policy, tenant, apf):
 
             cond_ontology['operator'] = True          # Set initial ontology flag
 
-            lo = get_operator(c['operator'], False)   # Get equivalent op obj
+            lo = get_operator(c['operator'], apf, tenant, False)   # Get equivalent op obj
 
             if not lo :
                 # Operator not found
                 cond_ontology['operator'] = False     
             else:
                 # Operator found: map
-                oo_list = map_op(lo)
+                oo_list = map_op(lo, apf, tenant)
                 if len(oo_list) != 1:
                     # Multiple operators found: Error
                     cond_ontology['operator'] = False     
@@ -342,9 +391,9 @@ def semantic2ontology(dnf_policy, tenant, apf):
             oa_list = []
             ov_list = []
 
-            la = get_attribute(c['attribute'], False) # Get equivalent att obj
+            la = get_attribute(c['attribute'], apf, tenant, False) # Get equivalent att obj
             if la:
-                oa_list = map_attr(la)                # Attribute found: map
+                oa_list = map_attr(la, apf, tenant)                # Attribute found: map
                 lv = get_value(c['value'], la)        # Get equivalent val obj
                 if lv:
                     ov_list = map_val(lv)             # Value found: map
@@ -374,7 +423,7 @@ def semantic2ontology(dnf_policy, tenant, apf):
                 new_c = None
 
                 for oa in oa_list:
-                    new_value = parse_value(c['value'], False)      # Try to find variables in it, and map them
+                    new_value = parse_value(c['value'], apf, tenant, False)      # Try to find variables in it, and map them
                     if new_value and not oa.enumerated:             # If value is valid and attribute is not enumerated
                         new_att = create_new_attribute(oa.name, oa.description, oa.apf, None)
                         new_c = create_new_condition(c['description'], new_att, new_op, new_value)
@@ -417,7 +466,17 @@ def semantic2ontology(dnf_policy, tenant, apf):
     return ret
 
 # Perform policy semantic mapping from Ontology DNF to Local DNF
-def semantic2local(policy, tenant, apf):
+def semantic2local(policy, ten, apf_nm):
+    tenant = get_tenant(ten)
+    if not tenant:
+        print("Error: Tenant "+ten+" not found.")
+        return None 
+
+    apf = get_apf(apf_nm)
+    if not apf:
+        print("Error: APF "+apf_nm+" not found.")
+        return None
+
     ars = []
     for ar in policy['and_rules']:
         unknown_tech = False                # If this flag is true, the AR will be jumped
@@ -430,9 +489,9 @@ def semantic2local(policy, tenant, apf):
             lo = None
 
             if c['operator']['cloud_technology'] is None:
-                oo = get_operator(c['operator']['name'], True)
+                oo = get_operator(c['operator']['name'], apf, tenant, True)
                 if oo:
-                    lo_list = map_op(oo)
+                    lo_list = map_op(oo, apf, tenant)
                     if len(lo_list) == 1:
                         lo = lo_list[0].name
                     else:
@@ -450,7 +509,7 @@ def semantic2local(policy, tenant, apf):
 
             if lo:
                 if  c['attribute']['cloud_technology'] is None:
-                    oa = get_attribute(c['attribute']['name'], True)
+                    oa = get_attribute(c['attribute']['name'], apf, tenant, True)
                     if oa:
                         if oa.enumerated:                                               # Enumerated Values
                             ov = get_value(c['value'], oa)
@@ -493,8 +552,8 @@ def semantic2local(policy, tenant, apf):
 
             ##################### Attribute & Value Mapping ##################
     
-            new_conds_enumerated = map_enumerated(new_conds_enumerated)
-            new_conds_infinite = map_infinite(new_conds_infinite)
+            new_conds_enumerated = map_enumerated(new_conds_enumerated, apf, tenant)
+            new_conds_infinite = map_infinite(new_conds_infinite, apf, tenant)
 
             ##################### Attribute & Value Merge ##################
 
@@ -534,16 +593,12 @@ def semantic2local(policy, tenant, apf):
                             cs_and.append(create_condition(k, op, val))
 
             if cs_or:
-                # print(cs_or)
                 for cso in cs_or:
                     ar_tmp = copy.copy(ar)
                     cs_tmp = copy.copy(cs_and)
                     cs_tmp.append(cso)
-                    # print("  ",cs)
                     ar_tmp['conditions'] = cs_tmp
                     ars.append(ar_tmp)
-                    # print("  ", ar_tmp)
-
             else:
                 ar['conditions'] = cs_and
                 ars.append(ar)

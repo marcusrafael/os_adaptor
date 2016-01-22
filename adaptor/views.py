@@ -49,11 +49,11 @@ class ValueMappingViewSet(viewsets.ModelViewSet):
 class AdaptorDnfView(APIView):
     def post(self, request, *args, **kwargs):
         resp = {}
-        if (not "format" in request.data or not "policy" in request.data):
+        if (not "format" in request.data or not "policy" in request.data or not "tenant" in request.data or not "apf" in request.data):
             resp['detail'] = "Missing argument"
             return Response(resp, status=412)
         elif (request.data["format"] == "openstack"):
-            resp = adaptor.policy2dnf(request.data["policy"])
+            resp = adaptor.policy2dnf(request.data["policy"], request.data["tenant"], request.data["apf"])
             return Response(resp)
         else:
             resp['detail'] = "Policy Format not Supported."
@@ -62,11 +62,11 @@ class AdaptorDnfView(APIView):
 class AdaptorLocalView(APIView):
     def post(self, request, *args, **kwargs):
         resp = {}
-        if (not "format" in request.data or not "dnf_policy" in request.data):
+        if (not "format" in request.data or not "dnf_policy" in request.data or not "tenant" in request.data or not "apf" in request.data):
             resp['detail'] = "Missing argument"
             return Response(resp, status=412)
         elif (request.data["format"] == "openstack"):
-            resp = adaptor.policy2local(request.data["dnf_policy"])
+            resp = adaptor.policy2local(request.data["dnf_policy"], request.data["tenant"], request.data["apf"])
             return Response(resp)
         else:
             resp['detail'] = "Policy Format not Supported."

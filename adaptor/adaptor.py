@@ -11,6 +11,9 @@ def policy2dnf(policy, tenant, apf):
 def policy2local(dnf_policy, tenant, apf):
     resp = {}
     locpol = semantic_parser.semantic2local(dnf_policy, tenant, apf)
+
     # resp['policy'] = locpol
-    resp['policy'] = openstack_parser.policy2local(locpol)
+
+    if (locpol):
+    	resp['policy'] = openstack_parser.policy2local(locpol)
     return resp
