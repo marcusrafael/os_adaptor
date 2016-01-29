@@ -1,0 +1,547 @@
+{
+    "count": 90,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "attribute": 1,
+            "description": "UFPE Openstack Admin role",
+            "id": 1,
+            "name": "admin"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB administrator role",
+            "id": 2,
+            "name": "administrator"
+        },
+        {
+            "attribute": 1,
+            "description": "Professor Adjunto da UFPE",
+            "id": 3,
+            "name": "professor_adjunto"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB Professor role",
+            "id": 4,
+            "name": "Professor"
+        },
+        {
+            "attribute": 1,
+            "description": "Professor Assistente da UFPE",
+            "id": 5,
+            "name": "professor_assistente"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB Lecturer role",
+            "id": 6,
+            "name": "lecturer"
+        },
+        {
+            "attribute": 1,
+            "description": "Funcionario da UFPE",
+            "id": 7,
+            "name": "funcionario"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB Staff role",
+            "id": 8,
+            "name": "staff"
+        },
+        {
+            "attribute": 1,
+            "description": "Estudante da Graduacao UFPE",
+            "id": 9,
+            "name": "estudante_graduacao"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB undergraduate student role",
+            "id": 10,
+            "name": "undergrad"
+        },
+        {
+            "attribute": 1,
+            "description": "Estudante de Mestrado da UFPE",
+            "id": 11,
+            "name": "estudante_mestrado"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB MSc student role",
+            "id": 12,
+            "name": "msc"
+        },
+        {
+            "attribute": 1,
+            "description": "Estudante de Doutorado da UFPE",
+            "id": 13,
+            "name": "estudante_doutorado"
+        },
+        {
+            "attribute": 2,
+            "description": "BRGB PhD student role",
+            "id": 14,
+            "name": "phd"
+        },
+        {
+            "attribute": 3,
+            "description": "Keystone - Openstack Identity Service",
+            "id": 15,
+            "name": "identity"
+        },
+        {
+            "attribute": 4,
+            "description": "Ontology Security Service",
+            "id": 16,
+            "name": "security_service"
+        },
+        {
+            "attribute": 6,
+            "description": "action list",
+            "id": 17,
+            "name": "list"
+        },
+        {
+            "attribute": 6,
+            "description": "action create",
+            "id": 18,
+            "name": "create"
+        },
+        {
+            "attribute": 6,
+            "description": "action read",
+            "id": 19,
+            "name": "read"
+        },
+        {
+            "attribute": 6,
+            "description": "action write",
+            "id": 20,
+            "name": "write"
+        },
+        {
+            "attribute": 6,
+            "description": "action delete",
+            "id": 21,
+            "name": "delete"
+        },
+        {
+            "attribute": 6,
+            "description": "action update",
+            "id": 22,
+            "name": "update"
+        },
+        {
+            "attribute": 6,
+            "description": "action append",
+            "id": 23,
+            "name": "append"
+        },
+        {
+            "attribute": 6,
+            "description": "action replace",
+            "id": 24,
+            "name": "replace"
+        },
+        {
+            "attribute": 6,
+            "description": "action resume",
+            "id": 25,
+            "name": "resume"
+        },
+        {
+            "attribute": 6,
+            "description": "action suspend",
+            "id": 26,
+            "name": "suspend"
+        },
+        {
+            "attribute": 6,
+            "description": "action start",
+            "id": 27,
+            "name": "start"
+        },
+        {
+            "attribute": 6,
+            "description": "action stop",
+            "id": 28,
+            "name": "stop"
+        },
+        {
+            "attribute": 6,
+            "description": "action add",
+            "id": 29,
+            "name": "add"
+        },
+        {
+            "attribute": 6,
+            "description": "action remove",
+            "id": 30,
+            "name": "remove"
+        },
+        {
+            "attribute": 5,
+            "description": "action=get; resource=service",
+            "id": 31,
+            "name": "get_service_dis"
+        },
+        {
+            "attribute": 5,
+            "description": "action=list; resource=service",
+            "id": 32,
+            "name": "list_services_dis"
+        },
+        {
+            "attribute": 5,
+            "description": "action=create; resource=service",
+            "id": 33,
+            "name": "create_service_dis"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update; resource=service",
+            "id": 34,
+            "name": "update_service_dis"
+        },
+        {
+            "attribute": 5,
+            "description": "action=delete; resource=service",
+            "id": 35,
+            "name": "delete_service_dis"
+        },
+        {
+            "attribute": 5,
+            "description": "action=get; resource=user",
+            "id": 36,
+            "name": "get_user"
+        },
+        {
+            "attribute": 5,
+            "description": "action=list; resource=user",
+            "id": 37,
+            "name": "list_users"
+        },
+        {
+            "attribute": 5,
+            "description": "action=create; resource=user",
+            "id": 38,
+            "name": "create_user"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update; resource=user",
+            "id": 39,
+            "name": "update_user"
+        },
+        {
+            "attribute": 5,
+            "description": "action=delete; resource=user",
+            "id": 40,
+            "name": "delete_user"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update; resource=user; param=password",
+            "id": 41,
+            "name": "change_password"
+        },
+        {
+            "attribute": 5,
+            "description": "action=get; resource=group",
+            "id": 42,
+            "name": "get_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=list; resource=group",
+            "id": 43,
+            "name": "list_groups"
+        },
+        {
+            "attribute": 5,
+            "description": "action=create; resource=group",
+            "id": 44,
+            "name": "create_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update; resource=group",
+            "id": 45,
+            "name": "update_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=delete; resource=group",
+            "id": 46,
+            "name": "delete_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=read; resource=group; param=user_list",
+            "id": 47,
+            "name": "list_users_in_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=remove; resource=group; param=user",
+            "id": 48,
+            "name": "remove_user_from_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=read; resource=group; param=user",
+            "id": 49,
+            "name": "check_user_in_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=add; resource=group; param=user",
+            "id": 50,
+            "name": "add_user_to_group"
+        },
+        {
+            "attribute": 5,
+            "description": "action=get; resource=role",
+            "id": 51,
+            "name": "get_role"
+        },
+        {
+            "attribute": 5,
+            "description": "action=list; resource=role",
+            "id": 52,
+            "name": "list_roles"
+        },
+        {
+            "attribute": 5,
+            "description": "action=create; resource=role",
+            "id": 53,
+            "name": "create_role"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update; resource=role",
+            "id": 54,
+            "name": "update_role"
+        },
+        {
+            "attribute": 5,
+            "description": "action=delete; resource=role",
+            "id": 55,
+            "name": "delete_role"
+        },
+        {
+            "attribute": 7,
+            "description": "IaaS Service",
+            "id": 56,
+            "name": "service"
+        },
+        {
+            "attribute": 7,
+            "description": "User",
+            "id": 57,
+            "name": "user"
+        },
+        {
+            "attribute": 7,
+            "description": "Group of users",
+            "id": 58,
+            "name": "user_group"
+        },
+        {
+            "attribute": 7,
+            "description": "Role",
+            "id": 59,
+            "name": "user_role"
+        },
+        {
+            "attribute": 8,
+            "description": "User's password attribute",
+            "id": 60,
+            "name": "user.password"
+        },
+        {
+            "attribute": 8,
+            "description": "List of users in a group",
+            "id": 61,
+            "name": "user_list"
+        },
+        {
+            "attribute": 8,
+            "description": "user in a group",
+            "id": 62,
+            "name": "user"
+        },
+        {
+            "attribute": 11,
+            "description": "Root Role at Kent",
+            "id": 63,
+            "name": "root"
+        },
+        {
+            "attribute": 11,
+            "description": "Professor Role at Kent",
+            "id": 64,
+            "name": "professor"
+        },
+        {
+            "attribute": 11,
+            "description": "Staff Role at Kent",
+            "id": 65,
+            "name": "staff"
+        },
+        {
+            "attribute": 11,
+            "description": "PhD Student at Kent",
+            "id": 66,
+            "name": "phd"
+        },
+        {
+            "attribute": 11,
+            "description": "Student at Kent",
+            "id": 67,
+            "name": "student"
+        },
+        {
+            "attribute": 3,
+            "description": "Nova - Openstack Compute Service",
+            "id": 68,
+            "name": "compute"
+        },
+        {
+            "attribute": 3,
+            "description": "Neutron - Openstack Network Service",
+            "id": 69,
+            "name": "network"
+        },
+        {
+            "attribute": 5,
+            "description": "action=create",
+            "id": 70,
+            "name": "create"
+        },
+        {
+            "attribute": 5,
+            "description": "action=get",
+            "id": 71,
+            "name": "get"
+        },
+        {
+            "attribute": 5,
+            "description": "action=update",
+            "id": 72,
+            "name": "update"
+        },
+        {
+            "attribute": 5,
+            "description": "action=delete",
+            "id": 73,
+            "name": "delete"
+        },
+        {
+            "attribute": 5,
+            "description": "action=start",
+            "id": 74,
+            "name": "start"
+        },
+        {
+            "attribute": 5,
+            "description": "action=stop",
+            "id": 75,
+            "name": "stop"
+        },
+        {
+            "attribute": 5,
+            "description": "action=reboot",
+            "id": 76,
+            "name": "reboot"
+        },
+        {
+            "attribute": 5,
+            "description": "action=attach_interface",
+            "id": 77,
+            "name": "attach_interface"
+        },
+        {
+            "attribute": 5,
+            "description": "action=detach_interface",
+            "id": 78,
+            "name": "detach_interface"
+        },
+        {
+            "attribute": 5,
+            "description": "action=attach_interface",
+            "id": 79,
+            "name": "attach_volume"
+        },
+        {
+            "attribute": 5,
+            "description": "action=detach_volume",
+            "id": 80,
+            "name": "detach_volume"
+        },
+        {
+            "attribute": 5,
+            "description": "action=snapshot",
+            "id": 81,
+            "name": "snapshot"
+        },
+        {
+            "attribute": 5,
+            "description": "action=volume_snapshot_create",
+            "id": 82,
+            "name": "volume_snapshot_create"
+        },
+        {
+            "attribute": 5,
+            "description": "action=volume_snapshot_delete",
+            "id": 83,
+            "name": "volume_snapshot_delete"
+        },
+        {
+            "attribute": 4,
+            "description": "Ontology Compute Service",
+            "id": 84,
+            "name": "compute_service"
+        },
+        {
+            "attribute": 7,
+            "description": "VM resource",
+            "id": 85,
+            "name": "virtual_machine"
+        },
+        {
+            "attribute": 7,
+            "description": "VM Snapshot",
+            "id": 86,
+            "name": "snapshot"
+        },
+        {
+            "attribute": 7,
+            "description": "VM VHD (Volume)",
+            "id": 87,
+            "name": "virtual_hard_disk"
+        },
+        {
+            "attribute": 7,
+            "description": "VM VNIF",
+            "id": 88,
+            "name": "virtual_network_interface"
+        },
+        {
+            "attribute": 8,
+            "description": "VM VNIF",
+            "id": 89,
+            "name": "virtual_network_interface"
+        },
+        {
+            "attribute": 8,
+            "description": "VM VHD (Volume)",
+            "id": 90,
+            "name": "virtual_hard_disk"
+        }
+    ]
+}
