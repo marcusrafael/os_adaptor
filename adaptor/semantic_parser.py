@@ -188,32 +188,33 @@ def map_val2(attvals, apf, tenant):
 
     for k, vs in mapped_vals.items():
         num_vals = len(vs)
-        if len(vs) > 1:
-            candidates = {}
-            for v in vs:
-                # print(to_str(v))
-                value_map2 = models.ValueMapping.objects.filter(local_value = v.id).all()
-                match = True
-                for v_map2 in value_map2:
-                    v_att2 = v_map2.apf_value.attribute
-                    v_val2 = v_map2.apf_value
-                    # print("   ",to_str(v_att2), end="")
-                    # print(" = ",to_str(v_val2), end="")
-                    if v_att2 in attvals.keys() and v_val2 in attvals[v_att2]:
-                        pass
-                        # print(" (True)")
-                    else:
-                        match = False
-                        # print(" (False)")
-                if match:
-                    if num_vals not in candidates.keys():
-                        candidates[num_vals] = []
-                    if v not in candidates[num_vals]:
-                        candidates[num_vals].append(v)
+        candidates = {}
+        for v in vs:
+            print(to_str(v))
+            value_map2 = models.ValueMapping.objects.filter(local_value = v.id).all()
+            match = True
+            for v_map2 in value_map2:
+                v_att2 = v_map2.apf_value.attribute
+                v_val2 = v_map2.apf_value
+                # print("   ",to_str(v_att2), end="")
+                # print(" = ",to_str(v_val2), end="")
+                if v_att2 in attvals.keys() and v_val2 in attvals[v_att2]:
+                    pass
+                    # print(" (True)")
+                else:
+                    match = False
+                    # print(" (False)")
+            if match:
+                if num_vals not in candidates.keys():
+                    candidates[num_vals] = []
+                if v not in candidates[num_vals]:
+                    candidates[num_vals].append(v)
 
-                    max_val = max(candidates.keys())
+                max_val = max(candidates.keys())
 
-                    mapped_vals[k] = candidates[max_val]
+                mapped_vals[k] = candidates[max_val]
+            else:
+                mapped_vals[k] = []
 
     # print(to_str(mapped_vals))
 
@@ -332,11 +333,11 @@ def split_values(values):
 
 # Map conditions with attributes on the ontology that accept Enumerated values onto local conditions
 def map_enumerated(new_conds, apf, tenant):
-    ret = new_conds
-
+    ret = {}
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
-        ret[op] = map_val2(attvals, apf, tenant)
-
+        attvals2 = map_val2(attvals, apf, tenant)
+        if attvals2:
+            ret[op] = attvals2
     return ret
 
 # Map conditions with attributes on the ontology that accept Infinite values onto local conditions
@@ -625,11 +626,7 @@ def semantic2local(policy, ten, apf_nm):
     
             new_conds_enumerated = map_enumerated(new_conds_enumerated, apf, tenant)
 
-            # print(to_str(new_conds_enumerated))
-
             new_conds_infinite = map_infinite(new_conds_infinite, apf, tenant)
-
-            # print(to_str(new_conds_infinite))
 
             ##################### Attribute & Value Merge ##################
 
@@ -683,7 +680,8 @@ def semantic2local(policy, ten, apf_nm):
                     ar_tmp['conditions'] = cs_tmp
                     if ar_tmp not in ars:
                         ars.append(ar_tmp)
-            else:
+
+            elif cs_and:
                 ar['conditions'] = cs_and
                 if ar not in ars:
                     ars.append(ar)

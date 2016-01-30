@@ -5,7 +5,9 @@ import json
 def policy2dnf(policy, tenant, apf):
     resp = {}
     dnfpol = openstack_parser.policy2dnf(policy)
-    resp['dnf_policy'] = semantic_parser.semantic2ontology(dnfpol, tenant, apf)
+    ontpol = semantic_parser.semantic2ontology(dnfpol, tenant, apf)
+    if ontpol:
+        resp['dnf_policy'] = ontpol
 
     # resp['dnf_policy'] = dnfpol
 
