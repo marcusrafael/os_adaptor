@@ -159,7 +159,7 @@ def to_str(v):
 
 # Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
 def map_val2(attvals, apf, tenant):
-    print(to_str(attvals))
+    # print(to_str(attvals))
     values = []
     mapped_vals = {}
 
@@ -182,7 +182,7 @@ def map_val2(attvals, apf, tenant):
                     else:
                         mapped_vals[k] = list(set(mapped_vals[k]) & set(vs))
 
-    print(to_str(mapped_vals))
+    # print(to_str(mapped_vals))
 
     mapped_vals_str = {}
 
@@ -191,7 +191,7 @@ def map_val2(attvals, apf, tenant):
         if len(vs) > 1:
             candidates = {}
             for v in vs:
-                print(to_str(v))
+                # print(to_str(v))
                 value_map2 = models.ValueMapping.objects.filter(local_value = v.id).all()
                 match = True
                 for v_map2 in value_map2:
@@ -215,7 +215,7 @@ def map_val2(attvals, apf, tenant):
 
                     mapped_vals[k] = candidates[max_val]
 
-    print(to_str(mapped_vals))
+    # print(to_str(mapped_vals))
 
     for k, vs in mapped_vals.items():
         if k.name not in mapped_vals_str.keys():
@@ -548,8 +548,8 @@ def semantic2local(policy, ten, apf_nm):
 
     ars = []
     for ar in policy['and_rules']:
-        print(ar['description'])
-        print()
+        # print()
+        # print(ar['description'])
         unknown_tech = False                # If this flag is true, the AR will be jumped
         new_conds_enumerated = {}
         new_conds_infinite = {}
@@ -625,11 +625,11 @@ def semantic2local(policy, ten, apf_nm):
     
             new_conds_enumerated = map_enumerated(new_conds_enumerated, apf, tenant)
 
-            print(to_str(new_conds_enumerated))
+            # print(to_str(new_conds_enumerated))
 
             new_conds_infinite = map_infinite(new_conds_infinite, apf, tenant)
 
-            print(to_str(new_conds_infinite))
+            # print(to_str(new_conds_infinite))
 
             ##################### Attribute & Value Merge ##################
 
