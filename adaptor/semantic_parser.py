@@ -190,7 +190,7 @@ def map_val2(attvals, apf, tenant):
         num_vals = len(vs)
         candidates = {}
         for v in vs:
-            print(to_str(v))
+            # print(to_str(v))
             value_map2 = models.ValueMapping.objects.filter(local_value = v.id).all()
             match = True
             for v_map2 in value_map2:
@@ -231,14 +231,14 @@ def parse_variables(value, ont):
     vars = []
 
     if ont:
-        var = re.compile('\$\(([^\)]*)\)')
+        var = re.compile('(\$\([^\)]*\))')
         vars = var.findall(value)
     else:
         if local_tech == "openstack":
-            var = re.compile('%\(([^\)]*)\)s')
+            var = re.compile('(%\([^\)]*\)s)')
             vars = var.findall(value)
         elif local_tech == "aws":
-            var = re.compile('\$\{([^\}]*)\}')
+            var = re.compile('(\$\{[^\}]*\})')
             vars = var.findall(value)
         else:
             print("Error: Cloud technology "+local_tech+" is not supported.")
@@ -247,41 +247,41 @@ def parse_variables(value, ont):
 
 # Receive a list of variables, map them in the ontology and replace them with correct syntax
 def parse_value(value, apf, tenant, ont):
-    ret = value
 
+    ret = value # If no variable is found, return the initial value.
+
+    # Retrieve a list of variables from the value.
     vars = parse_variables(value, ont)
 
-    for v in vars:
-        att = get_attribute(v, apf, tenant, ont)
+    if vars:
+        # Get the list of valid variables
+        att = get_attribute("variable", apf, tenant, ont)
+
         if att:
-            oa_list = map_attr(att, apf, tenant)
-            if oa_list:
-                for oa in oa_list:
-                    if ont:
-                        ont_var = "$("+v+")"
-                        if local_tech == "openstack":
-                            loc_var = "%("+oa.name+")s"
-                        elif local_tech == "aws":
-                            loc_var = "${"+oa.name+"}"
-                        else:
-                            loc_var = ont_var
-                            print("Error: Cloud technology "+local_tech+" is not supported.")
-                        ret = ret.replace(ont_var, loc_var)
-                    else:
-                        ont_var = "$("+oa.name+")"
-                        if local_tech == "openstack":
-                            loc_var = "%("+v+")s"
-                        elif local_tech == "aws":
-                            loc_var = "${"+v+"}"
-                        else:
-                            loc_var = ont_var
-                            print("Error: Cloud technology "+local_tech+" is not supported.")
-                        ret = ret.replace(loc_var, ont_var)
+            valid_vars = models.Value.objects.filter(attribute = att).all()
+
+            if valid_vars:
+                print(valid_vars)
+                for v in vars:
+                    for vv in valid_vars:
+                        if v == vv.name:
+                            mv_list = map_val(vv, apf, tenant)   # Map value (ont->loc or loc->ont)
+                            if not mv_list:
+                                print("Variable "+v+" has no equivalent.")
+                                ret = None
+                            elif len(mv_list) > 1:
+                                print("Variable "+v+" has multiple equivalents.")
+                                ret = None
+                            else: 
+                                ret = ret.replace(v, mv_list[0].name)
+
+                            break   # A variable can only have one entry in the database.
             else:
-                print("Variable "+v+"has no equivalent.")
+                print("Value has variables, but this adaptor does not accept variables.")
                 ret = None
+
         else:
-            print("Variable "+v+" is not valid.")
+            print("Value has variables, but this adaptor does not accept variables.")
             ret = None
 
     return ret
@@ -350,14 +350,22 @@ def map_infinite(new_conds, apf, tenant):
             la_list = map_attr(att, apf, tenant)
 
             for la in la_list:
-                if la.name not in ar_attvals:
-                    ar_attvals[la.name] = [] 
                 for v in vals:                  # Values of one Att
                     lv = parse_value(v, la.apf, la.tenant, True)
-                    if lv not in ar_attvals[la.name]:
-                        ar_attvals[la.name].append(lv)
+                    if lv:
+                        if la.name not in ar_attvals:
+                            ar_attvals[la.name] = []
+                        if lv not in ar_attvals[la.name]:
+                            ar_attvals[la.name].append(lv)
+                    else:
+                        if att.name not in ar_attvals:
+                            ar_attvals[att.name] = []
+                        if v not in ar_attvals[att.name]:
+                            ar_attvals[att].append(v)
         
         ret[op] = ar_attvals
+
+    print(to_str(ret))
 
     return ret
 
@@ -494,6 +502,13 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
                         new_c = create_new_condition(c['description'], new_att, new_op, new_value)
                         if new_c not in new_conds:
                             new_conds.append(new_c)
+                    else:   # Variable exist and was not found.
+                        cond_ontology['value'] = False
+                        new_value = c['value']
+                        new_att = create_new_attribute(c['attribute'], None, la.apf, local_tech)
+                        new_c = create_new_condition(c['description'], new_att, new_op, new_value)
+                        if new_c not in new_conds:
+                            new_conds.append(new_c)
 
                 if not new_c:                                        # Error on Variable mapping or Attribute is enumerated (Else)
                     cond_ontology['value'] = False
@@ -624,9 +639,11 @@ def semantic2local(policy, ten, apf_nm):
 
             ##################### Attribute & Value Mapping ##################
     
-            new_conds_enumerated = map_enumerated(new_conds_enumerated, apf, tenant)
-
             new_conds_infinite = map_infinite(new_conds_infinite, apf, tenant)
+
+            print(to_str(new_conds_infinite))
+
+            new_conds_enumerated = map_enumerated(new_conds_enumerated, apf, tenant)
 
             ##################### Attribute & Value Merge ##################
 
@@ -640,6 +657,8 @@ def semantic2local(policy, ten, apf_nm):
                         new_conds[op][k] = []
                     new_conds[op][k] = new_conds[op][k] + v
 
+            print(to_str(new_conds))
+
             for op, ar_attvals in new_conds_local.items():      # Add local atts
                 for k,v in ar_attvals.items():
                     if op not in new_conds:
@@ -647,6 +666,8 @@ def semantic2local(policy, ten, apf_nm):
                     if k not in new_conds[op]:
                         new_conds[op][k] = []
                     new_conds[op][k] = new_conds[op][k] + v
+
+            print(to_str(new_conds))
 
             ################## Create condition and add them to ars ##################
 
@@ -680,11 +701,14 @@ def semantic2local(policy, ten, apf_nm):
                     ar_tmp['conditions'] = cs_tmp
                     if ar_tmp not in ars:
                         ars.append(ar_tmp)
+                    print(to_str(ar_tmp))
 
             elif cs_and:
                 ar['conditions'] = cs_and
                 if ar not in ars:
                     ars.append(ar)
+                print(to_str(ar))
+
 
     ret = {}
     ret['and_rules'] = ars
