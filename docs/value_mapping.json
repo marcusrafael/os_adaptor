@@ -1,5 +1,5 @@
 {
-    "count": 86,
+    "count": 84,
     "next": null,
     "previous": null,
     "results": [
@@ -239,11 +239,6 @@
             "local_value": 48
         },
         {
-            "apf_value": 19,
-            "id": 48,
-            "local_value": 49
-        },
-        {
             "apf_value": 58,
             "id": 49,
             "local_value": 49
@@ -297,16 +292,6 @@
             "apf_value": 59,
             "id": 59,
             "local_value": 53
-        },
-        {
-            "apf_value": 22,
-            "id": 60,
-            "local_value": 54
-        },
-        {
-            "apf_value": 59,
-            "id": 61,
-            "local_value": 54
         },
         {
             "apf_value": 21,
@@ -432,6 +417,11 @@
             "apf_value": 88,
             "id": 86,
             "local_value": 69
+        },
+        {
+            "apf_value": 93,
+            "id": 88,
+            "local_value": 94
         }
     ]
 }

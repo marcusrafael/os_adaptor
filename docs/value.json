@@ -1,5 +1,5 @@
 {
-    "count": 90,
+    "count": 92,
     "next": null,
     "previous": null,
     "results": [
@@ -295,7 +295,7 @@
             "attribute": 5,
             "description": "action=read; resource=group; param=user",
             "id": 49,
-            "name": "check_user_in_group"
+            "name": "check_user_in_group_null"
         },
         {
             "attribute": 5,
@@ -325,7 +325,7 @@
             "attribute": 5,
             "description": "action=update; resource=role",
             "id": 54,
-            "name": "update_role"
+            "name": "update_role_null"
         },
         {
             "attribute": 5,
@@ -542,6 +542,18 @@
             "description": "VM VHD (Volume)",
             "id": 90,
             "name": "virtual_hard_disk"
+        },
+        {
+            "attribute": 10,
+            "description": "This ontology variable contains the id of the subject who owns a resource.",
+            "id": 93,
+            "name": "$(resource.owner.id)"
+        },
+        {
+            "attribute": 9,
+            "description": "Openstack Resource Owner Variable",
+            "id": 94,
+            "name": "%(user_id)s"
         }
     ]
 }
