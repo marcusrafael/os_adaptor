@@ -69,6 +69,25 @@ def get_value(val, attr):
         pass
     return value
 
+# Receive a value and return a list of variables
+def parse_variables(value, ont):
+    vars = []
+
+    if ont:
+        var = re.compile('(\$\([^\)]*\))')
+        vars = var.findall(value)
+    else:
+        if local_tech == "openstack":
+            var = re.compile('(%\([^\)]*\)s)')
+            vars = var.findall(value)
+        elif local_tech == "aws":
+            var = re.compile('(\$\{[^\}]*\})')
+            vars = var.findall(value)
+        else:
+            print("Error: Cloud technology "+local_tech+" is not supported.")
+
+    return vars
+
 # Receive an attribute (loc/ont) and return its equivalent(s) (ont/loc)
 def map_attr(attr, apf, tenant):
     attributes = []
@@ -102,16 +121,47 @@ def map_op(op, apf, tenant):
 # Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
 def map_val(val, apf, tenant):
     values = []
-    if val.attribute.ontology:
-        value_map = models.ValueMapping.objects.filter(apf_value = val.id).all()
-        for v_map in value_map:
-            if (v_map.local_value.attribute.apf == apf or v_map.local_value.attribute.apf is None) and (v_map.local_value.attribute.tenant == tenant or v_map.local_value.attribute.tenant is None):
-                values.append(v_map.local_value)
-    else:
-        value_map = models.ValueMapping.objects.filter(local_value = val.id).all()
-        for v_map in value_map:
-            if (v_map.apf_value.attribute.apf == apf or v_map.apf_value.attribute.apf is None) and (v_map.apf_value.attribute.tenant == tenant or v_map.apf_value.attribute.tenant is None):
-                values.append(v_map.apf_value)
+    if val.attribute.enumerated:
+        if val.attribute.ontology:
+            value_map = models.ValueMapping.objects.filter(apf_value = val.id).all()
+            for v_map in value_map:
+                if (v_map.local_value.attribute.apf == apf or v_map.local_value.attribute.apf is None) and (v_map.local_value.attribute.tenant == tenant or v_map.local_value.attribute.tenant is None):
+                    values.append(v_map.local_value)
+        else:
+            value_map = models.ValueMapping.objects.filter(local_value = val.id).all()
+            for v_map in value_map:
+                if (v_map.apf_value.attribute.apf == apf or v_map.apf_value.attribute.apf is None) and (v_map.apf_value.attribute.tenant == tenant or v_map.apf_value.attribute.tenant is None):
+                    values.append(v_map.apf_value)
+
+    else: # Infinite values
+        vars = parse_variables(val.name, val.attribute.ontology)   # Find the variables inside the value name (String)
+        for v in vars:                                             # For each variable...
+            v_val = get_value(v, val.attribute)                    # ... find the Value object
+            if v_val:
+                if v_val.attribute.ontology:
+                    value_map = models.ValueMapping.objects.filter(apf_value = v_val.id).all()
+                    for v_map in value_map:
+                        if (v_map.local_value.attribute.apf == apf or v_map.local_value.attribute.apf is None) and (v_map.local_value.attribute.tenant == tenant or v_map.local_value.attribute.tenant is None):
+                            if v_map.local_value.attribute.enumerated:
+                                values.append(v_map.local_value)
+                            else:
+                                new_val = copy.deepcopy(v_map.local_value)
+                                new_val.name = val.name.replace(v, v_map.local_value.name)
+                                values.append(new_val)
+
+                else:
+                    v_value_map = models.ValueMapping.objects.filter(local_value = v_val.id).all()
+                    for v_map in v_value_map:
+                        if (v_map.apf_value.attribute.apf == apf or v_map.apf_value.attribute.apf is None) and (v_map.apf_value.attribute.tenant == tenant or v_map.apf_value.attribute.tenant is None):
+                            if v_map.apf_value.attribute.enumerated:
+                                values.append(v_map.apf_value)
+                            else:
+                                new_val = copy.deepcopy(v_map.apf_value)
+                                new_val.name = val.name.replace(v, v_map.apf_value.name)
+                                values.append(new_val)
+        if not values:
+            values = val    # No replacement - Return the same string
+
     return values
 
 def obj2str(o):
@@ -156,72 +206,6 @@ def to_str(v):
     else:
         txt += "--Unmapped--"
     return txt
-
-
-# Receive a value and return a list of variables
-def parse_variables(value, ont):
-    vars = []
-
-    if ont:
-        var = re.compile('(\$\([^\)]*\))')
-        vars = var.findall(value)
-    else:
-        if local_tech == "openstack":
-            var = re.compile('(%\([^\)]*\)s)')
-            vars = var.findall(value)
-        elif local_tech == "aws":
-            var = re.compile('(\$\{[^\}]*\})')
-            vars = var.findall(value)
-        else:
-            print("Error: Cloud technology "+local_tech+" is not supported.")
-
-    return vars
-
-# Verify if a value contains one or more variables.
-def contains_variable(value, ont):
-    vars = parse_variables(value, ont)
-    return len(vars) > 0
-
-# Receive a list of variables, map them in the ontology and replace them with correct syntax
-def parse_value(value, apf, tenant, ont):
-
-    ret = value # If no variable is found, return the initial value.
-
-    # Retrieve a list of variables from the value.
-    vars = parse_variables(value, ont)
-
-    if vars:
-        # Get the list of valid variables
-        att = get_attribute("variable", apf, tenant, ont)
-
-        if att:
-            valid_vars = models.Value.objects.filter(attribute = att).all()
-
-            if valid_vars:
-                print(valid_vars)
-                for v in vars:
-                    for vv in valid_vars:
-                        if v == vv.name:
-                            mv_list = map_val(vv, apf, tenant)   # Map value (ont->loc or loc->ont)
-                            if not mv_list:
-                                print("Variable "+v+" has no equivalent.")
-                                ret = None
-                            elif len(mv_list) > 1:
-                                print("Variable "+v+" has multiple equivalents.")
-                                ret = None
-                            else: 
-                                ret = ret.replace(v, mv_list[0].name)
-
-                            break   # A variable can only have one entry in the database.
-            else:
-                print("Value has variables, but this adaptor does not accept variables.")
-                ret = None
-
-        else:
-            print("Value has variables, but this adaptor does not accept variables.")
-            ret = None
-
-    return ret
 
 # Check if a value contains a local variable.
 def is_local_variable(val):
@@ -270,7 +254,6 @@ def split_values(values):
 
 def map_val_enum(val, mapped_vals, apf, tenant):
     # Find the mappings for the value (val)
-    # print(to_str(val))
     value_map = models.ValueMapping.objects.filter(apf_value = val.id).all()  # Get all mappings for this Ont value
 
     # Append mapped values to a temporary dictionary for the mapped attribute
@@ -297,12 +280,8 @@ def map_val_enum(val, mapped_vals, apf, tenant):
 
 # Map conditions with attributes on the ontology onto local conditions
 def map_conditions(new_conds, apf, tenant):
-
-    print("===")
     ret = {}
     for op, attvals in new_conds.items():   # List of all atts/vals in the condition per operator
-
-        print(to_str(attvals))
         values = []
         mapped_vals = {}
 
@@ -314,19 +293,14 @@ def map_conditions(new_conds, apf, tenant):
                     else:
                         vars = parse_variables(val, True)
                         for vr in vars:
-                            # print("VR:", vr)
-                            # print("ATT:", to_str(att))
                             var = get_value(vr, att)
                             if var:
-                                # print("VAR:", to_str(var))
                                 mapped_vals = map_val_enum(var, mapped_vals, apf, tenant)
                                 for mv_att, mv_vals in mapped_vals.items():
                                     if not mv_att.enumerated: # If infinite, replace ontology variable with local ones
                                         v_list = []
                                         for mv_val in mv_vals:
                                             v_list.append(val.replace(vr, mv_val.name))
-                                        # print("MV_ATT: ",to_str(mv_att))
-                                        # print("MV_VAL: ",to_str(mv_vals))
                                         mapped_vals[mv_att] = mv_vals
                             else:
                                 print("Error: Variable "+vr+" could not be retrieved.")
@@ -335,29 +309,20 @@ def map_conditions(new_conds, apf, tenant):
                                 mapped_vals[att] = []
                             mapped_vals[att].append(val)        
 
-        print(to_str(mapped_vals))
-
-        mapped_vals_str = {}
-
         for k, vs in mapped_vals.items():
             if k.enumerated:
                 num_vals = len(vs)
                 candidates = {}
                 for v in vs:
-                    print(to_str(v))
                     value_map2 = models.ValueMapping.objects.filter(local_value = v.id).all()
                     match = True
                     for v_map2 in value_map2:
                         v_att2 = v_map2.apf_value.attribute
                         v_val2 = v_map2.apf_value
-                        print("   ",to_str(v_att2), end="")
-                        print(" = ",to_str(v_val2), end="")
                         if v_att2 in attvals.keys() and v_val2 in attvals[v_att2]:
                             pass
-                            print(" (True)")
                         else:
                             match = False
-                            print(" (False)")
                     if match:
                         if num_vals not in candidates.keys():
                             candidates[num_vals] = []
@@ -365,12 +330,9 @@ def map_conditions(new_conds, apf, tenant):
                             candidates[num_vals].append(v)
 
                         max_val = max(candidates.keys())
-
                         mapped_vals[k] = candidates[max_val]
-                    else:
-                        mapped_vals[k] = []
 
-        print(to_str(mapped_vals))
+        mapped_vals_str = {}
 
         for k, vs in mapped_vals.items():
             if k.name not in mapped_vals_str.keys():
@@ -383,6 +345,7 @@ def map_conditions(new_conds, apf, tenant):
 
         if mapped_vals_str:
             ret[op] = mapped_vals_str
+
     return ret
 
 # Create a condition object to be added in an And Rule
@@ -438,9 +401,6 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
         new_conds = []                        # Reset NewConditions list
         ar_ontology = True                    # Reset AndRuleInOntology flag
 
-        # print("----")
-        # print(ar['description'])
-
         for c in ar['conditions']:            # Iterate through the conditions.
             cond_ontology = {}                # Reset OnOntology flags
 
@@ -482,7 +442,7 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
             la = get_attribute(c['attribute'], apf, tenant, False) # Get equivalent att obj
             if la:
                 oa_list = map_attr(la, apf, tenant)                # Attribute found: map
-                lv = get_value(c['value'], la)        # Get equivalent val obj
+                lv = get_value(c['value'], la)                     # Get equivalent val obj
                 if lv:
                     ov_list = map_val(lv, apf, tenant)             # Value found: map
 
@@ -502,7 +462,7 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
                         cond_ontology['attribute'] = False
                         new_att = create_new_attribute(c['attribute'], None, la.apf, local_tech)
 
-                        print("Warning: Ontology equivalents for the local attribute/value pair does not match!")
+                        print("Warning: Ontology equivalents for the local attribute/value pair does not match!", to_str(ov.attribute), to_str(oa_list))
                         
                     new_c = create_new_condition(c['description'], new_att, new_op, new_value)
                     if new_c not in new_conds:
@@ -512,8 +472,8 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
                 new_c = None
 
                 for oa in oa_list:
-                    new_value = parse_value(c['value'], apf, tenant, False)      # Try to find variables in it, and map them
-                    if new_value and not oa.enumerated:             # If value is valid and attribute is not enumerated
+                    new_value = c['value']
+                    if new_value and not oa.enumerated:
                         new_att = create_new_attribute(oa.name, oa.description, oa.apf, None)
                         new_c = create_new_condition(c['description'], new_att, new_op, new_value)
                         if new_c not in new_conds:
@@ -580,8 +540,6 @@ def semantic2local(policy, ten, apf_nm):
 
     ars = []
     for ar in policy['and_rules']:
-        print()
-        print(ar['description'])
         unknown_tech = False                # If this flag is true, the AR will be jumped
         new_conds_ont = {}
         new_conds_local = {}
@@ -658,8 +616,6 @@ def semantic2local(policy, ten, apf_nm):
 
             new_conds = new_conds_ont                    # Start with enumerated atts
 
-            print(to_str(new_conds))
-
             for op, ar_attvals in new_conds_local.items():      # Add local atts
                 for k,v in ar_attvals.items():
                     if op not in new_conds:
@@ -668,28 +624,16 @@ def semantic2local(policy, ten, apf_nm):
                         new_conds[op][k] = []
                     new_conds[op][k] = new_conds[op][k] + v
 
-            print(to_str(new_conds))
-
             ################## Create condition and add them to ars ##################
-
-            print("=====")
 
             cs_or = []
             cs_and = []
 
             for op, ar_attvals in new_conds.items():
 
-                print(to_str(ar_attvals))
-
                 for k,v in ar_attvals.items():
-
-                    print(k)
-                    print(to_str(v))
-
                     if len(v) > 1:
                         consts, vars = split_values(v)
-                        print("consts: ", consts)
-                        print("vars: ", vars)
                         for const in consts:
                             new_c = create_condition(k, op, const)
                             if new_c not in cs_or:
@@ -699,7 +643,6 @@ def semantic2local(policy, ten, apf_nm):
                             if new_c not in cs_and:
                                 cs_and.append(new_c)
                     else:
-                        print("vals: ", v)
                         for val in v:
                             new_c = create_condition(k, op, val)
                             if new_c not in cs_and:
@@ -714,14 +657,11 @@ def semantic2local(policy, ten, apf_nm):
                     ar_tmp['conditions'] = cs_tmp
                     if ar_tmp not in ars:
                         ars.append(ar_tmp)
-                    print(to_str(ar_tmp))
 
             elif cs_and:
                 ar['conditions'] = cs_and
                 if ar not in ars:
                     ars.append(ar)
-                print(to_str(ar))
-
 
     ret = {}
     ret['and_rules'] = ars
