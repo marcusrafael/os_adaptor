@@ -150,8 +150,8 @@ def map_val(val, apf, tenant):
                                 values.append(new_val)
 
                 else:
-                    v_value_map = models.ValueMapping.objects.filter(local_value = v_val.id).all()
-                    for v_map in v_value_map:
+                    value_map = models.ValueMapping.objects.filter(local_value = v_val.id).all()
+                    for v_map in value_map:
                         if (v_map.apf_value.attribute.apf == apf or v_map.apf_value.attribute.apf is None) and (v_map.apf_value.attribute.tenant == tenant or v_map.apf_value.attribute.tenant is None):
                             if v_map.apf_value.attribute.enumerated:
                                 values.append(v_map.apf_value)
@@ -159,9 +159,6 @@ def map_val(val, apf, tenant):
                                 new_val = copy.deepcopy(v_map.apf_value)
                                 new_val.name = val.name.replace(v, v_map.apf_value.name)
                                 values.append(new_val)
-        if not values:
-            values = val    # No replacement - Return the same string
-
     return values
 
 def obj2str(o):
@@ -469,30 +466,20 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
                         new_conds.append(new_c)
 
             elif oa_list and not ov_list:                           # Attribute found - Value not found
-                new_c = None
-
                 for oa in oa_list:
                     new_value = c['value']
-                    if new_value and not oa.enumerated:
+                    vars = parse_variables(new_value, False)
+                    if not oa.enumerated and not vars:              # If the attribute is infinite and there are no variables, it can be mapped to ontology
                         new_att = create_new_attribute(oa.name, oa.description, oa.apf, None)
                         new_c = create_new_condition(c['description'], new_att, new_op, new_value)
                         if new_c not in new_conds:
                             new_conds.append(new_c)
-                    else:   # Variable exist but it was not found or accepted
+                    else:                                           # Otherwise, if the attribute is enumerated or finite with variables, the local will be kept
                         cond_ontology['value'] = False
-                        new_value = c['value']
                         new_att = create_new_attribute(c['attribute'], None, la.apf, local_tech)
                         new_c = create_new_condition(c['description'], new_att, new_op, new_value)
                         if new_c not in new_conds:
                             new_conds.append(new_c)
-
-                if not new_c:                                        # Error on Variable mapping or Attribute is enumerated (Else)
-                    cond_ontology['value'] = False
-                    new_value = c['value']
-                    new_att = create_new_attribute(c['attribute'], None, la.apf, local_tech)
-                    new_c = create_new_condition(c['description'], new_att, new_op, new_value)
-                    if new_c not in new_conds:
-                        new_conds.append(new_c)
 
             else:                                                       # Attribute and value not found
                 cond_ontology['value'] = False
