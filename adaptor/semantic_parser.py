@@ -43,7 +43,7 @@ def get_attribute(attr, att_apf, att_ten, ont):
     return attribute
 
 # Return the Operator object given a name and if the operator is or not in the ontology
-def get_operator(op, ont, op_apf, op_ten):
+def get_operator(op, op_apf, op_ten, ont):
     operator = None
     try:
         operator = models.Operator.objects.get(apf = op_apf.id, tenant = op_ten.id, ontology = ont, name = op)
