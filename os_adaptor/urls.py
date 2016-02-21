@@ -37,7 +37,7 @@ class AttributeSerializer(serializers.ModelSerializer):
 class OperatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Operator
-        fields = ('id', 'tenant', 'apf', 'ontology', 'name', 'description')
+        fields = ('id', 'ontology', 'name', 'description')
 
 class ValueSerializer(serializers.ModelSerializer):
     class Meta:

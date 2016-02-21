@@ -100,13 +100,11 @@ def map_op(op, apf, tenant):
     if op.ontology:
         operator_map = models.OperatorMapping.objects.filter(apf_operator = op.id).all()
         for o_map in operator_map:
-            if (o_map.local_operator.tenant is None or o_map.local_operator.tenant == tenant) and (o_map.local_operator.apf is None or o_map.local_operator.apf  == apf):
-                operators.append(o_map.local_operator)
+            operators.append(o_map.local_operator)
     else:
         operator_map = models.OperatorMapping.objects.filter(local_operator = op.id).all()
         for o_map in operator_map:
-            if (o_map.apf_operator.tenant is None or o_map.apf_operator.tenant == tenant) and (o_map.apf_operator.apf is None or o_map.apf_operator.apf  == apf):
-                operators.append(o_map.apf_operator)
+            operators.append(o_map.apf_operator)
     return operators
 
 # Receive a value (loc/ont) and return its equivalent(s) (ont/loc)
