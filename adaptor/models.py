@@ -19,8 +19,8 @@ class Attribute(models.Model):
     enumerated = models.BooleanField(default=False)
 
 class Operator(models.Model):
-    tenant = models.ForeignKey(Tenant, null=True)
-    apf = models.ForeignKey(Apf, null=True)
+#    tenant = models.ForeignKey(Tenant, null=True)
+#    apf = models.ForeignKey(Apf, null=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     ontology = models.BooleanField(default=False)

@@ -43,21 +43,12 @@ def get_attribute(attr, att_apf, att_ten, ont):
     return attribute
 
 # Return the Operator object given a name and if the operator is or not in the ontology
-def get_operator(op, op_apf, op_ten, ont):
+def get_operator(op, ont):
     operator = None
     try:
-        operator = models.Operator.objects.get(apf = op_apf.id, tenant = op_ten.id, ontology = ont, name = op)
+        operator = models.Operator.objects.get(ontology = ont, name = op)
     except:
-        try:
-            operator = models.Operator.objects.get(apf = None, tenant = op_ten.id, ontology = ont, name = op)
-        except:
-            try:
-                operator = models.Operator.objects.get(apf = op_apf.id, tenant = None, ontology = ont, name = op)
-            except:
-                try:
-                    operator = models.Operator.objects.get(apf = None, tenant = None, ontology = ont, name = op)
-                except:
-                    pass
+        pass
     return operator
 
 # Return the Value object given a name and the attribute id
@@ -405,7 +396,7 @@ def semantic2ontology(dnf_policy, ten, apf_nm):
 
             cond_ontology['operator'] = True          # Set initial ontology flag
 
-            lo = get_operator(c['operator'], apf, tenant, False)   # Get equivalent op obj
+            lo = get_operator(c['operator'], False)   # Get equivalent op obj
 
             if not lo :
                 # Operator not found
@@ -536,7 +527,7 @@ def semantic2local(policy, ten, apf_nm):
             lo = None
 
             if c['operator']['cloud_technology'] is None:
-                oo = get_operator(c['operator']['name'], apf, tenant, True)
+                oo = get_operator(c['operator']['name'], True)
                 if oo:
                     lo_list = map_op(oo, apf, tenant)
                     if len(lo_list) == 1:
