@@ -1,0 +1,115 @@
+
+        {
+            "id": 41,
+            "attribute": 5,
+*           "name": "change_password",
+            "description": "action=update; resource=user; param=password"
+        },
+            "id": 29,
+            "local_value": 41,
+            "apf_value": 22             update
+        },
+        {
+            "id": 30,
+            "local_value": 41,
+            "apf_value": 57             user-7
+        }
+           {
+            "id": 31,
+            "local_value": 41,
+            "apf_value": 60             user.password-8
+        },
+
+
+
+        {
+            "id": 47,
+            "attribute": 5,
+*            "name": "list_users_in_group",
+            "description": "action=read; resource=group; param=user_list"
+        },
+        {
+            "id": 42,
+            "local_value": 47,
+            "apf_value": 19         read
+        },
+        {
+            "id": 43,
+            "local_value": 47,
+            "apf_value": 58         user.group-7
+        },
+        {
+            "id": 44,
+            "local_value": 47,
+            "apf_value": 61         user.list-8
+        },
+
+
+        {
+            "id": 48,
+            "attribute": 5,
+            "name": "remove_user_from_group",
+            "description": "action=remove; resource=group; param=user"
+        },
+        {
+            "id": 45,
+            "local_value": 48,
+            "apf_value": 30         remove
+        },
+        {
+            "id": 46,
+            "local_value": 48,
+            "apf_value": 58         user.group-7
+        },
+        {
+            "id": 47,
+            "local_value": 48,
+            "apf_value": 62         user-8
+        },
+
+
+        {
+            "id": 49,
+            "attribute": 5,
+  *          "name": "check_user_in_group",
+            "description": "action=read; resource=group; param=user"
+        },
+        {
+            "id": 48,
+            "local_value": 49,
+            "apf_value": 19         read
+        },
+        {
+            "id": 49,
+            "local_value": 49,
+            "apf_value": 58         user.group-7
+        },
+        {
+            "id": 50,
+            "local_value": 49,
+            "apf_value": 62         user-8
+        }
+
+
+        {
+            "id": 50,
+            "attribute": 5,
+            "name": "add_user_to_group",
+            "description": "action=add; resource=group; param=user"
+        }
+
+        {
+            "id": 51,
+            "local_value": 50,
+            "apf_value": 29         add
+        },
+        {
+            "id": 52,
+            "local_value": 50,
+            "apf_value": 58         user.group-8
+        },
+        {
+            "id": 53,
+            "local_value": 50,
+            "apf_value": 62         user-8
+        },

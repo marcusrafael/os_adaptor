@@ -1,0 +1,1649 @@
+== Info: Hostname was NOT found in DNS cache
+== Info:   Trying 127.0.0.1...
+== Info: Connected to localhost (127.0.0.1) port 8001 (#0)
+=> Send header, 166 bytes (0xa6)
+0000: POST /policy2dnf/ HTTP/1.1
+001c: User-Agent: curl/7.35.0
+0035: Host: localhost:8001
+004b: Accept: */*
+0058: Content-Type: application/json
+0078: Content-Length: 7335
+008e: Expect: 100-continue
+00a4: 
+== Info: Done waiting for 100-continue
+=> Send data, 7335 bytes (0x1ca7)
+0000: {    "format": "openstack",    "policy": {    "admin_required": 
+0040: "role:admin or is_admin:1",    "service_role": "role:service",  
+0080:   "service_or_admin": "rule:admin_required or rule:service_role"
+00c0: ,    "owner" : "user_id:%(user_id)s",    "admin_or_owner": "rule
+0100: :admin_required or rule:owner",    "vo_admin" : "role:VoAdmin or
+0140:  rule:admin_required",    "default": "rule:admin_required",    "
+0180: identity:get_region": "",    "identity:list_regions": "",    "id
+01c0: entity:create_region": "rule:admin_required",    "identity:updat
+0200: e_region": "rule:admin_required",    "identity:delete_region": "
+0240: rule:admin_required",    "identity:get_service": "rule:admin_req
+0280: uired",    "identity:list_services": "rule:admin_required",    "
+02c0: identity:create_service": "rule:admin_required",    "identity:up
+0300: date_service": "rule:admin_required",    "identity:delete_servic
+0340: e": "rule:admin_required",    "identity:get_endpoint": "rule:adm
+0380: in_required",    "identity:list_endpoints": "rule:admin_required
+03c0: ",    "identity:create_endpoint": "rule:admin_required",    "ide
+0400: ntity:update_endpoint": "rule:admin_required",    "identity:dele
+0440: te_endpoint": "rule:admin_required",    "identity:get_domain": "
+0480: rule:vo_admin",    "identity:list_domains": "rule:vo_admin",    
+04c0: "identity:create_domain": "rule:vo_admin",    "identity:update_d
+0500: omain": "rule:vo_admin",    "identity:delete_domain": "rule:vo_a
+0540: dmin",    "identity:get_project": "rule:admin_required",    "ide
+0580: ntity:list_projects": "rule:admin_required",    "identity:list_u
+05c0: ser_projects": "rule:admin_or_owner",    "identity:create_projec
+0600: t": "rule:admin_required",    "identity:update_project": "rule:a
+0640: dmin_required",    "identity:delete_project": "rule:admin_requir
+0680: ed",    "identity:get_user": "rule:vo_admin",    "identity:list_
+06c0: users": "rule:admin_required",    "identity:create_user": "rule:
+0700: admin_required",    "identity:update_user": "rule:admin_required
+0740: ",    "identity:delete_user": "rule:admin_required",    "identit
+0780: y:change_password": "rule:admin_or_owner",    "identity:get_grou
+07c0: p": "rule:vo_admin",    "identity:list_groups": "rule:vo_admin",
+0800:     "identity:list_groups_for_user": "rule:vo_admin or rule:admi
+0840: n_or_owner",    "identity:create_group": "rule:vo_admin",    "id
+0880: entity:update_group": "rule:vo_admin",    "identity:delete_group
+08c0: ": "rule:vo_admin",    "identity:list_users_in_group": "rule:vo_
+0900: admin",    "identity:remove_user_from_group": "rule:vo_admin",  
+0940:   "identity:check_user_in_group": "rule:vo_admin",    "identity:
+0980: add_user_to_group": "rule:vo_admin",    "identity:get_credential
+09c0: ": "rule:admin_required",    "identity:list_credentials": "rule:
+0a00: admin_required",    "identity:create_credential": "rule:admin_re
+0a40: quired",    "identity:update_credential": "rule:admin_required",
+0a80:     "identity:delete_credential": "rule:admin_required",    "ide
+0ac0: ntity:ec2_get_credential": "rule:admin_or_owner",    "identity:e
+0b00: c2_list_credentials": "rule:admin_or_owner",    "identity:ec2_cr
+0b40: eate_credential": "rule:admin_or_owner",    "identity:ec2_delete
+0b80: _credential": "rule:admin_required or (rule:owner and user_id:%(
+0bc0: target.credential.user_id)s)",    "identity:get_role": "rule:adm
+0c00: in_required",    "identity:list_roles": "rule:admin_required",  
+0c40:   "identity:create_role": "rule:admin_required",    "identity:up
+0c80: date_role": "rule:admin_required",    "identity:delete_role": "r
+0cc0: ule:admin_required",    "identity:check_grant": "rule:admin_requ
+0d00: ired",    "identity:list_grants": "rule:admin_required",    "ide
+0d40: ntity:create_grant": "rule:admin_required",    "identity:revoke_
+0d80: grant": "rule:admin_required",    "identity:list_role_assignment
+0dc0: s": "rule:admin_required",    "identity:get_policy": "rule:admin
+0e00: _required",    "identity:list_policies": "rule:admin_required", 
+0e40:    "identity:create_policy": "rule:admin_required",    "identity
+0e80: :update_policy": "rule:admin_required",    "identity:delete_poli
+0ec0: cy": "rule:admin_required",    "identity:check_token": "rule:adm
+0f00: in_required",    "identity:validate_token": "rule:service_or_adm
+0f40: in",    "identity:validate_token_head": "rule:service_or_admin",
+0f80:     "identity:revocation_list": "rule:service_or_admin",    "ide
+0fc0: ntity:revoke_token": "rule:admin_or_owner",    "identity:create_
+1000: trust": "user_id:%(trust.trustor_user_id)s",    "identity:get_tr
+1040: ust": "rule:admin_or_owner",    "identity:list_trusts": "",    "
+1080: identity:list_roles_for_trust": "",    "identity:check_role_for_
+10c0: trust": "",    "identity:get_role_for_trust": "",    "identity:d
+1100: elete_trust": "",    "identity:create_consumer": "rule:admin_req
+1140: uired",    "identity:get_consumer": "rule:admin_required",    "i
+1180: dentity:list_consumers": "rule:admin_required",    "identity:del
+11c0: ete_consumer": "rule:admin_required",    "identity:update_consum
+1200: er": "rule:admin_required",    "identity:authorize_request_token
+1240: ": "rule:admin_required",    "identity:list_access_token_roles":
+1280:  "rule:admin_required",    "identity:get_access_token_role": "ru
+12c0: le:admin_required",    "identity:list_access_tokens": "rule:admi
+1300: n_required",    "identity:get_access_token": "rule:admin_require
+1340: d",    "identity:delete_access_token": "rule:admin_required",   
+1380:  "identity:list_projects_for_endpoint": "rule:admin_required",  
+13c0:   "identity:add_endpoint_to_project": "rule:admin_required",    
+1400: "identity:check_endpoint_in_project": "rule:admin_required",    
+1440: "identity:list_endpoints_for_project": "rule:admin_required",   
+1480:  "identity:remove_endpoint_from_project": "rule:admin_required",
+14c0:     "identity:create_identity_provider": "rule:admin_required", 
+1500:    "identity:list_identity_providers": "rule:admin_required",   
+1540:  "identity:get_identity_providers": "rule:admin_required",    "i
+1580: dentity:update_identity_provider": "rule:admin_required",    "id
+15c0: entity:delete_identity_provider": "rule:admin_required",    "ide
+1600: ntity:create_protocol": "rule:admin_required",    "identity:upda
+1640: te_protocol": "rule:admin_required",    "identity:get_protocol":
+1680:  "rule:admin_required",    "identity:list_protocols": "rule:admi
+16c0: n_required",    "identity:delete_protocol": "rule:admin_required
+1700: ",    "identity:create_mapping": "rule:admin_required",    "iden
+1740: tity:get_mapping": "rule:admin_required",    "identity:list_mapp
+1780: ings": "rule:admin_required",    "identity:delete_mapping": "rul
+17c0: e:admin_required",    "identity:update_mapping": "rule:admin_req
+1800: uired",    "identity:get_auth_catalog": "",    "identity:get_aut
+1840: h_projects": "",    "identity:get_auth_domains": "",    "identit
+1880: y:list_projects_for_groups": "",    "identity:list_domains_for_g
+18c0: roups": "",    "identity:list_revoke_events": "",    "identity:v
+1900: o_admin": "rule:vo_admin",    "identity:create_vo_role": "rule:v
+1940: o_admin",    "identity:list_vo_roles": "",    "identity:get_vo_r
+1980: ole": "rule:vo_admin",    "identity:delete_vo_role": "rule:vo_ad
+19c0: min",    "identity:update_vo_role": "rule:vo_admin",    "identit
+1a00: y:add_user_to_vo_role": "rule:vo_admin",    "identity:list_vo_ro
+1a40: les_members": "rule:vo_admin",    "identity:get_vo_role_member":
+1a80:  "rule:vo_admin",    "identity:remove_vo_role_membership_from_us
+1ac0: er": "rule:vo_admin",    "identity:switch_vo_role_for_user": "ru
+1b00: le:vo_admin",    "identity:list_vo_requests": "rule:vo_admin",  
+1b40:   "identity:decline_vo_request": "rule:vo_admin",    "identity:a
+1b80: pprove_vo_request": "rule:vo_admin",    "identity:get_vo_blackli
+1bc0: st": "rule:vo_admin",    "identity:remove_user_from_blacklist": 
+1c00: "rule:vo_admin",    "identity:join_vo_role": "",    "identity:li
+1c40: st_my_vo_roles": "",    "identity:check_vo_membership_status": "
+1c80: ",    "identity:resign_from_role": ""}}
+== Info: HTTP 1.0, assume close after body
+<= Recv header, 36 bytes (0x24)
+0000: HTTP/1.0 500 INTERNAL SERVER ERROR
+<= Recv header, 37 bytes (0x25)
+0000: Date: Thu, 07 Jan 2016 15:13:02 GMT
+<= Recv header, 38 bytes (0x26)
+0000: Server: WSGIServer/0.2 CPython/3.4.0
+<= Recv header, 25 bytes (0x19)
+0000: Content-Type: text/html
+<= Recv header, 29 bytes (0x1d)
+0000: X-Frame-Options: SAMEORIGIN
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 16328 bytes (0x3fc8)
+0000: .<!DOCTYPE html>.<html lang="en">.<head>.  <meta http-equiv="con
+0040: tent-type" content="text/html; charset=utf-8">.  <meta name="rob
+0080: ots" content="NONE,NOARCHIVE">.  <title>AttributeError at /polic
+00c0: y2dnf/</title>.  <style type="text/css">.    html * { padding:0;
+0100:  margin:0; }.    body * { padding:10px 20px; }.    body * * { pa
+0140: dding:0; }.    body { font:small sans-serif; }.    body>div { bo
+0180: rder-bottom:1px solid #ddd; }.    h1 { font-weight:normal; }.   
+01c0:  h2 { margin-bottom:.8em; }.    h2 span { font-size:80%; color:#
+0200: 666; font-weight:normal; }.    h3 { margin:1em 0 .5em 0; }.    h
+0240: 4 { margin:0 0 .5em 0; font-weight: normal; }.    code, pre { fo
+0280: nt-size: 100%; white-space: pre-wrap; }.    table { border:1px s
+02c0: olid #ccc; border-collapse: collapse; width:100%; background:whi
+0300: te; }.    tbody td, tbody th { vertical-align:top; padding:2px 3
+0340: px; }.    thead th {.      padding:1px 6px 1px 3px; background:#
+0380: fefefe; text-align:left;.      font-weight:normal; font-size:11p
+03c0: x; border:1px solid #ddd;.    }.    tbody th { width:12em; text-
+0400: align:right; color:#666; padding-right:.5em; }.    table.vars { 
+0440: margin:5px 0 2px 40px; }.    table.vars td, table.req td { font-
+0480: family:monospace; }.    table td.code { width:100%; }.    table 
+04c0: td.code pre { overflow:hidden; }.    table.source th { color:#66
+0500: 6; }.    table.source td { font-family:monospace; white-space:pr
+0540: e; border-bottom:1px solid #eee; }.    ul.traceback { list-style
+0580: -type:none; color: #222; }.    ul.traceback li.frame { padding-b
+05c0: ottom:1em; color:#666; }.    ul.traceback li.user { background-c
+0600: olor:#e0e0e0; color:#000 }.    div.context { padding:10px 0; ove
+0640: rflow:hidden; }.    div.context ol { padding-left:30px; margin:0
+0680:  10px; list-style-position: inside; }.    div.context ol li { fo
+06c0: nt-family:monospace; white-space:pre; color:#777; cursor:pointer
+0700: ; }.    div.context ol li pre { display:inline; }.    div.contex
+0740: t ol.context-line li { color:#505050; background-color:#dfdfdf; 
+0780: }.    div.context ol.context-line li span { position:absolute; r
+07c0: ight:32px; }.    .user div.context ol.context-line li { backgrou
+0800: nd-color:#bbb; color:#000; }.    .user div.context ol li { color
+0840: :#666; }.    div.commands { margin-left: 40px; }.    div.command
+0880: s a { color:#555; text-decoration:none; }.    .user div.commands
+08c0:  a { color: black; }.    #summary { background: #ffc; }.    #sum
+0900: mary h2 { font-weight: normal; color: #666; }.    #explanation {
+0940:  background:#eee; }.    #template, #template-not-exist { backgro
+0980: und:#f6f6f6; }.    #template-not-exist ul { margin: 0 0 0 20px; 
+09c0: }.    #unicode-hint { background:#eee; }.    #traceback { backgr
+0a00: ound:#eee; }.    #requestinfo { background:#f6f6f6; padding-left
+0a40: :120px; }.    #summary table { border:none; background:transpare
+0a80: nt; }.    #requestinfo h2, #requestinfo h3 { position:relative; 
+0ac0: margin-left:-100px; }.    #requestinfo h3 { margin-bottom:-1em; 
+0b00: }.    .error { background: #ffc; }.    .specific { color:#cc3300
+0b40: ; font-weight:bold; }.    h2 span.commands { font-size:.7em;}.  
+0b80:   span.commands a:link {color:#5E5694;}.    pre.exception_value 
+0bc0: { font-family: sans-serif; color: #666; font-size: 1.5em; margin
+0c00: : 10px 0 10px 0; }.  </style>.  .  <script type="text/javascript
+0c40: ">.  //<!--.    function getElementsByClassName(oElm, strTagName
+0c80: , strClassName){.        // Written by Jonathan Snook, http://ww
+0cc0: w.snook.ca/jon; Add-ons by Robert Nyman, http://www.robertnyman.
+0d00: com.        var arrElements = (strTagName == "*" && document.all
+0d40: )? document.all :.        oElm.getElementsByTagName(strTagName);
+0d80: .        var arrReturnElements = new Array();.        strClassNa
+0dc0: me = strClassName.replace(/\-/g, "\-");.        var oRegExp = ne
+0e00: w RegExp("(^|\s)" + strClassName + "(\s|$)");.        var oEleme
+0e40: nt;.        for(var i=0; i<arrElements.length; i++){.           
+0e80:  oElement = arrElements[i];.            if(oRegExp.test(oElement
+0ec0: .className)){.                arrReturnElements.push(oElement);.
+0f00:             }.        }.        return (arrReturnElements).    }
+0f40: .    function hideAll(elems) {.      for (var e = 0; e < elems.l
+0f80: ength; e++) {.        elems[e].style.display = 'none';.      }. 
+0fc0:    }.    window.onload = function() {.      hideAll(getElementsB
+1000: yClassName(document, 'table', 'vars'));.      hideAll(getElement
+1040: sByClassName(document, 'ol', 'pre-context'));.      hideAll(getE
+1080: lementsByClassName(document, 'ol', 'post-context'));.      hideA
+10c0: ll(getElementsByClassName(document, 'div', 'pastebin'));.    }. 
+1100:    function toggle() {.      for (var i = 0; i < arguments.lengt
+1140: h; i++) {.        var e = document.getElementById(arguments[i]);
+1180: .        if (e) {.          e.style.display = e.style.display ==
+11c0:  'none' ? 'block': 'none';.        }.      }.      return false;
+1200: .    }.    function varToggle(link, id) {.      toggle('v' + id)
+1240: ;.      var s = link.getElementsByTagName('span')[0];.      var 
+1280: uarr = String.fromCharCode(0x25b6);.      var darr = String.from
+12c0: CharCode(0x25bc);.      s.innerHTML = s.innerHTML == uarr ? darr
+1300:  : uarr;.      return false;.    }.    function switchPastebinFr
+1340: iendly(link) {.      s1 = "Switch to copy-and-paste view";.     
+1380:  s2 = "Switch back to interactive view";.      link.innerHTML = 
+13c0: link.innerHTML == s1 ? s2: s1;.      toggle('browserTraceback', 
+1400: 'pastebinTraceback');.      return false;.    }.    //-->.  </sc
+1440: ript>.  .</head>.<body>.<div id="summary">.  <h1>AttributeError 
+1480: at /policy2dnf/</h1>.  <pre class="exception_value">&#39;module&
+14c0: #39; object has no attribute &#39;semantic2ontology&#39;</pre>. 
+1500:  <table class="meta">..    <tr>.      <th>Request Method:</th>. 
+1540:      <td>POST</td>.    </tr>.    <tr>.      <th>Request URL:</th
+1580: >.      <td>http://localhost:8001/policy2dnf/</td>.    </tr>..  
+15c0:   <tr>.      <th>Django Version:</th>.      <td>1.8.2</td>.    <
+1600: /tr>..    <tr>.      <th>Exception Type:</th>.      <td>Attribut
+1640: eError</td>.    </tr>...    <tr>.      <th>Exception Value:</th>
+1680: .      <td><pre>&#39;module&#39; object has no attribute &#39;se
+16c0: mantic2ontology&#39;</pre></td>.    </tr>...    <tr>.      <th>E
+1700: xception Location:</th>.      <td>/home/ioram/os_adaptor/adaptor
+1740: /views.py in post, line 57</td>.    </tr>..    <tr>.      <th>Py
+1780: thon Executable:</th>.      <td>/home/ioram/os_adaptor/env/bin/p
+17c0: ython</td>.    </tr>.    <tr>.      <th>Python Version:</th>.   
+1800:    <td>3.4.0</td>.    </tr>.    <tr>.      <th>Python Path:</th>
+1840: .      <td><pre>[&#39;/home/ioram/os_adaptor&#39;,. &#39;/home/i
+1880: oram/os_adaptor/env/lib/python3.4&#39;,. &#39;/home/ioram/os_ada
+18c0: ptor/env/lib/python3.4/plat-x86_64-linux-gnu&#39;,. &#39;/home/i
+1900: oram/os_adaptor/env/lib/python3.4/lib-dynload&#39;,. &#39;/usr/l
+1940: ib/python3.4&#39;,. &#39;/usr/lib/python3.4/plat-x86_64-linux-gn
+1980: u&#39;,. &#39;/home/ioram/os_adaptor/env/lib/python3.4/site-pack
+19c0: ages&#39;]</pre></td>.    </tr>.    <tr>.      <th>Server time:<
+1a00: /th>.      <td>Thu, 7 Jan 2016 15:13:02 +0000</td>.    </tr>.  <
+1a40: /table>.</div>.....<div id="traceback">.  <h2>Traceback <span cl
+1a80: ass="commands"><a href="#" onclick="return switchPastebinFriendl
+1ac0: y(this);">.    Switch to copy-and-paste view</a></span>.  </h2>.
+1b00:   .  <div id="browserTraceback">.    <ul class="traceback">.    
+1b40:   .        <li class="frame django">.          <code>/home/ioram
+1b80: /os_adaptor/env/lib/python3.4/site-packages/django/core/handlers
+1bc0: /base.py</code> in <code>get_response</code>..          .       
+1c00:      <div class="context" id="c140495343270792">.              .
+1c40:                 <ol start="125" class="pre-context" id="pre14049
+1c80: 5343270792">.                .                  <li onclick="tog
+1cc0: gle('pre140495343270792', 'post140495343270792')"><pre>         
+1d00:            response = middleware_method(request, callback, callb
+1d40: ack_args, callback_kwargs)</pre></li>.                .         
+1d80:          <li onclick="toggle('pre140495343270792', 'post14049534
+1dc0: 3270792')"><pre>                    if response:</pre></li>.    
+1e00:             .                  <li onclick="toggle('pre140495343
+1e40: 270792', 'post140495343270792')"><pre>                        br
+1e80: eak</pre></li>.                .                  <li onclick="t
+1ec0: oggle('pre140495343270792', 'post140495343270792')"><pre></pre><
+1f00: /li>.                .                  <li onclick="toggle('pre
+1f40: 140495343270792', 'post140495343270792')"><pre>            if re
+1f80: sponse is None:</pre></li>.                .                  <l
+1fc0: i onclick="toggle('pre140495343270792', 'post140495343270792')">
+2000: <pre>                wrapped_callback = self.make_view_atomic(ca
+2040: llback)</pre></li>.                .                  <li onclic
+2080: k="toggle('pre140495343270792', 'post140495343270792')"><pre>   
+20c0:              try:</pre></li>.                .                </
+2100: ol>.              .              <ol start="132" class="context-
+2140: line">.                <li onclick="toggle('pre140495343270792',
+2180:  'post140495343270792')"><pre>.                                r
+21c0: esponse = wrapped_callback(request, *callback_args, **callback_k
+2200: wargs)</pre> <span>...</span></li></ol>.              .         
+2240:        <ol start='133' class="post-context" id="post140495343270
+2280: 792">.                  .                  <li onclick="toggle('
+22c0: pre140495343270792', 'post140495343270792')"><pre>              
+2300:   except Exception as e:</pre></li>.                  .         
+2340:          <li onclick="toggle('pre140495343270792', 'post14049534
+2380: 3270792')"><pre>                    # If the view raised an exce
+23c0: ption, run it through exception</pre></li>.                  .  
+2400:                 <li onclick="toggle('pre140495343270792', 'post1
+2440: 40495343270792')"><pre>                    # middleware, and if 
+2480: the exception middleware returns a</pre></li>.                  
+24c0: .                  <li onclick="toggle('pre140495343270792', 'po
+2500: st140495343270792')"><pre>                    # response, use th
+2540: at. Otherwise, reraise the exception.</pre></li>.               
+2580:    .                  <li onclick="toggle('pre140495343270792', 
+25c0: 'post140495343270792')"><pre>                    for middleware_
+2600: method in self._exception_middleware:</pre></li>.               
+2640:    .                  <li onclick="toggle('pre140495343270792', 
+2680: 'post140495343270792')"><pre>                        response = 
+26c0: middleware_method(request, e)</pre></li>.                  .    
+2700:           </ol>.              .            </div>.          ..  
+2740:         .            <div class="commands">.                .   
+2780:                  <a href="#" onclick="return varToggle(this, '14
+27c0: 0495343270792')"><span>&#x25b6;</span> Local vars</a>.          
+2800:       .            </div>.            <table class="vars" id="v1
+2840: 40495343270792">.              <thead>.                <tr>.    
+2880:               <th>Variable</th>.                  <th>Value</th>
+28c0: .                </tr>.              </thead>.              <tbo
+2900: dy>.                .                  <tr>.                    
+2940: <td>self</td>.                    <td class="code"><pre>&lt;djan
+2980: go.core.handlers.wsgi.WSGIHandler object at 0x7fc7a4888748&gt;</
+29c0: pre></td>.                  </tr>.                .             
+2a00:      <tr>.                    <td>middleware_method</td>.       
+2a40:              <td class="code"><pre>&lt;bound method CsrfViewMidd
+2a80: leware.process_view of &lt;django.middleware.csrf.CsrfViewMiddle
+2ac0: ware object at 0x7fc7a4868dd8&gt;&gt;</pre></td>.               
+2b00:    </tr>.                .                  <tr>.               
+2b40:      <td>callback_args</td>.                    <td class="code"
+2b80: ><pre>()</pre></td>.                  </tr>.                .   
+2bc0:                <tr>.                    <td>callback</td>.      
+2c00:               <td class="code"><pre>&lt;function AdaptorDnfView 
+2c40: at 0x7fc7a4319d90&gt;</pre></td>.                  </tr>.       
+2c80:          .                  <tr>.                    <td>wrapped
+2cc0: _callback</td>.                    <td class="code"><pre>&lt;fun
+2d00: ction AdaptorDnfView at 0x7fc7a4319d90&gt;</pre></td>.          
+2d40:         </tr>.                .                  <tr>.          
+2d80:           <td>urlconf</td>.                    <td class="code">
+2dc0: <pre>&#39;os_adaptor.urls&#39;</pre></td>.                  </tr
+2e00: >.                .                  <tr>.                    <t
+2e40: d>resolver</td>.                    <td class="code"><pre>&lt;Re
+2e80: gexURLResolver &#39;os_adaptor.urls&#39; (None:None) ^/&gt;</pre
+2ec0: ></td>.                  </tr>.                .                
+2f00:   <tr>.                    <td>request</td>.                    
+2f40: <td class="code"><pre>(&#39;&lt;WSGIRequest\n&#39;. &#39;path:/p
+2f80: olicy2dnf/,\n&#39;. &#39;GET:&lt;QueryDict: {}&gt;,\n&#39;. &#39
+2fc0: ;POST:&lt;could not parse&gt;,\n&#39;. &#39;COOKIES:{},\n&#39;. 
+3000: &quot;META:{&#39;CLUTTER_IM_MODULE&#39;: &#39;xim&#39;,\n&quot;.
+3040:  &quot; &#39;COLORFGBG&#39;: &#39;15;0&#39;,\n&quot;. &quot; &#3
+3080: 9;CONTENT_LENGTH&#39;: &#39;7335&#39;,\n&quot;. &quot; &#39;CONT
+30c0: ENT_TYPE&#39;: &#39;application/json&#39;,\n&quot;. &quot; &#39;
+3100: CSRF_COOKIE&#39;: &#39;LLXZSF1O5xi2GoaInDQcq2vpfgvYcuMw&#39;,\n&
+3140: quot;. &quot; &#39;DBUS_SESSION_BUS_ADDRESS&#39;: &#39;unix:abst
+3180: ract=/tmp/dbus-zp8baYGtDU&#39;,\n&quot;. &quot; &#39;DEFAULTS_PA
+31c0: TH&#39;: &#39;/usr/share/gconf/kde-plasma.default.path&#39;,\n&q
+3200: uot;. &quot; &#39;DESKTOP_SESSION&#39;: &#39;kde-plasma&#39;,\n&
+3240: quot;. &quot; &#39;DISPLAY&#39;: &#39;:0&#39;,\n&quot;. &quot; &
+3280: #39;DJANGO_SETTINGS_MODULE&#39;: &#39;os_adaptor.settings&#39;,\
+32c0: n&quot;. &quot; &#39;GATEWAY_INTERFACE&#39;: &#39;CGI/1.1&#39;,\
+3300: n&quot;. &quot; &#39;GDMSESSION&#39;: &#39;kde-plasma&#39;,\n&qu
+3340: ot;. &quot; &#39;GDM_LANG&#39;: &#39;en_GB&#39;,\n&quot;. &quot;
+3380:  &#39;GNOME_KEYRING_CONTROL&#39;: &#39;/run/user/1000/keyring-DQ
+33c0: GMqT&#39;,\n&quot;. &quot; &#39;GNOME_KEYRING_PID&#39;: &#39;174
+3400: 5&#39;,\n&quot;. &quot; &#39;GPG_AGENT_INFO&#39;: &#39;/run/user
+3440: /1000/keyring-DQGMqT/gpg:0:1&#39;,\n&quot;. &quot; &#39;GS_LIB&#
+3480: 39;: &#39;/home/ioram/.fonts&#39;,\n&quot;. &quot; &#39;GTK2_RC_
+34c0: FILES&#39;: &quot;. &quot;&#39;/etc/gtk-2.0/gtkrc:/home/ioram/.g
+3500: tkrc-2.0:/home/ioram/.kde/share/config/gtkrc-2.0&#39;,\n&quot;. 
+3540: &quot; &#39;GTK_IM_MODULE&#39;: &#39;ibus&#39;,\n&quot;. &quot; 
+3580: &#39;GTK_MODULES&#39;: &#39;overlay-scrollbar&#39;,\n&quot;. &qu
+35c0: ot; &#39;GTK_RC_FILES&#39;: &quot;. &quot;&#39;/etc/gtk/gtkrc:/h
+3600: ome/ioram/.gtkrc:/home/ioram/.kde/share/config/gtkrc&#39;,\n&quo
+3640: t;. &quot; &#39;HOME&#39;: &#39;/home/ioram&#39;,\n&quot;. &quot
+3680: ; &#39;HTTP_ACCEPT&#39;: &#39;*/*&#39;,\n&quot;. &quot; &#39;HTT
+36c0: P_EXPECT&#39;: &#39;100-continue&#39;,\n&quot;. &quot; &#39;HTTP
+3700: _HOST&#39;: &#39;localhost:8001&#39;,\n&quot;. &quot; &#39;HTTP_
+3740: USER_AGENT&#39;: &#39;curl/7.35.0&#39;,\n&quot;. &quot; &#39;IM_
+3780: CONFIG_PHASE&#39;: &#39;1&#39;,\n&quot;. &quot; &#39;INSTANCE&#3
+37c0: 9;: &#39;&#39;,\n&quot;. &quot; &#39;JOB&#39;: &#39;dbus&#39;,\n
+3800: &quot;. &quot; &#39;KDE_FULL_SESSION&#39;: &#39;true&#39;,\n&quo
+3840: t;. &quot; &#39;KDE_MULTIHEAD&#39;: &#39;false&#39;,\n&quot;. &q
+3880: uot; &#39;KDE_SESSION_UID&#39;: &#39;1000&#39;,\n&quot;. &quot; 
+38c0: &#39;KDE_SESSION_VERSION&#39;: &#39;4&#39;,\n&quot;. &quot; &#39
+3900: ;KONSOLE_DBUS_SERVICE&#39;: &#39;:1.48&#39;,\n&quot;. &quot; &#3
+3940: 9;KONSOLE_DBUS_SESSION&#39;: &#39;/Sessions/2&#39;,\n&quot;. &qu
+3980: ot; &#39;KONSOLE_DBUS_WINDOW&#39;: &#39;/Windows/1&#39;,\n&quot;
+39c0: . &quot; &#39;KONSOLE_PROFILE_NAME&#39;: &#39;Shell&#39;,\n&quot
+3a00: ;. &quot; &#39;LANG&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot;
+3a40:  &#39;LANGUAGE&#39;: &#39;en&#39;,\n&quot;. &quot; &#39;LC_ADDRE
+3a80: SS&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_IDENTIFI
+3ac0: CATION&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_MEAS
+3b00: UREMENT&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_MON
+3b40: ETARY&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_NAME&
+3b80: #39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_NUMERIC&#39
+3bc0: ;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_PAPER&#39;: &#
+3c00: 39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_TELEPHONE&#39;: &#3
+3c40: 9;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;LC_TIME&#39;: &#39;en_G
+3c80: B.UTF-8&#39;,\n&quot;. &quot; &#39;LESSCLOSE&#39;: &#39;/usr/bin
+3cc0: /lesspipe %s %s&#39;,\n&quot;. &quot; &#39;LESSOPEN&#39;: &#39;|
+3d00:  /usr/bin/lesspipe %s&#39;,\n&quot;. &quot; &#39;LOGNAME&#39;: &
+3d40: #39;ioram&#39;,\n&quot;. &quot; &#39;LS_COLORS&#39;: &quot;. &qu
+3d80: ot;&#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:
+3dc0: bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:t
+3e00: w=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj
+3e40: =01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01
+3e80: ;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=0
+3ec0: 1;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:
+3f00: *.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear
+3f40: =01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01
+3f80: ;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*
+3fc0: .bmp=01;
+<= Recv data, 16384 bytes (0x4000)
+0000: 35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*
+0040: .xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.sv
+0080: gz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=
+00c0: 01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;
+0100: 35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*
+0140: .wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi
+0180: =01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35
+01c0: :*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.a
+0200: nx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=0
+0240: 0;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;3
+0280: 6:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.s
+02c0: px=00;36:*.xspf=00;36:&#39;,\n&quot;. &quot; &#39;MANDATORY_PATH
+0300: &#39;: &#39;/usr/share/gconf/kde-plasma.mandatory.path&#39;,\n&q
+0340: uot;. &quot; &#39;OLDPWD&#39;: &#39;/home/ioram/cfas&#39;,\n&quo
+0380: t;. &quot; &#39;PAM_KWALLET_LOGIN&#39;: &#39;/tmp//ioram.socket&
+03c0: #39;,\n&quot;. &quot; &#39;PATH&#39;: &quot;. &quot;&#39;/home/i
+0400: oram/os_adaptor/env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin
+0440: :/usr/bin:/sbin:/bin:/usr/games:/usr/local/games&#39;,\n&quot;. 
+0480: &quot; &#39;PATH_INFO&#39;: &#39;/policy2dnf/&#39;,\n&quot;. &qu
+04c0: ot; &#39;PROFILEHOME&#39;: &#39;&#39;,\n&quot;. &quot; &#39;PS1&
+0500: #39;: &#39;(env)\\\\[\\\\e]0;\\\\u@\\\\h: &#39;\n&quot;. &#39;  
+0540:       &#39;. &quot;&#39;\\\\w\\\\a\\\\]${debian_chroot:+($debian
+0580: _chroot)}\\\\u@\\\\h:\\\\w\\\\$ &quot;. &quot;&#39;,\n&quot;. &q
+05c0: uot; &#39;PWD&#39;: &#39;/home/ioram/os_adaptor&#39;,\n&quot;. &
+0600: quot; &#39;QT4_IM_MODULE&#39;: &#39;ibus&#39;,\n&quot;. &quot; &
+0640: #39;QT_IM_MO... &lt;trimmed 6381 bytes string&gt;</pre></td>.   
+0680:                </tr>.                .                  <tr>.   
+06c0:                  <td>response</td>.                    <td class
+0700: ="code"><pre>None</pre></td>.                  </tr>.           
+0740:      .                  <tr>.                    <td>callback_kw
+0780: args</td>.                    <td class="code"><pre>{}</pre></td
+07c0: >.                  </tr>.                .                  <tr
+0800: >.                    <td>resolver_match</td>.                  
+0840:   <td class="code"><pre>ResolverMatch(func=adaptor.views.Adaptor
+0880: DnfView, args=(), kwargs={}, url_name=my_rest_view, app_name=Non
+08c0: e, namespaces=[])</pre></td>.                  </tr>.           
+0900:      .              </tbody>.            </table>.          .   
+0940:      </li>.      .        <li class="frame django">.          <c
+0980: ode>/home/ioram/os_adaptor/env/lib/python3.4/site-packages/djang
+09c0: o/views/decorators/csrf.py</code> in <code>wrapped_view</code>..
+0a00:           .            <div class="context" id="c140495343270600
+0a40: ">.              .                <ol start="51" class="pre-cont
+0a80: ext" id="pre140495343270600">.                .                 
+0ac0:  <li onclick="toggle('pre140495343270600', 'post140495343270600'
+0b00: )"><pre>    &quot;&quot;&quot;</pre></li>.                .     
+0b40:              <li onclick="toggle('pre140495343270600', 'post1404
+0b80: 95343270600')"><pre>    Marks a view function as being exempt fr
+0bc0: om the CSRF view protection.</pre></li>.                .       
+0c00:            <li onclick="toggle('pre140495343270600', 'post140495
+0c40: 343270600')"><pre>    &quot;&quot;&quot;</pre></li>.            
+0c80:     .                  <li onclick="toggle('pre140495343270600',
+0cc0:  'post140495343270600')"><pre>    # We could just do view_func.c
+0d00: srf_exempt = True, but decorators</pre></li>.                .  
+0d40:                 <li onclick="toggle('pre140495343270600', 'post1
+0d80: 40495343270600')"><pre>    # are nicer if they don&#39;t have si
+0dc0: de-effects, so we return a new</pre></li>.                .     
+0e00:              <li onclick="toggle('pre140495343270600', 'post1404
+0e40: 95343270600')"><pre>    # function.</pre></li>.                .
+0e80:                   <li onclick="toggle('pre140495343270600', 'pos
+0ec0: t140495343270600')"><pre>    def wrapped_view(*args, **kwargs):<
+0f00: /pre></li>.                .                </ol>.              
+0f40: .              <ol start="58" class="context-line">.            
+0f80:     <li onclick="toggle('pre140495343270600', 'post1404953432706
+0fc0: 00')"><pre>.                    return view_func(*args, **kwargs
+1000: )</pre> <span>...</span></li></ol>.              .              
+1040:   <ol start='59' class="post-context" id="post140495343270600">.
+1080:                   .                  <li onclick="toggle('pre140
+10c0: 495343270600', 'post140495343270600')"><pre>    wrapped_view.csr
+1100: f_exempt = True</pre></li>.                  .                  
+1140: <li onclick="toggle('pre140495343270600', 'post140495343270600')
+1180: "><pre>    return wraps(view_func, assigned=available_attrs(view
+11c0: _func))(wrapped_view)</pre></li>.                  .            
+1200:   </ol>.              .            </div>.          ..          
+1240: .            <div class="commands">.                .           
+1280:          <a href="#" onclick="return varToggle(this, '1404953432
+12c0: 70600')"><span>&#x25b6;</span> Local vars</a>.                . 
+1300:            </div>.            <table class="vars" id="v140495343
+1340: 270600">.              <thead>.                <tr>.            
+1380:       <th>Variable</th>.                  <th>Value</th>.       
+13c0:          </tr>.              </thead>.              <tbody>.    
+1400:             .                  <tr>.                    <td>kwar
+1440: gs</td>.                    <td class="code"><pre>{}</pre></td>.
+1480:                   </tr>.                .                  <tr>.
+14c0:                     <td>args</td>.                    <td class=
+1500: "code"><pre>(&lt;WSGIRequest: POST &#39;/policy2dnf/&#39;&gt;,)<
+1540: /pre></td>.                  </tr>.                .            
+1580:       <tr>.                    <td>view_func</td>.              
+15c0:       <td class="code"><pre>&lt;function AdaptorDnfView at 0x7fc
+1600: 7a4651f28&gt;</pre></td>.                  </tr>.               
+1640:  .              </tbody>.            </table>.          .       
+1680:  </li>.      .        <li class="frame django">.          <code>
+16c0: /home/ioram/os_adaptor/env/lib/python3.4/site-packages/django/vi
+1700: ews/generic/base.py</code> in <code>view</code>..          .    
+1740:         <div class="context" id="c140495343270536">.            
+1780:   .                <ol start="64" class="pre-context" id="pre140
+17c0: 495343270536">.                .                  <li onclick="t
+1800: oggle('pre140495343270536', 'post140495343270536')"><pre>       
+1840:  def view(request, *args, **kwargs):</pre></li>.                
+1880: .                  <li onclick="toggle('pre140495343270536', 'po
+18c0: st140495343270536')"><pre>            self = cls(**initkwargs)</
+1900: pre></li>.                .                  <li onclick="toggle
+1940: ('pre140495343270536', 'post140495343270536')"><pre>            
+1980: if hasattr(self, &#39;get&#39;) and not hasattr(self, &#39;head&
+19c0: #39;):</pre></li>.                .                  <li onclick
+1a00: ="toggle('pre140495343270536', 'post140495343270536')"><pre>    
+1a40:             self.head = self.get</pre></li>.                .   
+1a80:                <li onclick="toggle('pre140495343270536', 'post14
+1ac0: 0495343270536')"><pre>            self.request = request</pre></
+1b00: li>.                .                  <li onclick="toggle('pre1
+1b40: 40495343270536', 'post140495343270536')"><pre>            self.a
+1b80: rgs = args</pre></li>.                .                  <li onc
+1bc0: lick="toggle('pre140495343270536', 'post140495343270536')"><pre>
+1c00:             self.kwargs = kwargs</pre></li>.                .   
+1c40:              </ol>.              .              <ol start="71" c
+1c80: lass="context-line">.                <li onclick="toggle('pre140
+1cc0: 495343270536', 'post140495343270536')"><pre>.                   
+1d00:      return self.dispatch(request, *args, **kwargs)</pre> <span>
+1d40: ...</span></li></ol>.              .                <ol start='7
+1d80: 2' class="post-context" id="post140495343270536">.              
+1dc0:     .                  <li onclick="toggle('pre140495343270536',
+1e00:  'post140495343270536')"><pre></pre></li>.                  .   
+1e40:                <li onclick="toggle('pre140495343270536', 'post14
+1e80: 0495343270536')"><pre>        # take name and docstring from cla
+1ec0: ss</pre></li>.                  .                  <li onclick="
+1f00: toggle('pre140495343270536', 'post140495343270536')"><pre>      
+1f40:   update_wrapper(view, cls, updated=())</pre></li>.             
+1f80:      .                  <li onclick="toggle('pre140495343270536'
+1fc0: , 'post140495343270536')"><pre></pre></li>.                  .  
+2000:                 <li onclick="toggle('pre140495343270536', 'post1
+2040: 40495343270536')"><pre>        # and possible attributes set by 
+2080: decorators</pre></li>.                  .                  <li o
+20c0: nclick="toggle('pre140495343270536', 'post140495343270536')"><pr
+2100: e>        # like csrf_exempt from dispatch</pre></li>.          
+2140:         .              </ol>.              .            </div>. 
+2180:          ..          .            <div class="commands">.       
+21c0:          .                    <a href="#" onclick="return varTog
+2200: gle(this, '140495343270536')"><span>&#x25b6;</span> Local vars</
+2240: a>.                .            </div>.            <table class=
+2280: "vars" id="v140495343270536">.              <thead>.            
+22c0:     <tr>.                  <th>Variable</th>.                  <
+2300: th>Value</th>.                </tr>.              </thead>.     
+2340:          <tbody>.                .                  <tr>.       
+2380:              <td>self</td>.                    <td class="code">
+23c0: <pre>&lt;adaptor.views.AdaptorDnfView object at 0x7fc79f31be80&g
+2400: t;</pre></td>.                  </tr>.                .         
+2440:          <tr>.                    <td>kwargs</td>.              
+2480:       <td class="code"><pre>{}</pre></td>.                  </tr
+24c0: >.                .                  <tr>.                    <t
+2500: d>args</td>.                    <td class="code"><pre>()</pre></
+2540: td>.                  </tr>.                .                  <
+2580: tr>.                    <td>initkwargs</td>.                    
+25c0: <td class="code"><pre>{}</pre></td>.                  </tr>.    
+2600:             .                  <tr>.                    <td>requ
+2640: est</td>.                    <td class="code"><pre>(&#39;&lt;WSG
+2680: IRequest\n&#39;. &#39;path:/policy2dnf/,\n&#39;. &#39;GET:&lt;Qu
+26c0: eryDict: {}&gt;,\n&#39;. &#39;POST:&lt;could not parse&gt;,\n&#3
+2700: 9;. &#39;COOKIES:{},\n&#39;. &quot;META:{&#39;CLUTTER_IM_MODULE&
+2740: #39;: &#39;xim&#39;,\n&quot;. &quot; &#39;COLORFGBG&#39;: &#39;1
+2780: 5;0&#39;,\n&quot;. &quot; &#39;CONTENT_LENGTH&#39;: &#39;7335&#3
+27c0: 9;,\n&quot;. &quot; &#39;CONTENT_TYPE&#39;: &#39;application/jso
+2800: n&#39;,\n&quot;. &quot; &#39;CSRF_COOKIE&#39;: &#39;LLXZSF1O5xi2
+2840: GoaInDQcq2vpfgvYcuMw&#39;,\n&quot;. &quot; &#39;DBUS_SESSION_BUS
+2880: _ADDRESS&#39;: &#39;unix:abstract=/tmp/dbus-zp8baYGtDU&#39;,\n&q
+28c0: uot;. &quot; &#39;DEFAULTS_PATH&#39;: &#39;/usr/share/gconf/kde-
+2900: plasma.default.path&#39;,\n&quot;. &quot; &#39;DESKTOP_SESSION&#
+2940: 39;: &#39;kde-plasma&#39;,\n&quot;. &quot; &#39;DISPLAY&#39;: &#
+2980: 39;:0&#39;,\n&quot;. &quot; &#39;DJANGO_SETTINGS_MODULE&#39;: &#
+29c0: 39;os_adaptor.settings&#39;,\n&quot;. &quot; &#39;GATEWAY_INTERF
+2a00: ACE&#39;: &#39;CGI/1.1&#39;,\n&quot;. &quot; &#39;GDMSESSION&#39
+2a40: ;: &#39;kde-plasma&#39;,\n&quot;. &quot; &#39;GDM_LANG&#39;: &#3
+2a80: 9;en_GB&#39;,\n&quot;. &quot; &#39;GNOME_KEYRING_CONTROL&#39;: &
+2ac0: #39;/run/user/1000/keyring-DQGMqT&#39;,\n&quot;. &quot; &#39;GNO
+2b00: ME_KEYRING_PID&#39;: &#39;1745&#39;,\n&quot;. &quot; &#39;GPG_AG
+2b40: ENT_INFO&#39;: &#39;/run/user/1000/keyring-DQGMqT/gpg:0:1&#39;,\
+2b80: n&quot;. &quot; &#39;GS_LIB&#39;: &#39;/home/ioram/.fonts&#39;,\
+2bc0: n&quot;. &quot; &#39;GTK2_RC_FILES&#39;: &quot;. &quot;&#39;/etc
+2c00: /gtk-2.0/gtkrc:/home/ioram/.gtkrc-2.0:/home/ioram/.kde/share/con
+2c40: fig/gtkrc-2.0&#39;,\n&quot;. &quot; &#39;GTK_IM_MODULE&#39;: &#3
+2c80: 9;ibus&#39;,\n&quot;. &quot; &#39;GTK_MODULES&#39;: &#39;overlay
+2cc0: -scrollbar&#39;,\n&quot;. &quot; &#39;GTK_RC_FILES&#39;: &quot;.
+2d00:  &quot;&#39;/etc/gtk/gtkrc:/home/ioram/.gtkrc:/home/ioram/.kde/s
+2d40: hare/config/gtkrc&#39;,\n&quot;. &quot; &#39;HOME&#39;: &#39;/ho
+2d80: me/ioram&#39;,\n&quot;. &quot; &#39;HTTP_ACCEPT&#39;: &#39;*/*&#
+2dc0: 39;,\n&quot;. &quot; &#39;HTTP_EXPECT&#39;: &#39;100-continue&#3
+2e00: 9;,\n&quot;. &quot; &#39;HTTP_HOST&#39;: &#39;localhost:8001&#39
+2e40: ;,\n&quot;. &quot; &#39;HTTP_USER_AGENT&#39;: &#39;curl/7.35.0&#
+2e80: 39;,\n&quot;. &quot; &#39;IM_CONFIG_PHASE&#39;: &#39;1&#39;,\n&q
+2ec0: uot;. &quot; &#39;INSTANCE&#39;: &#39;&#39;,\n&quot;. &quot; &#3
+2f00: 9;JOB&#39;: &#39;dbus&#39;,\n&quot;. &quot; &#39;KDE_FULL_SESSIO
+2f40: N&#39;: &#39;true&#39;,\n&quot;. &quot; &#39;KDE_MULTIHEAD&#39;:
+2f80:  &#39;false&#39;,\n&quot;. &quot; &#39;KDE_SESSION_UID&#39;: &#3
+2fc0: 9;1000&#39;,\n&quot;. &quot; &#39;KDE_SESSION_VERSION&#39;: &#39
+3000: ;4&#39;,\n&quot;. &quot; &#39;KONSOLE_DBUS_SERVICE&#39;: &#39;:1
+3040: .48&#39;,\n&quot;. &quot; &#39;KONSOLE_DBUS_SESSION&#39;: &#39;/
+3080: Sessions/2&#39;,\n&quot;. &quot; &#39;KONSOLE_DBUS_WINDOW&#39;: 
+30c0: &#39;/Windows/1&#39;,\n&quot;. &quot; &#39;KONSOLE_PROFILE_NAME&
+3100: #39;: &#39;Shell&#39;,\n&quot;. &quot; &#39;LANG&#39;: &#39;en_G
+3140: B.UTF-8&#39;,\n&quot;. &quot; &#39;LANGUAGE&#39;: &#39;en&#39;,\
+3180: n&quot;. &quot; &#39;LC_ADDRESS&#39;: &#39;en_GB.UTF-8&#39;,\n&q
+31c0: uot;. &quot; &#39;LC_IDENTIFICATION&#39;: &#39;en_GB.UTF-8&#39;,
+3200: \n&quot;. &quot; &#39;LC_MEASUREMENT&#39;: &#39;en_GB.UTF-8&#39;
+3240: ,\n&quot;. &quot; &#39;LC_MONETARY&#39;: &#39;en_GB.UTF-8&#39;,\
+3280: n&quot;. &quot; &#39;LC_NAME&#39;: &#39;en_GB.UTF-8&#39;,\n&quot
+32c0: ;. &quot; &#39;LC_NUMERIC&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. 
+3300: &quot; &#39;LC_PAPER&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot
+3340: ; &#39;LC_TELEPHONE&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot;
+3380:  &#39;LC_TIME&#39;: &#39;en_GB.UTF-8&#39;,\n&quot;. &quot; &#39;
+33c0: LESSCLOSE&#39;: &#39;/usr/bin/lesspipe %s %s&#39;,\n&quot;. &quo
+3400: t; &#39;LESSOPEN&#39;: &#39;| /usr/bin/lesspipe %s&#39;,\n&quot;
+3440: . &quot; &#39;LOGNAME&#39;: &#39;ioram&#39;,\n&quot;. &quot; &#3
+3480: 9;LS_COLORS&#39;: &quot;. &quot;&#39;rs=0:di=01;34:ln=01;36:mh=0
+34c0: 0:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01
+3500: :su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:
+3540: *.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lz
+3580: ma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31
+35c0: :*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01
+3600: ;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:
+3640: *.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ac
+3680: e=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;
+36c0: 35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:
+3700: *.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.ti
+3740: ff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=
+3780: 01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;
+37c0: 35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35
+3800: :*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm
+3840: =01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01
+3880: ;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.
+38c0: cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=
+3900: 01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;
+3940: 36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.
+3980: wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:&#39;
+39c0: ,\n&quot;. &quot; &#39;MANDATORY_PATH&#39;: &#39;/usr/share/gcon
+3a00: f/kde-plasma.mandatory.path&#39;,\n&quot;. &quot; &#39;OLDPWD&#3
+3a40: 9;: &#39;/home/ioram/cfas&#39;,\n&quot;. &quot; &#39;PAM_KWALLET
+3a80: _LOGIN&#39;: &#39;/tmp//ioram.socket&#39;,\n&quot;. &quot; &#39;
+3ac0: PATH&#39;: &quot;. &quot;&#39;/home/ioram/os_adaptor/env/bin:/us
+3b00: r/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
+3b40: ames:/usr/local/games&#39;,\n&quot;. &quot; &#39;PATH_INFO&#39;:
+3b80:  &#39;/policy2dnf/&#39;,\n&quot;. &quot; &#39;PROFILEHOME&#39;: 
+3bc0: &#39;&#39;,\n&quot;. &quot; &#39;PS1&#39;: &#39;(env)\\\\[\\\\e]
+3c00: 0;\\\\u@\\\\h: &#39;\n&quot;. &#39;        &#39;. &quot;&#39;\\\
+3c40: \w\\\\a\\\\]${debian_chroot:+($debian_chroot)}\\\\u@\\\\h:\\\\w\
+3c80: \\\$ &quot;. &quot;&#39;,\n&quot;. &quot; &#39;PWD&#39;: &#39;/h
+3cc0: ome/ioram/os_adaptor&#39;,\n&quot;. &quot; &#39;QT4_IM_MODULE&#3
+3d00: 9;: &#39;ibus&#39;,\n&quot;. &quot; &#39;QT_IM_MO... &lt;trimmed
+3d40:  6381 bytes string&gt;</pre></td>.                  </tr>.      
+3d80:           .                  <tr>.                    <td>cls</t
+3dc0: d>.                    <td class="code"><pre>&lt;class &#39;adap
+3e00: tor.views.AdaptorDnfView&#39;&gt;</pre></td>.                  <
+3e40: /tr>.                .              </tbody>.            </table
+3e80: >.          .        </li>.      .        <li class="frame user"
+3ec0: >.          <code>/home/ioram/os_adaptor/env/lib/python3.4/site-
+3f00: packages/rest_framework/views.py</code> in <code>dispatch</code>
+3f40: ..          .            <div class="context" id="c1404953432716
+3f80: 88">.              .                <ol start="459" class="pre-c
+3fc0: ontext" id="pre140495343271688">.                .              
+<= Recv data, 16384 bytes (0x4000)
+0000:     <li onclick="toggle('pre140495343271688', 'post1404953432716
+0040: 88')"><pre>                                  self.http_method_no
+0080: t_allowed)</pre></li>.                .                  <li onc
+00c0: lick="toggle('pre140495343271688', 'post140495343271688')"><pre>
+0100:             else:</pre></li>.                .                  
+0140: <li onclick="toggle('pre140495343271688', 'post140495343271688')
+0180: "><pre>                handler = self.http_method_not_allowed</p
+01c0: re></li>.                .                  <li onclick="toggle(
+0200: 'pre140495343271688', 'post140495343271688')"><pre></pre></li>. 
+0240:                .                  <li onclick="toggle('pre140495
+0280: 343271688', 'post140495343271688')"><pre>            response = 
+02c0: handler(request, *args, **kwargs)</pre></li>.                .  
+0300:                 <li onclick="toggle('pre140495343271688', 'post1
+0340: 40495343271688')"><pre></pre></li>.                .            
+0380:       <li onclick="toggle('pre140495343271688', 'post14049534327
+03c0: 1688')"><pre>        except Exception as exc:</pre></li>.       
+0400:          .                </ol>.              .              <ol
+0440:  start="466" class="context-line">.                <li onclick="
+0480: toggle('pre140495343271688', 'post140495343271688')"><pre>.     
+04c0:                    response = self.handle_exception(exc)</pre> <
+0500: span>...</span></li></ol>.              .                <ol sta
+0540: rt='467' class="post-context" id="post140495343271688">.        
+0580:           .                  <li onclick="toggle('pre14049534327
+05c0: 1688', 'post140495343271688')"><pre></pre></li>.                
+0600:   .                  <li onclick="toggle('pre140495343271688', '
+0640: post140495343271688')"><pre>        self.response = self.finaliz
+0680: e_response(request, response, *args, **kwargs)</pre></li>.      
+06c0:             .                  <li onclick="toggle('pre140495343
+0700: 271688', 'post140495343271688')"><pre>        return self.respon
+0740: se</pre></li>.                  .                  <li onclick="
+0780: toggle('pre140495343271688', 'post140495343271688')"><pre></pre>
+07c0: </li>.                  .                  <li onclick="toggle('
+0800: pre140495343271688', 'post140495343271688')"><pre>    def option
+0840: s(self, request, *args, **kwargs):</pre></li>.                  
+0880: .                  <li onclick="toggle('pre140495343271688', 'po
+08c0: st140495343271688')"><pre>        &quot;&quot;&quot;</pre></li>.
+0900:                   .              </ol>.              .          
+0940:   </div>.          ..          .            <div class="commands
+0980: ">.                .                    <a href="#" onclick="ret
+09c0: urn varToggle(this, '140495343271688')"><span>&#x25b6;</span> Lo
+0a00: cal vars</a>.                .            </div>.            <ta
+0a40: ble class="vars" id="v140495343271688">.              <thead>.  
+0a80:               <tr>.                  <th>Variable</th>.         
+0ac0:          <th>Value</th>.                </tr>.              </th
+0b00: ead>.              <tbody>.                .                  <t
+0b40: r>.                    <td>handler</td>.                    <td 
+0b80: class="code"><pre>&lt;bound method AdaptorDnfView.post of &lt;ad
+0bc0: aptor.views.AdaptorDnfView object at 0x7fc79f31be80&gt;&gt;</pre
+0c00: ></td>.                  </tr>.                .                
+0c40:   <tr>.                    <td>self</td>.                    <td
+0c80:  class="code"><pre>&lt;adaptor.views.AdaptorDnfView object at 0x
+0cc0: 7fc79f31be80&gt;</pre></td>.                  </tr>.            
+0d00:     .                  <tr>.                    <td>kwargs</td>.
+0d40:                     <td class="code"><pre>{}</pre></td>.        
+0d80:           </tr>.                .                  <tr>.        
+0dc0:             <td>request</td>.                    <td class="code
+0e00: "><pre>&lt;rest_framework.request.Request object at 0x7fc79f31b1
+0e40: 60&gt;</pre></td>.                  </tr>.                .     
+0e80:              <tr>.                    <td>args</td>.            
+0ec0:         <td class="code"><pre>()</pre></td>.                  </
+0f00: tr>.                .              </tbody>.            </table>
+0f40: .          .        </li>.      .        <li class="frame user">
+0f80: .          <code>/home/ioram/os_adaptor/env/lib/python3.4/site-p
+0fc0: ackages/rest_framework/views.py</code> in <code>dispatch</code>.
+1000: .          .            <div class="context" id="c14049534327181
+1040: 6">.              .                <ol start="456" class="pre-co
+1080: ntext" id="pre140495343271816">.                .               
+10c0:    <li onclick="toggle('pre140495343271816', 'post14049534327181
+1100: 6')"><pre>            # Get the appropriate handler method</pre>
+1140: </li>.                .                  <li onclick="toggle('pr
+1180: e140495343271816', 'post140495343271816')"><pre>            if r
+11c0: equest.method.lower() in self.http_method_names:</pre></li>.    
+1200:             .                  <li onclick="toggle('pre140495343
+1240: 271816', 'post140495343271816')"><pre>                handler = 
+1280: getattr(self, request.method.lower(),</pre></li>.               
+12c0:  .                  <li onclick="toggle('pre140495343271816', 'p
+1300: ost140495343271816')"><pre>                                  sel
+1340: f.http_method_not_allowed)</pre></li>.                .         
+1380:          <li onclick="toggle('pre140495343271816', 'post14049534
+13c0: 3271816')"><pre>            else:</pre></li>.                .  
+1400:                 <li onclick="toggle('pre140495343271816', 'post1
+1440: 40495343271816')"><pre>                handler = self.http_metho
+1480: d_not_allowed</pre></li>.                .                  <li 
+14c0: onclick="toggle('pre140495343271816', 'post140495343271816')"><p
+1500: re></pre></li>.                .                </ol>.          
+1540:     .              <ol start="463" class="context-line">.       
+1580:          <li onclick="toggle('pre140495343271816', 'post14049534
+15c0: 3271816')"><pre>.                        response = handler(requ
+1600: est, *args, **kwargs)</pre> <span>...</span></li></ol>.         
+1640:      .                <ol start='464' class="post-context" id="p
+1680: ost140495343271816">.                  .                  <li on
+16c0: click="toggle('pre140495343271816', 'post140495343271816')"><pre
+1700: ></pre></li>.                  .                  <li onclick="t
+1740: oggle('pre140495343271816', 'post140495343271816')"><pre>       
+1780:  except Exception as exc:</pre></li>.                  .        
+17c0:           <li onclick="toggle('pre140495343271816', 'post1404953
+1800: 43271816')"><pre>            response = self.handle_exception(ex
+1840: c)</pre></li>.                  .                  <li onclick="
+1880: toggle('pre140495343271816', 'post140495343271816')"><pre></pre>
+18c0: </li>.                  .                  <li onclick="toggle('
+1900: pre140495343271816', 'post140495343271816')"><pre>        self.r
+1940: esponse = self.finalize_response(request, response, *args, **kwa
+1980: rgs)</pre></li>.                  .                  <li onclick
+19c0: ="toggle('pre140495343271816', 'post140495343271816')"><pre>    
+1a00:     return self.response</pre></li>.                  .         
+1a40:      </ol>.              .            </div>.          ..       
+1a80:    .            <div class="commands">.                .        
+1ac0:             <a href="#" onclick="return varToggle(this, '1404953
+1b00: 43271816')"><span>&#x25b6;</span> Local vars</a>.               
+1b40:  .            </div>.            <table class="vars" id="v140495
+1b80: 343271816">.              <thead>.                <tr>.         
+1bc0:          <th>Variable</th>.                  <th>Value</th>.    
+1c00:             </tr>.              </thead>.              <tbody>. 
+1c40:                .                  <tr>.                    <td>h
+1c80: andler</td>.                    <td class="code"><pre>&lt;bound 
+1cc0: method AdaptorDnfView.post of &lt;adaptor.views.AdaptorDnfView o
+1d00: bject at 0x7fc79f31be80&gt;&gt;</pre></td>.                  </t
+1d40: r>.                .                  <tr>.                    <
+1d80: td>self</td>.                    <td class="code"><pre>&lt;adapt
+1dc0: or.views.AdaptorDnfView object at 0x7fc79f31be80&gt;</pre></td>.
+1e00:                   </tr>.                .                  <tr>.
+1e40:                     <td>kwargs</td>.                    <td clas
+1e80: s="code"><pre>{}</pre></td>.                  </tr>.            
+1ec0:     .                  <tr>.                    <td>request</td>
+1f00: .                    <td class="code"><pre>&lt;rest_framework.re
+1f40: quest.Request object at 0x7fc79f31b160&gt;</pre></td>.          
+1f80:         </tr>.                .                  <tr>.          
+1fc0:           <td>args</td>.                    <td class="code"><pr
+2000: e>()</pre></td>.                  </tr>.                .       
+2040:        </tbody>.            </table>.          .        </li>.  
+2080:     .        <li class="frame user">.          <code>/home/ioram
+20c0: /os_adaptor/adaptor/views.py</code> in <code>post</code>..      
+2100:     .            <div class="context" id="c140495346074696">.   
+2140:            .                <ol start="50" class="pre-context" i
+2180: d="pre140495346074696">.                .                  <li o
+21c0: nclick="toggle('pre140495346074696', 'post140495346074696')"><pr
+2200: e>    def post(self, request, *args, **kwargs):</pre></li>.     
+2240:            .                  <li onclick="toggle('pre1404953460
+2280: 74696', 'post140495346074696')"><pre>        resp = {}</pre></li
+22c0: >.                .                  <li onclick="toggle('pre140
+2300: 495346074696', 'post140495346074696')"><pre>        if (not &quo
+2340: t;format&quot; in request.data or not &quot;policy&quot; in requ
+2380: est.data):</pre></li>.                .                  <li onc
+23c0: lick="toggle('pre140495346074696', 'post140495346074696')"><pre>
+2400:             resp[&#39;detail&#39;] = &quot;Missing argument&quot
+2440: ;</pre></li>.                .                  <li onclick="tog
+2480: gle('pre140495346074696', 'post140495346074696')"><pre>         
+24c0:    return Response(resp, status=412)</pre></li>.                
+2500: .                  <li onclick="toggle('pre140495346074696', 'po
+2540: st140495346074696')"><pre>        elif (request.data[&quot;forma
+2580: t&quot;] == &quot;openstack&quot;):</pre></li>.                .
+25c0:                   <li onclick="toggle('pre140495346074696', 'pos
+2600: t140495346074696')"><pre>            resp = adaptor.policy2dnf(r
+2640: equest.data[&quot;policy&quot;])</pre></li>.                .   
+2680:              </ol>.              .              <ol start="57" c
+26c0: lass="context-line">.                <li onclick="toggle('pre140
+2700: 495346074696', 'post140495346074696')"><pre>.                   
+2740:      resp2 = adaptor.semantic2ontology(resp)</pre> <span>...</sp
+2780: an></li></ol>.              .                <ol start='58' clas
+27c0: s="post-context" id="post140495346074696">.                  .  
+2800:                 <li onclick="toggle('pre140495346074696', 'post1
+2840: 40495346074696')"><pre>            return Response(resp)</pre></
+2880: li>.                  .                  <li onclick="toggle('pr
+28c0: e140495346074696', 'post140495346074696')"><pre>        else:</p
+2900: re></li>.                  .                  <li onclick="toggl
+2940: e('pre140495346074696', 'post140495346074696')"><pre>           
+2980:  resp[&#39;detail&#39;] = &quot;Policy Format not Supported.&quo
+29c0: t;</pre></li>.                  .                  <li onclick="
+2a00: toggle('pre140495346074696', 'post140495346074696')"><pre>      
+2a40:       return Response(resp, status=415)</pre></li>.             
+2a80:      .                  <li onclick="toggle('pre140495346074696'
+2ac0: , 'post140495346074696')"><pre></pre></li>.                  .  
+2b00:                 <li onclick="toggle('pre140495346074696', 'post1
+2b40: 40495346074696')"><pre>class AdaptorLocalView(APIView):</pre></l
+2b80: i>.                  .              </ol>.              .       
+2bc0:      </div>.          ..          .            <div class="comma
+2c00: nds">.                .                    <a href="#" onclick="
+2c40: return varToggle(this, '140495346074696')"><span>&#x25b6;</span>
+2c80:  Local vars</a>.                .            </div>.            
+2cc0: <table class="vars" id="v140495346074696">.              <thead>
+2d00: .                <tr>.                  <th>Variable</th>.      
+2d40:             <th>Value</th>.                </tr>.              <
+2d80: /thead>.              <tbody>.                .                 
+2dc0:  <tr>.                    <td>self</td>.                    <td 
+2e00: class="code"><pre>&lt;adaptor.views.AdaptorDnfView object at 0x7
+2e40: fc79f31be80&gt;</pre></td>.                  </tr>.             
+2e80:    .                  <tr>.                    <td>kwargs</td>. 
+2ec0:                    <td class="code"><pre>{}</pre></td>.         
+2f00:          </tr>.                .                  <tr>.         
+2f40:            <td>request</td>.                    <td class="code"
+2f80: ><pre>&lt;rest_framework.request.Request object at 0x7fc79f31b16
+2fc0: 0&gt;</pre></td>.                  </tr>.                .      
+3000:             <tr>.                    <td>resp</td>.             
+3040:        <td class="code"><pre>{&#39;dnf_policy&#39;: {&#39;and_ru
+3080: les&#39;: [{&#39;conditions&#39;: [{&#39;attribute&#39;: &#39;ro
+30c0: le&#39;,.                                               &#39;des
+3100: cription&#39;: &#39;role=VoAdmin&#39;,.                         
+3140:                       &#39;operator&#39;: &#39;=&#39;,.         
+3180:                                       &#39;type&#39;: &#39;c&#39
+31c0: ;,.                                               &#39;value&#39
+3200: ;: &#39;VoAdmin&#39;},.                                         
+3240:      {&#39;attribute&#39;: &#39;service&#39;,.                  
+3280:                              &#39;description&#39;: &#39;service
+32c0: =identity&#39;,.                                               &
+3300: #39;operator&#39;: &#39;=&#39;,.                                
+3340:                &#39;type&#39;: &#39;c&#39;,.                    
+3380:                            &#39;value&#39;: &#39;identity&#39;},
+33c0: .                                              {&#39;attribute&#
+3400: 39;: &#39;action&#39;,.                                         
+3440:       &#39;description&#39;: &#39;action=approve_vo_request&#39;
+3480: ,.                                               &#39;operator&#
+34c0: 39;: &#39;=&#39;,.                                              
+3500:  &#39;type&#39;: &#39;c&#39;,.                                  
+3540:              &#39;value&#39;: &#39;approve_vo_request&#39;}],.  
+3580:                              &#39;description&#39;: &#39;identit
+35c0: y:approve_vo_request:0&#39;,.                               &#39
+3600: ;enabled&#39;: True},.                              {&#39;condit
+3640: ions&#39;: [{&#39;attribute&#39;: &#39;role&#39;,.              
+3680:                                  &#39;description&#39;: &#39;rol
+36c0: e=admin&#39;,.                                               &#3
+3700: 9;operator&#39;: &#39;=&#39;,.                                  
+3740:              &#39;type&#39;: &#39;c&#39;,.                      
+3780:                          &#39;value&#39;: &#39;admin&#39;},.    
+37c0:                                           {&#39;attribute&#39;: 
+3800: &#39;service&#39;,.                                             
+3840:   &#39;description&#39;: &#39;service=identity&#39;,.           
+3880:                                     &#39;operator&#39;: &#39;=&#
+38c0: 39;,.                                               &#39;type&#3
+3900: 9;: &#39;c&#39;,.                                               
+3940: &#39;value&#39;: &#39;identity&#39;},.                          
+3980:                     {&#39;attribute&#39;: &#39;action&#39;,.    
+39c0:                                            &#39;description&#39;
+3a00: : &#39;action=approve_vo_request&#39;,.                         
+3a40:                       &#39;operator&#39;: &#39;=&#39;,.         
+3a80:                                       &#39;type&#39;: &#39;c&#39
+3ac0: ;,.                                               &#39;value&#39
+3b00: ;: &#39;approve_vo_request&#39;}],.                             
+3b40:   &#39;description&#39;: &#39;identity:approve_vo_request:1&#39;
+3b80: ,.                               &#39;enabled&#39;: True},.     
+3bc0:                          {&#39;conditions&#39;: [{&#39;attribute
+3c00: &#39;: &#39;is_admin&#39;,.                                     
+3c40:           &#39;description&#39;: &#39;is_admin=1&#39;,.         
+3c80:                                       &#39;operator&#39;: &#39;=
+3cc0: &#39;,.                                               &#39;type&
+3d00: #39;: &#39;c&#39;,.                                             
+3d40:   &#39;value&#39;: &#39;1&#39;},.                               
+3d80:                {&#39;attribute&#39;: &#39;service&#39;,.        
+3dc0:                                        &#39;description&#39;: &#
+3e00: 39;service=identity&#39;,.                                      
+3e40:          &#39;operator&#39;: &#39;=&#39;,.                      
+3e80:                          &#39;type&#39;: &#39;c&#39;,.          
+3ec0:                                      &#39;value&#39;: &#39;ident
+3f00: ity&#39;},.                                              {&#39;a
+3f40: ttribute&#39;: &#39;action&#39;,.                               
+3f80:                 &#39;description&#39;: &#39;action=approve_vo_re
+3fc0: quest&#39;,.                                               &#39;
+<= Recv data, 16384 bytes (0x4000)
+0000: operator&#39;: &#39;=&#39;,.                                    
+0040:            &#39;type&#39;: &#39;c&#39;,.                        
+0080:                        &#39;value&#39;: &#39;approve_vo_request&
+00c0: #39;}],.                               &#39;description&#39;: &#
+0100: 39;identity:approve_vo_request:2&#39;,.                         
+0140:       &#39;enabled&#39;: True},.                              {&
+0180: #39;conditions&#39;: [{&#39;attribute&#39;: &#39;service&#39;,. 
+01c0:                                               &#39;description&#
+0200: 39;: &#39;service=identity&#39;,.                               
+0240:                 &#39;operator&#39;: &#39;=&#39;,.               
+0280:                                 &#39;type&#39;: &#39;c&#39;,.   
+02c0:                                             &#39;value&#39;: &#3
+0300: 9;identity&#39;},.                                              
+0340: {&#39;attribute&#39;: &#39;action&#39;,.                        
+0380:                        &#39;description&#39;: &#39;action=check_
+03c0: role_for_trust&#39;,.                                           
+0400:     &#39;operator&#39;: &#39;=&#39;,.... &lt;trimmed 337520 byte
+0440: s string&gt;</pre></td>.                  </tr>.                
+0480: .                  <tr>.                    <td>args</td>.      
+04c0:               <td class="code"><pre>()</pre></td>.              
+0500:     </tr>.                .              </tbody>.            </
+0540: table>.          .        </li>.      .    </ul>.  </div>.  .  <
+0580: form action="http://dpaste.com/" name="pasteform" id="pasteform"
+05c0:  method="post">..  <div id="pastebinTraceback" class="pastebin">
+0600: .    <input type="hidden" name="language" value="PythonConsole">
+0640: .    <input type="hidden" name="title".      value="AttributeErr
+0680: or at /policy2dnf/">.    <input type="hidden" name="source" valu
+06c0: e="Django Dpaste Agent">.    <input type="hidden" name="poster" 
+0700: value="Django">.    <textarea name="content" id="traceback_area"
+0740:  cols="140" rows="25">.Environment:...Request Method: POST.Reque
+0780: st URL: http://localhost:8001/policy2dnf/..Django Version: 1.8.2
+07c0: .Python Version: 3.4.0.Installed Applications:.(&#39;django.cont
+0800: rib.admin&#39;,. &#39;django.contrib.auth&#39;,. &#39;django.con
+0840: trib.contenttypes&#39;,. &#39;django.contrib.sessions&#39;,. &#3
+0880: 9;django.contrib.messages&#39;,. &#39;django.contrib.staticfiles
+08c0: &#39;,. &#39;rest_framework&#39;,. &#39;adaptor&#39;).Installed 
+0900: Middleware:.(&#39;django.contrib.sessions.middleware.SessionMidd
+0940: leware&#39;,. &#39;django.middleware.common.CommonMiddleware&#39
+0980: ;,. &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,. &#39;d
+09c0: jango.contrib.auth.middleware.AuthenticationMiddleware&#39;,. &#
+0a00: 39;django.contrib.auth.middleware.SessionAuthenticationMiddlewar
+0a40: e&#39;,. &#39;django.contrib.messages.middleware.MessageMiddlewa
+0a80: re&#39;,. &#39;django.middleware.clickjacking.XFrameOptionsMiddl
+0ac0: eware&#39;,. &#39;django.middleware.security.SecurityMiddleware&
+0b00: #39;)...Traceback:.File "/home/ioram/os_adaptor/env/lib/python3.
+0b40: 4/site-packages/django/core/handlers/base.py" in get_response.  
+0b80: 132.                     response = wrapped_callback(request, *c
+0bc0: allback_args, **callback_kwargs).File "/home/ioram/os_adaptor/en
+0c00: v/lib/python3.4/site-packages/django/views/decorators/csrf.py" i
+0c40: n wrapped_view.  58.         return view_func(*args, **kwargs).F
+0c80: ile "/home/ioram/os_adaptor/env/lib/python3.4/site-packages/djan
+0cc0: go/views/generic/base.py" in view.  71.             return self.
+0d00: dispatch(request, *args, **kwargs).File "/home/ioram/os_adaptor/
+0d40: env/lib/python3.4/site-packages/rest_framework/views.py" in disp
+0d80: atch.  466.             response = self.handle_exception(exc).Fi
+0dc0: le "/home/ioram/os_adaptor/env/lib/python3.4/site-packages/rest_
+0e00: framework/views.py" in dispatch.  463.             response = ha
+0e40: ndler(request, *args, **kwargs).File "/home/ioram/os_adaptor/ada
+0e80: ptor/views.py" in post.  57.             resp2 = adaptor.semanti
+0ec0: c2ontology(resp)..Exception Type: AttributeError at /policy2dnf/
+0f00: .Exception Value: &#39;module&#39; object has no attribute &#39;
+0f40: semantic2ontology&#39;.</textarea>.  <br><br>.  <input type="sub
+0f80: mit" value="Share this traceback on a public Web site">.  </div>
+0fc0: .</form>.</div>....<div id="requestinfo">.  <h2>Request informat
+1000: ion</h2>...  <h3 id="get-info">GET</h3>.  .    <p>No GET data</p
+1040: >.  ..  <h3 id="post-info">POST</h3>.  .    <p>No POST data</p>.
+1080:   .  <h3 id="files-info">FILES</h3>.  .    <p>No FILES data</p>.
+10c0:   ...  <h3 id="cookie-info">COOKIES</h3>.  .    <p>No cookie dat
+1100: a</p>.  ..  <h3 id="meta-info">META</h3>.  <table class="req">. 
+1140:    <thead>.      <tr>.        <th>Variable</th>.        <th>Valu
+1180: e</th>.      </tr>.    </thead>.    <tbody>.      .        <tr>.
+11c0:           <td>CLUTTER_IM_MODULE</td>.          <td class="code">
+1200: <pre>&#39;xim&#39;</pre></td>.        </tr>.      .        <tr>.
+1240:           <td>PAM_KWALLET_LOGIN</td>.          <td class="code">
+1280: <pre>&#39;/tmp//ioram.socket&#39;</pre></td>.        </tr>.     
+12c0:  .        <tr>.          <td>PATH</td>.          <td class="code
+1300: "><pre>&#39;/home/ioram/os_adaptor/env/bin:/usr/local/sbin:/usr/
+1340: local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/ga
+1380: mes&#39;</pre></td>.        </tr>.      .        <tr>.          
+13c0: <td>UPSTART_INSTANCE</td>.          <td class="code"><pre>&#39;&
+1400: #39;</pre></td>.        </tr>.      .        <tr>.          <td>
+1440: XCURSOR_THEME</td>.          <td class="code"><pre>&#39;oxy-whit
+1480: e&#39;</pre></td>.        </tr>.      .        <tr>.          <t
+14c0: d>COLORFGBG</td>.          <td class="code"><pre>&#39;15;0&#39;<
+1500: /pre></td>.        </tr>.      .        <tr>.          <td>XDG_S
+1540: ESSION_PATH</td>.          <td class="code"><pre>&#39;/org/freed
+1580: esktop/DisplayManager/Session0&#39;</pre></td>.        </tr>.   
+15c0:    .        <tr>.          <td>SHLVL</td>.          <td class="c
+1600: ode"><pre>&#39;1&#39;</pre></td>.        </tr>.      .        <t
+1640: r>.          <td>JOB</td>.          <td class="code"><pre>&#39;d
+1680: bus&#39;</pre></td>.        </tr>.      .        <tr>.          
+16c0: <td>TEXTDOMAIN</td>.          <td class="code"><pre>&#39;im-conf
+1700: ig&#39;</pre></td>.        </tr>.      .        <tr>.          <
+1740: td>RUN_MAIN</td>.          <td class="code"><pre>&#39;true&#39;<
+1780: /pre></td>.        </tr>.      .        <tr>.          <td>CONTE
+17c0: NT_LENGTH</td>.          <td class="code"><pre>&#39;7335&#39;</p
+1800: re></td>.        </tr>.      .        <tr>.          <td>GATEWAY
+1840: _INTERFACE</td>.          <td class="code"><pre>&#39;CGI/1.1&#39
+1880: ;</pre></td>.        </tr>.      .        <tr>.          <td>_</
+18c0: td>.          <td class="code"><pre>&#39;env/bin/python&#39;</pr
+1900: e></td>.        </tr>.      .        <tr>.          <td>SESSIONT
+1940: YPE</td>.          <td class="code"><pre>&#39;&#39;</pre></td>. 
+1980:        </tr>.      .        <tr>.          <td>GPG_AGENT_INFO</t
+19c0: d>.          <td class="code"><pre>&#39;/run/user/1000/keyring-D
+1a00: QGMqT/gpg:0:1&#39;</pre></td>.        </tr>.      .        <tr>.
+1a40:           <td>REMOTE_HOST</td>.          <td class="code"><pre>&
+1a80: #39;&#39;</pre></td>.        </tr>.      .        <tr>.         
+1ac0:  <td>GDMSESSION</td>.          <td class="code"><pre>&#39;kde-pl
+1b00: asma&#39;</pre></td>.        </tr>.      .        <tr>.         
+1b40:  <td>MANDATORY_PATH</td>.          <td class="code"><pre>&#39;/u
+1b80: sr/share/gconf/kde-plasma.mandatory.path&#39;</pre></td>.       
+1bc0:  </tr>.      .        <tr>.          <td>LS_COLORS</td>.        
+1c00:   <td class="code"><pre>&#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;
+1c40: 33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;4
+1c80: 1:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01
+1cc0: ;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31
+1d00: :*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01
+1d40: ;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tb
+1d80: z=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01
+1dc0: ;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:
+1e00: *.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpe
+1e40: g=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01
+1e80: ;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35
+1ec0: :*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.
+1f00: mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.web
+1f40: m=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=0
+1f80: 1;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*
+1fc0: .rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl
+2000: =01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;3
+2040: 5:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.
+2080: aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka
+20c0: =00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;3
+2100: 6:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:&#39;</pre></
+2140: td>.        </tr>.      .        <tr>.          <td>wsgi.errors<
+2180: /td>.          <td class="code"><pre>&lt;_io.TextIOWrapper name=
+21c0: &#39;&lt;stderr&gt;&#39; mode=&#39;w&#39; encoding=&#39;UTF-8&#3
+2200: 9;&gt;</pre></td>.        </tr>.      .        <tr>.          <t
+2240: d>SESSION_MANAGER</td>.          <td class="code"><pre>&#39;loca
+2280: l/ioram-Linux:@/tmp/.ICE-unix/2134,unix/ioram-Linux:/tmp/.ICE-un
+22c0: ix/2134&#39;</pre></td>.        </tr>.      .        <tr>.      
+2300:     <td>XDG_DATA_DIRS</td>.          <td class="code"><pre>&#39;
+2340: /usr/share:/usr/share/kde-plasma:/usr/local/share/:/usr/share/&#
+2380: 39;</pre></td>.        </tr>.      .        <tr>.          <td>K
+23c0: DE_MULTIHEAD</td>.          <td class="code"><pre>&#39;false&#39
+2400: ;</pre></td>.        </tr>.      .        <tr>.          <td>LC_
+2440: NAME</td>.          <td class="code"><pre>&#39;en_GB.UTF-8&#39;<
+2480: /pre></td>.        </tr>.      .        <tr>.          <td>XDG_V
+24c0: TNR</td>.          <td class="code"><pre>&#39;7&#39;</pre></td>.
+2500:         </tr>.      .        <tr>.          <td>wsgi.multithread
+2540: </td>.          <td class="code"><pre>True</pre></td>.        </
+2580: tr>.      .        <tr>.          <td>SERVER_PROTOCOL</td>.     
+25c0:      <td class="code"><pre>&#39;HTTP/1.1&#39;</pre></td>.       
+2600:  </tr>.      .        <tr>.          <td>XDG_SESSION_ID</td>.   
+2640:        <td class="code"><pre>&#39;c2&#39;</pre></td>.        </t
+2680: r>.      .        <tr>.          <td>LESSOPEN</td>.          <td
+26c0:  class="code"><pre>&#39;| /usr/bin/lesspipe %s&#39;</pre></td>. 
+2700:        </tr>.      .        <tr>.          <td>DISPLAY</td>.    
+2740:       <td class="code"><pre>&#39;:0&#39;</pre></td>.        </tr
+2780: >.      .        <tr>.          <td>SHELL</td>.          <td cla
+27c0: ss="code"><pre>&#39;/bin/bash&#39;</pre></td>.        </tr>.    
+2800:   .        <tr>.          <td>XDG_GREETER_DATA_DIR</td>.        
+2840:   <td class="code"><pre>&#39;/var/lib/lightdm-data/ioram&#39;</p
+2880: re></td>.        </tr>.      .        <tr>.          <td>SHELL_S
+28c0: ESSION_ID</td>.          <td class="code"><pre>&#39;688aea7103d5
+2900: 4000bc6627888ab57060&#39;</pre></td>.        </tr>.      .      
+2940:   <tr>.          <td>KONSOLE_DBUS_WINDOW</td>.          <td clas
+2980: s="code"><pre>&#39;/Windows/1&#39;</pre></td>.        </tr>.    
+29c0:   .        <tr>.          <td>LC_TELEPHONE</td>.          <td cl
+2a00: ass="code"><pre>&#39;en_GB.UTF-8&#39;</pre></td>.        </tr>. 
+2a40:      .        <tr>.          <td>DBUS_SESSION_BUS_ADDRESS</td>. 
+2a80:          <td class="code"><pre>&#39;unix:abstract=/tmp/dbus-zp8b
+2ac0: aYGtDU&#39;</pre></td>.        </tr>.      .        <tr>.       
+2b00:    <td>LESSCLOSE</td>.          <td class="code"><pre>&#39;/usr/
+2b40: bin/lesspipe %s %s&#39;</pre></td>.        </tr>.      .        
+2b80: <tr>.          <td>QT_IM_MODULE</td>.          <td class="code">
+2bc0: <pre>&#39;ibus&#39;</pre></td>.        </tr>.      .        <tr>
+2c00: .          <td>KONSOLE_DBUS_SERVICE</td>.          <td class="co
+2c40: de"><pre>&#39;:1.48&#39;</pre></td>.        </tr>.      .       
+2c80:  <tr>.          <td>LANGUAGE</td>.          <td class="code"><pr
+2cc0: e>&#39;en&#39;</pre></td>.        </tr>.      .        <tr>.    
+2d00:       <td>SERVER_PORT</td>.          <td class="code"><pre>&#39;
+2d40: 8001&#39;</pre></td>.        </tr>.      .        <tr>.         
+2d80:  <td>QT_PLUGIN_PATH</td>.          <td class="code"><pre>&#39;/h
+2dc0: ome/ioram/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/&#39;</pr
+2e00: e></td>.        </tr>.      .        <tr>.          <td>IM_CONFI
+2e40: G_PHASE</td>.          <td class="code"><pre>&#39;1&#39;</pre></
+2e80: td>.        </tr>.      .        <tr>.          <td>SCRIPT_NAME<
+2ec0: /td>.          <td class="code"><pre>&#39;&#39;</pre></td>.     
+2f00:    </tr>.      .        <tr>.          <td>VIRTUAL_ENV</td>.    
+2f40:       <td class="code"><pre>&#39;/home/ioram/os_adaptor/env&#39;
+2f80: </pre></td>.        </tr>.      .        <tr>.          <td>HTTP
+2fc0: _USER_AGENT</td>.          <td class="code"><pre>&#39;curl/7.35.
+3000: 0&#39;</pre></td>.        </tr>.      .        <tr>.          <t
+3040: d>QUERY_STRING</td>.          <td class="code"><pre>&#39;&#39;</
+3080: pre></td>.        </tr>.      .        <tr>.          <td>WINDOW
+30c0: ID</td>.          <td class="code"><pre>&#39;56623130&#39;</pre>
+3100: </td>.        </tr>.      .        <tr>.          <td>KDE_SESSIO
+3140: N_VERSION</td>.          <td class="code"><pre>&#39;4&#39;</pre>
+3180: </td>.        </tr>.      .        <tr>.          <td>PWD</td>. 
+31c0:          <td class="code"><pre>&#39;/home/ioram/os_adaptor&#39;<
+3200: /pre></td>.        </tr>.      .        <tr>.          <td>KDE_S
+3240: ESSION_UID</td>.          <td class="code"><pre>&#39;1000&#39;</
+3280: pre></td>.        </tr>.      .        <tr>.          <td>LC_MON
+32c0: ETARY</td>.          <td class="code"><pre>&#39;en_GB.UTF-8&#39;
+3300: </pre></td>.        </tr>.      .        <tr>.          <td>GTK_
+3340: RC_FILES</td>.          <td class="code"><pre>&#39;/etc/gtk/gtkr
+3380: c:/home/ioram/.gtkrc:/home/ioram/.kde/share/config/gtkrc&#39;</p
+33c0: re></td>.        </tr>.      .        <tr>.          <td>XAUTHOR
+3400: ITY</td>.          <td class="code"><pre>&#39;/tmp/kde-ioram/xau
+3440: th-1000-_0&#39;</pre></td>.        </tr>.      .        <tr>.   
+3480:        <td>LC_TIME</td>.          <td class="code"><pre>&#39;en_
+34c0: GB.UTF-8&#39;</pre></td>.        </tr>.      .        <tr>.     
+3500:      <td>TZ</td>.          <td class="code"><pre>&#39;UTC&#39;</
+3540: pre></td>.        </tr>.      .        <tr>.          <td>GNOME_
+3580: KEYRING_CONTROL</td>.          <td class="code"><pre>&#39;/run/u
+35c0: ser/1000/keyring-DQGMqT&#39;</pre></td>.        </tr>.      .   
+3600:      <tr>.          <td>UPSTART_SESSION</td>.          <td class
+3640: ="code"><pre>&#39;unix:abstract=/com/ubuntu/upstart-session/1000
+3680: /1750&#39;</pre></td>.        </tr>.      .        <tr>.        
+36c0:   <td>KONSOLE_PROFILE_NAME</td>.          <td class="code"><pre>
+3700: &#39;Shell&#39;</pre></td>.        </tr>.      .        <tr>.   
+3740:        <td>LANG</td>.          <td class="code"><pre>&#39;en_GB.
+3780: UTF-8&#39;</pre></td>.        </tr>.      .        <tr>.        
+37c0:   <td>TEXTDOMAINDIR</td>.          <td class="code"><pre>&#39;/u
+3800: sr/share/locale/&#39;</pre></td>.        </tr>.      .        <t
+3840: r>.          <td>QT4_IM_MODULE</td>.          <td class="code"><
+3880: pre>&#39;ibus&#39;</pre></td>.        </tr>.      .        <tr>.
+38c0:           <td>CONTENT_TYPE</td>.          <td class="code"><pre>
+3900: &#39;application/json&#39;</pre></td>.        </tr>.      .     
+3940:    <tr>.          <td>GNOME_KEYRING_PID</td>.          <td class
+3980: ="code"><pre>&#39;1745&#39;</pre></td>.        </tr>.      .    
+39c0:     <tr>.          <td>PS1</td>.          <td class="code"><pre>
+3a00: (&#39;(env)\\[\\e]0;\\u@\\h: &#39;. &#39;\\w\\a\\]${debian_chroo
+3a40: t:+($debian_chroot)}\\u@\\h:\\w\\$ &#39;)</pre></td>.        </t
+3a80: r>.      .        <tr>.          <td>XDG_SEAT_PATH</td>.        
+3ac0:   <td class="code"><pre>&#39;/org/freedesktop/DisplayManager/Sea
+3b00: t0&#39;</pre></td>.        </tr>.      .        <tr>.          <
+3b40: td>OLDPWD</td>.          <td class="code"><pre>&#39;/home/ioram/
+3b80: cfas&#39;</pre></td>.        </tr>.      .        <tr>.         
+3bc0:  <td>wsgi.run_once</td>.          <td class="code"><pre>False</p
+3c00: re></td>.        </tr>.      .        <tr>.          <td>SERVER_
+3c40: NAME</td>.          <td class="code"><pre>&#39;ioram-Linux&#39;<
+3c80: /pre></td>.        </tr>.      .        <tr>.          <td>REMOT
+3cc0: E_ADDR</td>.          <td class="code"><pre>&#39;127.0.0.1&#39;<
+3d00: /pre></td>.        </tr>.      .        <tr>.          <td>XDG_R
+3d40: UNTIME_DIR</td>.          <td class="code"><pre>&#39;/run/user/1
+3d80: 000&#39;</pre></td>.        </tr>.      .        <tr>.          
+3dc0: <td>LC_IDENTIFICATION</td>.          <td class="code"><pre>&#39;
+3e00: en_GB.UTF-8&#39;</pre></td>.        </tr>.      .        <tr>.  
+3e40:         <td>GS_LIB</td>.          <td class="code"><pre>&#39;/ho
+3e80: me/ioram/.fonts&#39;</pre></td>.        </tr>.      .        <tr
+3ec0: >.          <td>wsgi.url_scheme</td>.          <td class="code">
+3f00: <pre>&#39;http&#39;</pre></td>.        </tr>.      .        <tr>
+3f40: .          <td>XMODIFIERS</td>.          <td class="code"><pre>&
+3f80: #39;@im=ibus&#39;</pre></td>.        </tr>.      .        <tr>. 
+3fc0:          <td>UPSTART_EVENTS</td>.          <td class="code"><pre
+<= Recv data, 16384 bytes (0x4000)
+0000: >&#39;started xsession&#39;</pre></td>.        </tr>.      .    
+0040:     <tr>.          <td>LOGNAME</td>.          <td class="code"><
+0080: pre>&#39;ioram&#39;</pre></td>.        </tr>.      .        <tr>
+00c0: .          <td>GTK_IM_MODULE</td>.          <td class="code"><pr
+0100: e>&#39;ibus&#39;</pre></td>.        </tr>.      .        <tr>.  
+0140:         <td>PATH_INFO</td>.          <td class="code"><pre>&#39;
+0180: /policy2dnf/&#39;</pre></td>.        </tr>.      .        <tr>. 
+01c0:          <td>DESKTOP_SESSION</td>.          <td class="code"><pr
+0200: e>&#39;kde-plasma&#39;</pre></td>.        </tr>.      .        <
+0240: tr>.          <td>XDG_SEAT</td>.          <td class="code"><pre>
+0280: &#39;seat0&#39;</pre></td>.        </tr>.      .        <tr>.   
+02c0:        <td>TERM</td>.          <td class="code"><pre>&#39;xterm&
+0300: #39;</pre></td>.        </tr>.      .        <tr>.          <td>
+0340: HTTP_HOST</td>.          <td class="code"><pre>&#39;localhost:80
+0380: 01&#39;</pre></td>.        </tr>.      .        <tr>.          <
+03c0: td>UPSTART_JOB</td>.          <td class="code"><pre>&#39;startkd
+0400: e&#39;</pre></td>.        </tr>.      .        <tr>.          <t
+0440: d>USER</td>.          <td class="code"><pre>&#39;ioram&#39;</pre
+0480: ></td>.        </tr>.      .        <tr>.          <td>KDE_FULL_
+04c0: SESSION</td>.          <td class="code"><pre>&#39;true&#39;</pre
+0500: ></td>.        </tr>.      .        <tr>.          <td>wsgi.vers
+0540: ion</td>.          <td class="code"><pre>(1, 0)</pre></td>.     
+0580:    </tr>.      .        <tr>.          <td>wsgi.input</td>.     
+05c0:      <td class="code"><pre>&lt;_io.BufferedReader name=6&gt;</pr
+0600: e></td>.        </tr>.      .        <tr>.          <td>wsgi.mul
+0640: tiprocess</td>.          <td class="code"><pre>False</pre></td>.
+0680:         </tr>.      .        <tr>.          <td>DEFAULTS_PATH</t
+06c0: d>.          <td class="code"><pre>&#39;/usr/share/gconf/kde-pla
+0700: sma.default.path&#39;</pre></td>.        </tr>.      .        <t
+0740: r>.          <td>GDM_LANG</td>.          <td class="code"><pre>&
+0780: #39;en_GB&#39;</pre></td>.        </tr>.      .        <tr>.    
+07c0:       <td>LC_MEASUREMENT</td>.          <td class="code"><pre>&#
+0800: 39;en_GB.UTF-8&#39;</pre></td>.        </tr>.      .        <tr>
+0840: .          <td>DJANGO_SETTINGS_MODULE</td>.          <td class="
+0880: code"><pre>&#39;os_adaptor.settings&#39;</pre></td>.        </tr
+08c0: >.      .        <tr>.          <td>SELINUX_INIT</td>.          
+0900: <td class="code"><pre>&#39;YES&#39;</pre></td>.        </tr>.   
+0940:    .        <tr>.          <td>XDG_CONFIG_DIRS</td>.          <t
+0980: d class="code"><pre>&#39;/etc/xdg/xdg-kde-plasma:/usr/share/upst
+09c0: art/xdg:/etc/xdg&#39;</pre></td>.        </tr>.      .        <t
+0a00: r>.          <td>INSTANCE</td>.          <td class="code"><pre>&
+0a40: #39;&#39;</pre></td>.        </tr>.      .        <tr>.         
+0a80:  <td>wsgi.file_wrapper</td>.          <td class="code"><pre>&#39
+0ac0: ;&#39;</pre></td>.        </tr>.      .        <tr>.          <t
+0b00: d>REQUEST_METHOD</td>.          <td class="code"><pre>&#39;POST&
+0b40: #39;</pre></td>.        </tr>.      .        <tr>.          <td>
+0b80: LC_NUMERIC</td>.          <td class="code"><pre>&#39;en_GB.UTF-8
+0bc0: &#39;</pre></td>.        </tr>.      .        <tr>.          <td
+0c00: >SERVER_SOFTWARE</td>.          <td class="code"><pre>&#39;WSGIS
+0c40: erver/0.2&#39;</pre></td>.        </tr>.      .        <tr>.    
+0c80:       <td>CSRF_COOKIE</td>.          <td class="code"><pre>&#39;
+0cc0: LLXZSF1O5xi2GoaInDQcq2vpfgvYcuMw&#39;</pre></td>.        </tr>. 
+0d00:      .        <tr>.          <td>GTK_MODULES</td>.          <td 
+0d40: class="code"><pre>&#39;overlay-scrollbar&#39;</pre></td>.       
+0d80:  </tr>.      .        <tr>.          <td>LC_PAPER</td>.         
+0dc0:  <td class="code"><pre>&#39;en_GB.UTF-8&#39;</pre></td>.        
+0e00: </tr>.      .        <tr>.          <td>GTK2_RC_FILES</td>.     
+0e40:      <td class="code"><pre>&#39;/etc/gtk-2.0/gtkrc:/home/ioram/.
+0e80: gtkrc-2.0:/home/ioram/.kde/share/config/gtkrc-2.0&#39;</pre></td
+0ec0: >.        </tr>.      .        <tr>.          <td>KONSOLE_DBUS_S
+0f00: ESSION</td>.          <td class="code"><pre>&#39;/Sessions/2&#39
+0f40: ;</pre></td>.        </tr>.      .        <tr>.          <td>LC_
+0f80: ADDRESS</td>.          <td class="code"><pre>&#39;en_GB.UTF-8&#3
+0fc0: 9;</pre></td>.        </tr>.      .        <tr>.          <td>XD
+1000: G_CURRENT_DESKTOP</td>.          <td class="code"><pre>&#39;KDE&
+1040: #39;</pre></td>.        </tr>.      .        <tr>.          <td>
+1080: QT_QPA_PLATFORMTHEME</td>.          <td class="code"><pre>&#39;a
+10c0: ppmenu-qt5&#39;</pre></td>.        </tr>.      .        <tr>.   
+1100:        <td>HTTP_EXPECT</td>.          <td class="code"><pre>&#39
+1140: ;100-continue&#39;</pre></td>.        </tr>.      .        <tr>.
+1180:           <td>SESSION</td>.          <td class="code"><pre>&#39;
+11c0: kde-plasma&#39;</pre></td>.        </tr>.      .        <tr>.   
+1200:        <td>PROFILEHOME</td>.          <td class="code"><pre>&#39
+1240: ;&#39;</pre></td>.        </tr>.      .        <tr>.          <t
+1280: d>SSH_AUTH_SOCK</td>.          <td class="code"><pre>&#39;/run/u
+12c0: ser/1000/keyring-DQGMqT/ssh&#39;</pre></td>.        </tr>.      
+1300: .        <tr>.          <td>HOME</td>.          <td class="code"
+1340: ><pre>&#39;/home/ioram&#39;</pre></td>.        </tr>.      .    
+1380:     <tr>.          <td>HTTP_ACCEPT</td>.          <td class="cod
+13c0: e"><pre>&#39;*/*&#39;</pre></td>.        </tr>.      .    </tbod
+1400: y>.  </table>...  <h3 id="settings-info">Settings</h3>.  <h4>Usi
+1440: ng settings module <code>os_adaptor.settings</code></h4>.  <tabl
+1480: e class="req">.    <thead>.      <tr>.        <th>Setting</th>. 
+14c0:        <th>Value</th>.      </tr>.    </thead>.    <tbody>.     
+1500:  .        <tr>.          <td>SECURE_CONTENT_TYPE_NOSNIFF</td>.  
+1540:         <td class="code"><pre>False</pre></td>.        </tr>.   
+1580:    .        <tr>.          <td>LOGIN_URL</td>.          <td clas
+15c0: s="code"><pre>&#39;/accounts/login/&#39;</pre></td>.        </tr
+1600: >.      .        <tr>.          <td>SESSION_COOKIE_NAME</td>.   
+1640:        <td class="code"><pre>&#39;sessionid&#39;</pre></td>.    
+1680:     </tr>.      .        <tr>.          <td>MESSAGE_STORAGE</td>
+16c0: .          <td class="code"><pre>&#39;django.contrib.messages.st
+1700: orage.fallback.FallbackStorage&#39;</pre></td>.        </tr>.   
+1740:    .        <tr>.          <td>USE_ETAGS</td>.          <td clas
+1780: s="code"><pre>False</pre></td>.        </tr>.      .        <tr>
+17c0: .          <td>DECIMAL_SEPARATOR</td>.          <td class="code"
+1800: ><pre>&#39;.&#39;</pre></td>.        </tr>.      .        <tr>. 
+1840:          <td>CACHE_MIDDLEWARE_KEY_PREFIX</td>.          <td clas
+1880: s="code"><pre>&#39;********************&#39;</pre></td>.        
+18c0: </tr>.      .        <tr>.          <td>ABSOLUTE_URL_OVERRIDES</
+1900: td>.          <td class="code"><pre>{}</pre></td>.        </tr>.
+1940:       .        <tr>.          <td>SESSION_COOKIE_DOMAIN</td>.   
+1980:        <td class="code"><pre>None</pre></td>.        </tr>.     
+19c0:  .        <tr>.          <td>BASE_DIR</td>.          <td class="
+1a00: code"><pre>&#39;/home/ioram/os_adaptor&#39;</pre></td>.        <
+1a40: /tr>.      .        <tr>.          <td>EMAIL_SUBJECT_PREFIX</td>
+1a80: .          <td class="code"><pre>&#39;[Django] &#39;</pre></td>.
+1ac0:         </tr>.      .        <tr>.          <td>LANGUAGE_CODE</t
+1b00: d>.          <td class="code"><pre>&#39;en-us&#39;</pre></td>.  
+1b40:       </tr>.      .        <tr>.          <td>MEDIA_URL</td>.   
+1b80:        <td class="code"><pre>&#39;&#39;</pre></td>.        </tr>
+1bc0: .      .        <tr>.          <td>EMAIL_BACKEND</td>.          
+1c00: <td class="code"><pre>&#39;django.core.mail.backends.smtp.EmailB
+1c40: ackend&#39;</pre></td>.        </tr>.      .        <tr>.       
+1c80:    <td>PASSWORD_RESET_TIMEOUT_DAYS</td>.          <td class="cod
+1cc0: e"><pre>&#39;********************&#39;</pre></td>.        </tr>.
+1d00:       .        <tr>.          <td>SESSION_ENGINE</td>.          
+1d40: <td class="code"><pre>&#39;django.contrib.sessions.backends.db&#
+1d80: 39;</pre></td>.        </tr>.      .        <tr>.          <td>I
+1dc0: NSTALLED_APPS</td>.          <td class="code"><pre>(&#39;django.
+1e00: contrib.admin&#39;,. &#39;django.contrib.auth&#39;,. &#39;django
+1e40: .contrib.contenttypes&#39;,. &#39;django.contrib.sessions&#39;,.
+1e80:  &#39;django.contrib.messages&#39;,. &#39;django.contrib.staticf
+1ec0: iles&#39;,. &#39;rest_framework&#39;,. &#39;adaptor&#39;)</pre><
+1f00: /td>.        </tr>.      .        <tr>.          <td>CSRF_COOKIE
+1f40: _NAME</td>.          <td class="code"><pre>&#39;csrftoken&#39;</
+1f80: pre></td>.        </tr>.      .        <tr>.          <td>LANGUA
+1fc0: GE_COOKIE_AGE</td>.          <td class="code"><pre>None</pre></t
+2000: d>.        </tr>.      .        <tr>.          <td>DATABASE_ROUT
+2040: ERS</td>.          <td class="code"><pre>[]</pre></td>.        <
+2080: /tr>.      .        <tr>.          <td>EMAIL_PORT</td>.         
+20c0:  <td class="code"><pre>25</pre></td>.        </tr>.      .      
+2100:   <tr>.          <td>TEST_RUNNER</td>.          <td class="code"
+2140: ><pre>&#39;django.test.runner.DiscoverRunner&#39;</pre></td>.   
+2180:      </tr>.      .        <tr>.          <td>AUTH_USER_MODEL</td
+21c0: >.          <td class="code"><pre>&#39;auth.User&#39;</pre></td>
+2200: .        </tr>.      .        <tr>.          <td>LOGIN_REDIRECT_
+2240: URL</td>.          <td class="code"><pre>&#39;/accounts/profile/
+2280: &#39;</pre></td>.        </tr>.      .        <tr>.          <td
+22c0: >FILE_UPLOAD_HANDLERS</td>.          <td class="code"><pre>(&#39
+2300: ;django.core.files.uploadhandler.MemoryFileUploadHandler&#39;,. 
+2340: &#39;django.core.files.uploadhandler.TemporaryFileUploadHandler&
+2380: #39;)</pre></td>.        </tr>.      .        <tr>.          <td
+23c0: >WSGI_APPLICATION</td>.          <td class="code"><pre>&#39;os_a
+2400: daptor.wsgi.application&#39;</pre></td>.        </tr>.      .   
+2440:      <tr>.          <td>DEFAULT_FILE_STORAGE</td>.          <td 
+2480: class="code"><pre>&#39;django.core.files.storage.FileSystemStora
+24c0: ge&#39;</pre></td>.        </tr>.      .        <tr>.          <
+2500: td>SESSION_SAVE_EVERY_REQUEST</td>.          <td class="code"><p
+2540: re>False</pre></td>.        </tr>.      .        <tr>.          
+2580: <td>DEBUG</td>.          <td class="code"><pre>True</pre></td>. 
+25c0:        </tr>.      .        <tr>.          <td>SESSION_COOKIE_HT
+2600: TPONLY</td>.          <td class="code"><pre>True</pre></td>.    
+2640:     </tr>.      .        <tr>.          <td>TEST_NON_SERIALIZED_
+2680: APPS</td>.          <td class="code"><pre>[]</pre></td>.        
+26c0: </tr>.      .        <tr>.          <td>DATE_FORMAT</td>.       
+2700:    <td class="code"><pre>&#39;N j, Y&#39;</pre></td>.        </t
+2740: r>.      .        <tr>.          <td>STATIC_ROOT</td>.          
+2780: <td class="code"><pre>None</pre></td>.        </tr>.      .     
+27c0:    <tr>.          <td>LANGUAGE_COOKIE_DOMAIN</td>.          <td 
+2800: class="code"><pre>None</pre></td>.        </tr>.      .        <
+2840: tr>.          <td>FILE_CHARSET</td>.          <td class="code"><
+2880: pre>&#39;utf-8&#39;</pre></td>.        </tr>.      .        <tr>
+28c0: .          <td>SIGNING_BACKEND</td>.          <td class="code"><
+2900: pre>&#39;django.core.signing.TimestampSigner&#39;</pre></td>.   
+2940:      </tr>.      .        <tr>.          <td>YEAR_MONTH_FORMAT</
+2980: td>.          <td class="code"><pre>&#39;F Y&#39;</pre></td>.   
+29c0:      </tr>.      .        <tr>.          <td>SHORT_DATE_FORMAT</
+2a00: td>.          <td class="code"><pre>&#39;m/d/Y&#39;</pre></td>. 
+2a40:        </tr>.      .        <tr>.          <td>STATICFILES_FINDE
+2a80: RS</td>.          <td class="code"><pre>(&#39;django.contrib.sta
+2ac0: ticfiles.finders.FileSystemFinder&#39;,. &#39;django.contrib.sta
+2b00: ticfiles.finders.AppDirectoriesFinder&#39;)</pre></td>.        <
+2b40: /tr>.      .        <tr>.          <td>SETTINGS_MODULE</td>.    
+2b80:       <td class="code"><pre>&#39;os_adaptor.settings&#39;</pre><
+2bc0: /td>.        </tr>.      .        <tr>.          <td>EMAIL_HOST_
+2c00: USER</td>.          <td class="code"><pre>&#39;&#39;</pre></td>.
+2c40:         </tr>.      .        <tr>.          <td>TEMPLATE_STRING_
+2c80: IF_INVALID</td>.          <td class="code"><pre>&#39;&#39;</pre>
+2cc0: </td>.        </tr>.      .        <tr>.          <td>LOGGING_CO
+2d00: NFIG</td>.          <td class="code"><pre>&#39;logging.config.di
+2d40: ctConfig&#39;</pre></td>.        </tr>.      .        <tr>.     
+2d80:      <td>ADMINS</td>.          <td class="code"><pre>()</pre></t
+2dc0: d>.        </tr>.      .        <tr>.          <td>USE_X_FORWARD
+2e00: ED_HOST</td>.          <td class="code"><pre>False</pre></td>.  
+2e40:       </tr>.      .        <tr>.          <td>SESSION_FILE_PATH<
+2e80: /td>.          <td class="code"><pre>None</pre></td>.        </t
+2ec0: r>.      .        <tr>.          <td>STATIC_URL</td>.          <
+2f00: td class="code"><pre>&#39;/static/&#39;</pre></td>.        </tr>
+2f40: .      .        <tr>.          <td>SECURE_HSTS_INCLUDE_SUBDOMAIN
+2f80: S</td>.          <td class="code"><pre>False</pre></td>.        
+2fc0: </tr>.      .        <tr>.          <td>CSRF_COOKIE_HTTPONLY</td
+3000: >.          <td class="code"><pre>False</pre></td>.        </tr>
+3040: .      .        <tr>.          <td>LANGUAGES</td>.          <td 
+3080: class="code"><pre>((&#39;af&#39;, &#39;Afrikaans&#39;),. (&#39;a
+30c0: r&#39;, &#39;Arabic&#39;),. (&#39;ast&#39;, &#39;Asturian&#39;),
+3100: . (&#39;az&#39;, &#39;Azerbaijani&#39;),. (&#39;bg&#39;, &#39;Bu
+3140: lgarian&#39;),. (&#39;be&#39;, &#39;Belarusian&#39;),. (&#39;bn&
+3180: #39;, &#39;Bengali&#39;),. (&#39;br&#39;, &#39;Breton&#39;),. (&
+31c0: #39;bs&#39;, &#39;Bosnian&#39;),. (&#39;ca&#39;, &#39;Catalan&#3
+3200: 9;),. (&#39;cs&#39;, &#39;Czech&#39;),. (&#39;cy&#39;, &#39;Wels
+3240: h&#39;),. (&#39;da&#39;, &#39;Danish&#39;),. (&#39;de&#39;, &#39
+3280: ;German&#39;),. (&#39;el&#39;, &#39;Greek&#39;),. (&#39;en&#39;,
+32c0:  &#39;English&#39;),. (&#39;en-au&#39;, &#39;Australian English&
+3300: #39;),. (&#39;en-gb&#39;, &#39;British English&#39;),. (&#39;eo&
+3340: #39;, &#39;Esperanto&#39;),. (&#39;es&#39;, &#39;Spanish&#39;),.
+3380:  (&#39;es-ar&#39;, &#39;Argentinian Spanish&#39;),. (&#39;es-mx&
+33c0: #39;, &#39;Mexican Spanish&#39;),. (&#39;es-ni&#39;, &#39;Nicara
+3400: guan Spanish&#39;),. (&#39;es-ve&#39;, &#39;Venezuelan Spanish&#
+3440: 39;),. (&#39;et&#39;, &#39;Estonian&#39;),. (&#39;eu&#39;, &#39;
+3480: Basque&#39;),. (&#39;fa&#39;, &#39;Persian&#39;),. (&#39;fi&#39;
+34c0: , &#39;Finnish&#39;),. (&#39;fr&#39;, &#39;French&#39;),. (&#39;
+3500: fy&#39;, &#39;Frisian&#39;),. (&#39;ga&#39;, &#39;Irish&#39;),. 
+3540: (&#39;gl&#39;, &#39;Galician&#39;),. (&#39;he&#39;, &#39;Hebrew&
+3580: #39;),. (&#39;hi&#39;, &#39;Hindi&#39;),. (&#39;hr&#39;, &#39;Cr
+35c0: oatian&#39;),. (&#39;hu&#39;, &#39;Hungarian&#39;),. (&#39;ia&#3
+3600: 9;, &#39;Interlingua&#39;),. (&#39;id&#39;, &#39;Indonesian&#39;
+3640: ),. (&#39;io&#39;, &#39;Ido&#39;),. (&#39;is&#39;, &#39;Icelandi
+3680: c&#39;),. (&#39;it&#39;, &#39;Italian&#39;),. (&#39;ja&#39;, &#3
+36c0: 9;Japanese&#39;),. (&#39;ka&#39;, &#39;Georgian&#39;),. (&#39;kk
+3700: &#39;, &#39;Kazakh&#39;),. (&#39;km&#39;, &#39;Khmer&#39;),. (&#
+3740: 39;kn&#39;, &#39;Kannada&#39;),. (&#39;ko&#39;, &#39;Korean&#39;
+3780: ),. (&#39;lb&#39;, &#39;Luxembourgish&#39;),. (&#39;lt&#39;, &#3
+37c0: 9;Lithuanian&#39;),. (&#39;lv&#39;, &#39;Latvian&#39;),. (&#39;m
+3800: k&#39;, &#39;Macedonian&#39;),. (&#39;ml&#39;, &#39;Malayalam&#3
+3840: 9;),. (&#39;mn&#39;, &#39;Mongolian&#39;),. (&#39;mr&#39;, &#39;
+3880: Marathi&#39;),. (&#39;my&#39;, &#39;Burmese&#39;),. (&#39;nb&#39
+38c0: ;, &#39;Norwegian Bokmal&#39;),. (&#39;ne&#39;, &#39;Nepali&#39;
+3900: ),. (&#39;nl&#39;, &#39;Dutch&#39;),. (&#39;nn&#39;, &#39;Norweg
+3940: ian Nynorsk&#39;),. (&#39;os&#39;, &#39;Ossetic&#39;),. (&#39;pa
+3980: &#39;, &#39;Punjabi&#39;),. (&#39;pl&#39;, &#39;Polish&#39;),. (
+39c0: &#39;pt&#39;, &#39;Portuguese&#39;),. (&#39;pt-br&#39;, &#39;Bra
+3a00: zilian Portuguese&#39;),. (&#39;ro&#39;, &#39;Romanian&#39;),. (
+3a40: &#39;ru&#39;, &#39;Russian&#39;),. (&#39;sk&#39;, &#39;Slovak&#3
+3a80: 9;),. (&#39;sl&#39;, &#39;Slovenian&#39;),. (&#39;sq&#39;, &#39;
+3ac0: Albanian&#39;),. (&#39;sr&#39;, &#39;Serbian&#39;),. (&#39;sr-la
+3b00: tn&#39;, &#39;Serbian Latin&#39;),. (&#39;sv&#39;, &#39;Swedish&
+3b40: #39;),. (&#39;sw&#39;, &#39;Swahili&#39;),. (&#39;ta&#39;, &#39;
+3b80: Tamil&#39;),. (&#39;te&#39;, &#39;Telugu&#39;),. (&#39;th&#39;, 
+3bc0: &#39;Thai&#39;),. (&#39;tr&#39;, &#39;Turkish&#39;),. (&#39;tt&#
+3c00: 39;, &#39;Tatar&#39;),. (&#39;udm&#39;, &#39;Udmurt&#39;),. (&#3
+3c40: 9;uk&#39;, &#39;Ukrainian&#39;),. (&#39;ur&#39;, &#39;Urdu&#39;)
+3c80: ,. (&#39;vi&#39;, &#39;Vietnamese&#39;),. (&#39;zh-cn&#39;, &#39
+3cc0: ;Simplified Chinese&#39;),. (&#39;zh-hans&#39;, &#39;Simplified 
+3d00: Chinese&#39;),. (&#39;zh-hant&#39;, &#39;Traditional Chinese&#39
+3d40: ;),. (&#39;zh-tw&#39;, &#39;Traditional Chinese&#39;))</pre></td
+3d80: >.        </tr>.      .        <tr>.          <td>SHORT_DATETIME
+3dc0: _FORMAT</td>.          <td class="code"><pre>&#39;m/d/Y P&#39;</
+3e00: pre></td>.        </tr>.      .        <tr>.          <td>DEBUG_
+3e40: PROPAGATE_EXCEPTIONS</td>.          <td class="code"><pre>False<
+3e80: /pre></td>.        </tr>.      .        <tr>.          <td>DEFAU
+3ec0: LT_INDEX_TABLESPACE</td>.          <td class="code"><pre>&#39;&#
+3f00: 39;</pre></td>.        </tr>.      .        <tr>.          <td>F
+3f40: ILE_UPLOAD_MAX_MEMORY_SIZE</td>.          <td class="code"><pre>
+3f80: 2621440</pre></td>.        </tr>.      .        <tr>.          <
+3fc0: td>LOGGING</td>.          <td class="code"><pre>{}</pre></td>.  
+<= Recv data, 14047 bytes (0x36df)
+0000:       </tr>.      .        <tr>.          <td>SECURE_REDIRECT_EX
+0040: EMPT</td>.          <td class="code"><pre>[]</pre></td>.        
+0080: </tr>.      .        <tr>.          <td>SESSION_SERIALIZER</td>.
+00c0:           <td class="code"><pre>&#39;django.contrib.sessions.ser
+0100: ializers.JSONSerializer&#39;</pre></td>.        </tr>.      .   
+0140:      <tr>.          <td>DATABASES</td>.          <td class="code
+0180: "><pre>{&#39;default&#39;: {&#39;ATOMIC_REQUESTS&#39;: False,.  
+01c0:            &#39;AUTOCOMMIT&#39;: True,.             &#39;CONN_MA
+0200: X_AGE&#39;: 0,.             &#39;ENGINE&#39;: &#39;django.db.bac
+0240: kends.mysql&#39;,.             &#39;HOST&#39;: &#39;127.0.0.1&#3
+0280: 9;,.             &#39;NAME&#39;: &#39;os_adaptor&#39;,.         
+02c0:     &#39;OPTIONS&#39;: {},.             &#39;PASSWORD&#39;: &#39
+0300: ;********************&#39;,.             &#39;PORT&#39;: &#39;33
+0340: 06&#39;,.             &#39;TEST&#39;: {&#39;CHARSET&#39;: None,.
+0380:                       &#39;COLLATION&#39;: None,.               
+03c0:        &#39;MIRROR&#39;: None,.                      &#39;NAME&#
+0400: 39;: None},.             &#39;TIME_ZONE&#39;: &#39;UTC&#39;,.   
+0440:           &#39;USER&#39;: &#39;root&#39;}}</pre></td>.        </
+0480: tr>.      .        <tr>.          <td>LANGUAGES_BIDI</td>.      
+04c0:     <td class="code"><pre>(&#39;he&#39;, &#39;ar&#39;, &#39;fa&#
+0500: 39;, &#39;ur&#39;)</pre></td>.        </tr>.      .        <tr>.
+0540:           <td>NUMBER_GROUPING</td>.          <td class="code"><p
+0580: re>0</pre></td>.        </tr>.      .        <tr>.          <td>
+05c0: AUTHENTICATION_BACKENDS</td>.          <td class="code"><pre>(&#
+0600: 39;django.contrib.auth.backends.ModelBackend&#39;,)</pre></td>. 
+0640:        </tr>.      .        <tr>.          <td>DEFAULT_CHARSET</
+0680: td>.          <td class="code"><pre>&#39;utf-8&#39;</pre></td>. 
+06c0:        </tr>.      .        <tr>.          <td>DEFAULT_EXCEPTION
+0700: _REPORTER_FILTER</td>.          <td class="code"><pre>&#39;djang
+0740: o.views.debug.SafeExceptionReporterFilter&#39;</pre></td>.      
+0780:   </tr>.      .        <tr>.          <td>TIME_FORMAT</td>.     
+07c0:      <td class="code"><pre>&#39;P&#39;</pre></td>.        </tr>.
+0800:       .        <tr>.          <td>ROOT_URLCONF</td>.          <t
+0840: d class="code"><pre>&#39;os_adaptor.urls&#39;</pre></td>.       
+0880:  </tr>.      .        <tr>.          <td>TIME_ZONE</td>.        
+08c0:   <td class="code"><pre>&#39;UTC&#39;</pre></td>.        </tr>. 
+0900:      .        <tr>.          <td>MIGRATION_MODULES</td>.        
+0940:   <td class="code"><pre>{}</pre></td>.        </tr>.      .     
+0980:    <tr>.          <td>EMAIL_SSL_KEYFILE</td>.          <td class
+09c0: ="code"><pre>&#39;********************&#39;</pre></td>.        <
+0a00: /tr>.      .        <tr>.          <td>USE_TZ</td>.          <td
+0a40:  class="code"><pre>True</pre></td>.        </tr>.      .        
+0a80: <tr>.          <td>FILE_UPLOAD_DIRECTORY_PERMISSIONS</td>.      
+0ac0:     <td class="code"><pre>None</pre></td>.        </tr>.      . 
+0b00:        <tr>.          <td>CSRF_COOKIE_SECURE</td>.          <td 
+0b40: class="code"><pre>False</pre></td>.        </tr>.      .        
+0b80: <tr>.          <td>SECURE_SSL_HOST</td>.          <td class="cod
+0bc0: e"><pre>None</pre></td>.        </tr>.      .        <tr>.      
+0c00:     <td>EMAIL_USE_TLS</td>.          <td class="code"><pre>False
+0c40: </pre></td>.        </tr>.      .        <tr>.          <td>CSRF
+0c80: _COOKIE_AGE</td>.          <td class="code"><pre>31449600</pre><
+0cc0: /td>.        </tr>.      .        <tr>.          <td>MANAGERS</t
+0d00: d>.          <td class="code"><pre>()</pre></td>.        </tr>. 
+0d40:      .        <tr>.          <td>FIRST_DAY_OF_WEEK</td>.        
+0d80:   <td class="code"><pre>0</pre></td>.        </tr>.      .      
+0dc0:   <tr>.          <td>LOGOUT_URL</td>.          <td class="code">
+0e00: <pre>&#39;/accounts/logout/&#39;</pre></td>.        </tr>.      
+0e40: .        <tr>.          <td>PREPEND_WWW</td>.          <td class
+0e80: ="code"><pre>False</pre></td>.        </tr>.      .        <tr>.
+0ec0:           <td>MONTH_DAY_FORMAT</td>.          <td class="code"><
+0f00: pre>&#39;F j&#39;</pre></td>.        </tr>.      .        <tr>. 
+0f40:          <td>DATE_INPUT_FORMATS</td>.          <td class="code">
+0f80: <pre>(&#39;%Y-%m-%d&#39;,. &#39;%m/%d/%Y&#39;,. &#39;%m/%d/%y&#3
+0fc0: 9;,. &#39;%b %d %Y&#39;,. &#39;%b %d, %Y&#39;,. &#39;%d %b %Y&#3
+1000: 9;,. &#39;%d %b, %Y&#39;,. &#39;%B %d %Y&#39;,. &#39;%B %d, %Y&#
+1040: 39;,. &#39;%d %B %Y&#39;,. &#39;%d %B, %Y&#39;)</pre></td>.     
+1080:    </tr>.      .        <tr>.          <td>LOCALE_PATHS</td>.   
+10c0:        <td class="code"><pre>()</pre></td>.        </tr>.      .
+1100:         <tr>.          <td>FILE_UPLOAD_PERMISSIONS</td>.        
+1140:   <td class="code"><pre>None</pre></td>.        </tr>.      .   
+1180:      <tr>.          <td>EMAIL_HOST_PASSWORD</td>.          <td c
+11c0: lass="code"><pre>&#39;********************&#39;</pre></td>.     
+1200:    </tr>.      .        <tr>.          <td>SECRET_KEY</td>.     
+1240:      <td class="code"><pre>&#39;********************&#39;</pre><
+1280: /td>.        </tr>.      .        <tr>.          <td>MEDIA_ROOT<
+12c0: /td>.          <td class="code"><pre>&#39;&#39;</pre></td>.     
+1300:    </tr>.      .        <tr>.          <td>DEFAULT_TABLESPACE</t
+1340: d>.          <td class="code"><pre>&#39;&#39;</pre></td>.       
+1380:  </tr>.      .        <tr>.          <td>APPEND_SLASH</td>.     
+13c0:      <td class="code"><pre>True</pre></td>.        </tr>.      .
+1400:         <tr>.          <td>EMAIL_TIMEOUT</td>.          <td clas
+1440: s="code"><pre>None</pre></td>.        </tr>.      .        <tr>.
+1480:           <td>CSRF_COOKIE_DOMAIN</td>.          <td class="code"
+14c0: ><pre>None</pre></td>.        </tr>.      .        <tr>.        
+1500:   <td>IGNORABLE_404_URLS</td>.          <td class="code"><pre>()
+1540: </pre></td>.        </tr>.      .        <tr>.          <td>SECU
+1580: RE_BROWSER_XSS_FILTER</td>.          <td class="code"><pre>False
+15c0: </pre></td>.        </tr>.      .        <tr>.          <td>CACH
+1600: E_MIDDLEWARE_ALIAS</td>.          <td class="code"><pre>&#39;def
+1640: ault&#39;</pre></td>.        </tr>.      .        <tr>.         
+1680:  <td>EMAIL_USE_SSL</td>.          <td class="code"><pre>False</p
+16c0: re></td>.        </tr>.      .        <tr>.          <td>SESSION
+1700: _COOKIE_PATH</td>.          <td class="code"><pre>&#39;/&#39;</p
+1740: re></td>.        </tr>.      .        <tr>.          <td>USE_I18
+1780: N</td>.          <td class="code"><pre>True</pre></td>.        <
+17c0: /tr>.      .        <tr>.          <td>CACHE_MIDDLEWARE_SECONDS<
+1800: /td>.          <td class="code"><pre>600</pre></td>.        </tr
+1840: >.      .        <tr>.          <td>ALLOWED_INCLUDE_ROOTS</td>. 
+1880:          <td class="code"><pre>()</pre></td>.        </tr>.     
+18c0:  .        <tr>.          <td>TEMPLATE_LOADERS</td>.          <td
+1900:  class="code"><pre>(&#39;django.template.loaders.filesystem.Load
+1940: er&#39;,. &#39;django.template.loaders.app_directories.Loader&#3
+1980: 9;)</pre></td>.        </tr>.      .        <tr>.          <td>S
+19c0: ILENCED_SYSTEM_CHECKS</td>.          <td class="code"><pre>[]</p
+1a00: re></td>.        </tr>.      .        <tr>.          <td>CACHES<
+1a40: /td>.          <td class="code"><pre>{&#39;default&#39;: {&#39;B
+1a80: ACKEND&#39;: &#39;django.core.cache.backends.locmem.LocMemCache&
+1ac0: #39;}}</pre></td>.        </tr>.      .        <tr>.          <t
+1b00: d>X_FRAME_OPTIONS</td>.          <td class="code"><pre>&#39;SAME
+1b40: ORIGIN&#39;</pre></td>.        </tr>.      .        <tr>.       
+1b80:    <td>TEMPLATES</td>.          <td class="code"><pre>[{&#39;APP
+1bc0: _DIRS&#39;: True,.  &#39;BACKEND&#39;: &#39;django.template.back
+1c00: ends.django.DjangoTemplates&#39;,.  &#39;DIRS&#39;: [],.  &#39;O
+1c40: PTIONS&#39;: {&#39;context_processors&#39;: [&#39;django.templat
+1c80: e.context_processors.debug&#39;,.                               
+1cc0:       &#39;django.template.context_processors.request&#39;,.    
+1d00:                                  &#39;django.contrib.auth.contex
+1d40: t_processors.auth&#39;,.                                     &#3
+1d80: 9;django.contrib.messages.context_processors.messages&#39;]}}]</
+1dc0: pre></td>.        </tr>.      .        <tr>.          <td>MIDDLE
+1e00: WARE_CLASSES</td>.          <td class="code"><pre>(&#39;django.c
+1e40: ontrib.sessions.middleware.SessionMiddleware&#39;,. &#39;django.
+1e80: middleware.common.CommonMiddleware&#39;,. &#39;django.middleware
+1ec0: .csrf.CsrfViewMiddleware&#39;,. &#39;django.contrib.auth.middlew
+1f00: are.AuthenticationMiddleware&#39;,. &#39;django.contrib.auth.mid
+1f40: dleware.SessionAuthenticationMiddleware&#39;,. &#39;django.contr
+1f80: ib.messages.middleware.MessageMiddleware&#39;,. &#39;django.midd
+1fc0: leware.clickjacking.XFrameOptionsMiddleware&#39;,. &#39;django.m
+2000: iddleware.security.SecurityMiddleware&#39;)</pre></td>.        <
+2040: /tr>.      .        <tr>.          <td>FORMAT_MODULE_PATH</td>. 
+2080:          <td class="code"><pre>None</pre></td>.        </tr>.   
+20c0:    .        <tr>.          <td>SESSION_EXPIRE_AT_BROWSER_CLOSE</
+2100: td>.          <td class="code"><pre>False</pre></td>.        </t
+2140: r>.      .        <tr>.          <td>DISALLOWED_USER_AGENTS</td>
+2180: .          <td class="code"><pre>()</pre></td>.        </tr>.   
+21c0:    .        <tr>.          <td>SESSION_CACHE_ALIAS</td>.        
+2200:   <td class="code"><pre>&#39;default&#39;</pre></td>.        </t
+2240: r>.      .        <tr>.          <td>THOUSAND_SEPARATOR</td>.   
+2280:        <td class="code"><pre>&#39;,&#39;</pre></td>.        </tr
+22c0: >.      .        <tr>.          <td>LANGUAGE_COOKIE_NAME</td>.  
+2300:         <td class="code"><pre>&#39;django_language&#39;</pre></t
+2340: d>.        </tr>.      .        <tr>.          <td>TIME_INPUT_FO
+2380: RMATS</td>.          <td class="code"><pre>(&#39;%H:%M:%S&#39;, 
+23c0: &#39;%H:%M:%S.%f&#39;, &#39;%H:%M&#39;)</pre></td>.        </tr>
+2400: .      .        <tr>.          <td>REST_FRAMEWORK</td>.         
+2440:  <td class="code"><pre>{&#39;DEFAULT_AUTHENTICATION_CLASSES&#39;
+2480: : [],. &#39;DEFAULT_PERMISSION_CLASSES&#39;: [],. &#39;PAGE_SIZE
+24c0: &#39;: 10}</pre></td>.        </tr>.      .        <tr>.        
+2500:   <td>STATICFILES_DIRS</td>.          <td class="code"><pre>()</
+2540: pre></td>.        </tr>.      .        <tr>.          <td>SESSIO
+2580: N_COOKIE_SECURE</td>.          <td class="code"><pre>False</pre>
+25c0: </td>.        </tr>.      .        <tr>.          <td>PASSWORD_H
+2600: ASHERS</td>.          <td class="code"><pre>&#39;***************
+2640: *****&#39;</pre></td>.        </tr>.      .        <tr>.        
+2680:   <td>DATETIME_INPUT_FORMATS</td>.          <td class="code"><pr
+26c0: e>(&#39;%Y-%m-%d %H:%M:%S&#39;,. &#39;%Y-%m-%d %H:%M:%S.%f&#39;,
+2700: . &#39;%Y-%m-%d %H:%M&#39;,. &#39;%Y-%m-%d&#39;,. &#39;%m/%d/%Y 
+2740: %H:%M:%S&#39;,. &#39;%m/%d/%Y %H:%M:%S.%f&#39;,. &#39;%m/%d/%Y %
+2780: H:%M&#39;,. &#39;%m/%d/%Y&#39;,. &#39;%m/%d/%y %H:%M:%S&#39;,. &
+27c0: #39;%m/%d/%y %H:%M:%S.%f&#39;,. &#39;%m/%d/%y %H:%M&#39;,. &#39;
+2800: %m/%d/%y&#39;)</pre></td>.        </tr>.      .        <tr>.    
+2840:       <td>FORCE_SCRIPT_NAME</td>.          <td class="code"><pre
+2880: >None</pre></td>.        </tr>.      .        <tr>.          <td
+28c0: >ALLOWED_HOSTS</td>.          <td class="code"><pre>[]</pre></td
+2900: >.        </tr>.      .        <tr>.          <td>TEMPLATE_CONTE
+2940: XT_PROCESSORS</td>.          <td class="code"><pre>(&#39;django.
+2980: contrib.auth.context_processors.auth&#39;,. &#39;django.template
+29c0: .context_processors.debug&#39;,. &#39;django.template.context_pr
+2a00: ocessors.i18n&#39;,. &#39;django.template.context_processors.med
+2a40: ia&#39;,. &#39;django.template.context_processors.static&#39;,. 
+2a80: &#39;django.template.context_processors.tz&#39;,. &#39;django.co
+2ac0: ntrib.messages.context_processors.messages&#39;)</pre></td>.    
+2b00:     </tr>.      .        <tr>.          <td>SESSION_COOKIE_AGE</
+2b40: td>.          <td class="code"><pre>1209600</pre></td>.        <
+2b80: /tr>.      .        <tr>.          <td>EMAIL_HOST</td>.         
+2bc0:  <td class="code"><pre>&#39;localhost&#39;</pre></td>.        </
+2c00: tr>.      .        <tr>.          <td>SECURE_PROXY_SSL_HEADER</t
+2c40: d>.          <td class="code"><pre>None</pre></td>.        </tr>
+2c80: .      .        <tr>.          <td>CSRF_FAILURE_VIEW</td>.      
+2cc0:     <td class="code"><pre>&#39;django.views.csrf.csrf_failure&#3
+2d00: 9;</pre></td>.        </tr>.      .        <tr>.          <td>TE
+2d40: MPLATE_DEBUG</td>.          <td class="code"><pre>False</pre></t
+2d80: d>.        </tr>.      .        <tr>.          <td>DATETIME_FORM
+2dc0: AT</td>.          <td class="code"><pre>&#39;N j, Y, P&#39;</pre
+2e00: ></td>.        </tr>.      .        <tr>.          <td>TEMPLATE_
+2e40: DIRS</td>.          <td class="code"><pre>()</pre></td>.        
+2e80: </tr>.      .        <tr>.          <td>STATICFILES_STORAGE</td>
+2ec0: .          <td class="code"><pre>&#39;django.contrib.staticfiles
+2f00: .storage.StaticFilesStorage&#39;</pre></td>.        </tr>.      
+2f40: .        <tr>.          <td>SECURE_HSTS_SECONDS</td>.          <
+2f80: td class="code"><pre>0</pre></td>.        </tr>.      .        <
+2fc0: tr>.          <td>LANGUAGE_COOKIE_PATH</td>.          <td class=
+3000: "code"><pre>&#39;/&#39;</pre></td>.        </tr>.      .        
+3040: <tr>.          <td>SECURE_SSL_REDIRECT</td>.          <td class=
+3080: "code"><pre>False</pre></td>.        </tr>.      .        <tr>. 
+30c0:          <td>USE_L10N</td>.          <td class="code"><pre>True<
+3100: /pre></td>.        </tr>.      .        <tr>.          <td>SERVE
+3140: R_EMAIL</td>.          <td class="code"><pre>&#39;root@localhost
+3180: &#39;</pre></td>.        </tr>.      .        <tr>.          <td
+31c0: >EMAIL_SSL_CERTFILE</td>.          <td class="code"><pre>None</p
+3200: re></td>.        </tr>.      .        <tr>.          <td>FIXTURE
+3240: _DIRS</td>.          <td class="code"><pre>()</pre></td>.       
+3280:  </tr>.      .        <tr>.          <td>INTERNAL_IPS</td>.     
+32c0:      <td class="code"><pre>()</pre></td>.        </tr>.      .  
+3300:       <tr>.          <td>USE_THOUSAND_SEPARATOR</td>.          <
+3340: td class="code"><pre>False</pre></td>.        </tr>.      .     
+3380:    <tr>.          <td>DEFAULT_CONTENT_TYPE</td>.          <td cl
+33c0: ass="code"><pre>&#39;text/html&#39;</pre></td>.        </tr>.   
+3400:    .        <tr>.          <td>FILE_UPLOAD_TEMP_DIR</td>.       
+3440:    <td class="code"><pre>None</pre></td>.        </tr>.      .  
+3480:       <tr>.          <td>DEFAULT_FROM_EMAIL</td>.          <td c
+34c0: lass="code"><pre>&#39;webmaster@localhost&#39;</pre></td>.      
+3500:   </tr>.      .        <tr>.          <td>CSRF_COOKIE_PATH</td>.
+3540:           <td class="code"><pre>&#39;/&#39;</pre></td>.        <
+3580: /tr>.      .    </tbody>.  </table>..</div>..  <div id="explanat
+35c0: ion">.    <p>.      You're seeing this error because you have <c
+3600: ode>DEBUG = True</code> in your.      Django settings file. Chan
+3640: ge that to <code>False</code>, and Django will.      display a s
+3680: tandard page generated by the handler for this status code..    
+36c0: </p>.  </div>..</body>.</html>.
+== Info: Closing connection 0

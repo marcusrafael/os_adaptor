@@ -1,0 +1,106 @@
+{
+    "count": 11,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "apf": null,
+            "description": "UFPE Openstack role",
+            "enumerated": true,
+            "id": 1,
+            "name": "role",
+            "ontology": false,
+            "tenant": 1
+        },
+        {
+            "apf": 1,
+            "description": "Ontology user's role attribute",
+            "enumerated": true,
+            "id": 2,
+            "name": "user.role",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Openstack service",
+            "enumerated": true,
+            "id": 3,
+            "name": "service",
+            "ontology": false,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Service in which the Resource is contained",
+            "enumerated": true,
+            "id": 4,
+            "name": "resource.service",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Action in Openstack Service",
+            "enumerated": true,
+            "id": 5,
+            "name": "action",
+            "ontology": false,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Type of an Action",
+            "enumerated": true,
+            "id": 6,
+            "name": "action.type",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Type of a resource",
+            "enumerated": true,
+            "id": 7,
+            "name": "resource.type",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Parameter of an action",
+            "enumerated": true,
+            "id": 8,
+            "name": "action.parameter",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Identifier of the user",
+            "enumerated": false,
+            "id": 9,
+            "name": "user_id",
+            "ontology": false,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Identifier for users in the ontology",
+            "enumerated": false,
+            "id": 10,
+            "name": "user.id",
+            "ontology": true,
+            "tenant": null
+        },
+        {
+            "apf": null,
+            "description": "Roles at UKC",
+            "enumerated": true,
+            "id": 11,
+            "name": "role",
+            "ontology": false,
+            "tenant": 2
+        }
+    ]
+}

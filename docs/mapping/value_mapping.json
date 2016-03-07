@@ -1,0 +1,427 @@
+{
+    "count": 84,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "apf_value": 2,
+            "id": 1,
+            "local_value": 1
+        },
+        {
+            "apf_value": 4,
+            "id": 2,
+            "local_value": 3
+        },
+        {
+            "apf_value": 6,
+            "id": 3,
+            "local_value": 5
+        },
+        {
+            "apf_value": 8,
+            "id": 4,
+            "local_value": 7
+        },
+        {
+            "apf_value": 10,
+            "id": 5,
+            "local_value": 9
+        },
+        {
+            "apf_value": 12,
+            "id": 6,
+            "local_value": 11
+        },
+        {
+            "apf_value": 14,
+            "id": 7,
+            "local_value": 13
+        },
+        {
+            "apf_value": 16,
+            "id": 8,
+            "local_value": 15
+        },
+        {
+            "apf_value": 19,
+            "id": 9,
+            "local_value": 31
+        },
+        {
+            "apf_value": 56,
+            "id": 10,
+            "local_value": 31
+        },
+        {
+            "apf_value": 17,
+            "id": 11,
+            "local_value": 32
+        },
+        {
+            "apf_value": 56,
+            "id": 12,
+            "local_value": 32
+        },
+        {
+            "apf_value": 18,
+            "id": 13,
+            "local_value": 33
+        },
+        {
+            "apf_value": 56,
+            "id": 14,
+            "local_value": 33
+        },
+        {
+            "apf_value": 22,
+            "id": 15,
+            "local_value": 34
+        },
+        {
+            "apf_value": 56,
+            "id": 16,
+            "local_value": 34
+        },
+        {
+            "apf_value": 21,
+            "id": 17,
+            "local_value": 35
+        },
+        {
+            "apf_value": 56,
+            "id": 18,
+            "local_value": 35
+        },
+        {
+            "apf_value": 19,
+            "id": 19,
+            "local_value": 36
+        },
+        {
+            "apf_value": 57,
+            "id": 20,
+            "local_value": 36
+        },
+        {
+            "apf_value": 17,
+            "id": 21,
+            "local_value": 37
+        },
+        {
+            "apf_value": 57,
+            "id": 22,
+            "local_value": 37
+        },
+        {
+            "apf_value": 18,
+            "id": 23,
+            "local_value": 38
+        },
+        {
+            "apf_value": 57,
+            "id": 24,
+            "local_value": 38
+        },
+        {
+            "apf_value": 22,
+            "id": 25,
+            "local_value": 39
+        },
+        {
+            "apf_value": 57,
+            "id": 26,
+            "local_value": 39
+        },
+        {
+            "apf_value": 21,
+            "id": 27,
+            "local_value": 40
+        },
+        {
+            "apf_value": 57,
+            "id": 28,
+            "local_value": 40
+        },
+        {
+            "apf_value": 22,
+            "id": 29,
+            "local_value": 41
+        },
+        {
+            "apf_value": 57,
+            "id": 30,
+            "local_value": 41
+        },
+        {
+            "apf_value": 60,
+            "id": 31,
+            "local_value": 41
+        },
+        {
+            "apf_value": 19,
+            "id": 32,
+            "local_value": 42
+        },
+        {
+            "apf_value": 58,
+            "id": 33,
+            "local_value": 42
+        },
+        {
+            "apf_value": 17,
+            "id": 34,
+            "local_value": 43
+        },
+        {
+            "apf_value": 58,
+            "id": 35,
+            "local_value": 43
+        },
+        {
+            "apf_value": 18,
+            "id": 36,
+            "local_value": 44
+        },
+        {
+            "apf_value": 58,
+            "id": 37,
+            "local_value": 44
+        },
+        {
+            "apf_value": 22,
+            "id": 38,
+            "local_value": 45
+        },
+        {
+            "apf_value": 58,
+            "id": 39,
+            "local_value": 45
+        },
+        {
+            "apf_value": 21,
+            "id": 40,
+            "local_value": 46
+        },
+        {
+            "apf_value": 58,
+            "id": 41,
+            "local_value": 46
+        },
+        {
+            "apf_value": 19,
+            "id": 42,
+            "local_value": 47
+        },
+        {
+            "apf_value": 58,
+            "id": 43,
+            "local_value": 47
+        },
+        {
+            "apf_value": 61,
+            "id": 44,
+            "local_value": 47
+        },
+        {
+            "apf_value": 30,
+            "id": 45,
+            "local_value": 48
+        },
+        {
+            "apf_value": 58,
+            "id": 46,
+            "local_value": 48
+        },
+        {
+            "apf_value": 62,
+            "id": 47,
+            "local_value": 48
+        },
+        {
+            "apf_value": 58,
+            "id": 49,
+            "local_value": 49
+        },
+        {
+            "apf_value": 62,
+            "id": 50,
+            "local_value": 49
+        },
+        {
+            "apf_value": 29,
+            "id": 51,
+            "local_value": 50
+        },
+        {
+            "apf_value": 58,
+            "id": 52,
+            "local_value": 50
+        },
+        {
+            "apf_value": 62,
+            "id": 53,
+            "local_value": 50
+        },
+        {
+            "apf_value": 19,
+            "id": 54,
+            "local_value": 51
+        },
+        {
+            "apf_value": 59,
+            "id": 55,
+            "local_value": 51
+        },
+        {
+            "apf_value": 17,
+            "id": 56,
+            "local_value": 52
+        },
+        {
+            "apf_value": 59,
+            "id": 57,
+            "local_value": 52
+        },
+        {
+            "apf_value": 18,
+            "id": 58,
+            "local_value": 53
+        },
+        {
+            "apf_value": 59,
+            "id": 59,
+            "local_value": 53
+        },
+        {
+            "apf_value": 21,
+            "id": 62,
+            "local_value": 55
+        },
+        {
+            "apf_value": 59,
+            "id": 63,
+            "local_value": 55
+        },
+        {
+            "apf_value": 2,
+            "id": 64,
+            "local_value": 63
+        },
+        {
+            "apf_value": 4,
+            "id": 65,
+            "local_value": 64
+        },
+        {
+            "apf_value": 8,
+            "id": 66,
+            "local_value": 65
+        },
+        {
+            "apf_value": 14,
+            "id": 67,
+            "local_value": 66
+        },
+        {
+            "apf_value": 12,
+            "id": 68,
+            "local_value": 67
+        },
+        {
+            "apf_value": 84,
+            "id": 69,
+            "local_value": 68
+        },
+        {
+            "apf_value": 84,
+            "id": 70,
+            "local_value": 69
+        },
+        {
+            "apf_value": 85,
+            "id": 71,
+            "local_value": 68
+        },
+        {
+            "apf_value": 18,
+            "id": 72,
+            "local_value": 70
+        },
+        {
+            "apf_value": 19,
+            "id": 73,
+            "local_value": 71
+        },
+        {
+            "apf_value": 22,
+            "id": 74,
+            "local_value": 72
+        },
+        {
+            "apf_value": 21,
+            "id": 75,
+            "local_value": 73
+        },
+        {
+            "apf_value": 27,
+            "id": 76,
+            "local_value": 74
+        },
+        {
+            "apf_value": 28,
+            "id": 77,
+            "local_value": 75
+        },
+        {
+            "apf_value": 29,
+            "id": 78,
+            "local_value": 77
+        },
+        {
+            "apf_value": 89,
+            "id": 79,
+            "local_value": 77
+        },
+        {
+            "apf_value": 30,
+            "id": 80,
+            "local_value": 78
+        },
+        {
+            "apf_value": 89,
+            "id": 81,
+            "local_value": 78
+        },
+        {
+            "apf_value": 29,
+            "id": 82,
+            "local_value": 79
+        },
+        {
+            "apf_value": 90,
+            "id": 83,
+            "local_value": 79
+        },
+        {
+            "apf_value": 30,
+            "id": 84,
+            "local_value": 80
+        },
+        {
+            "apf_value": 90,
+            "id": 85,
+            "local_value": 80
+        },
+        {
+            "apf_value": 88,
+            "id": 86,
+            "local_value": 69
+        },
+        {
+            "apf_value": 93,
+            "id": 88,
+            "local_value": 94
+        }
+    ]
+}
