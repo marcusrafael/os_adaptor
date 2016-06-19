@@ -1,0 +1,26 @@
+{
+    "format": "openstack",
+    "tenant": "UFPE",
+    "apf": "BRGB",
+    "policy":
+{
+    "context_is_admin":  "role:admin",
+    "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
+    "default": "rule:admin_or_owner",
+
+    "compute:create": "",
+    "compute:get": "",
+    "compute:update": "",
+    "compute:start": "rule:admin_or_owner",
+    "compute:stop": "rule:admin_or_owner",
+    "compute:attach_volume": "",
+    "compute:detach_volume": "",
+    "compute:attach_interface": "",
+    "compute:detach_interface": "",
+    "compute:delete": "rule:admin_or_owner",
+
+    "network:get": "",
+    "network:create": "",
+    "network:delete": ""
+}
+}

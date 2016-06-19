@@ -1,0 +1,627 @@
+{
+    "policy": {
+        "and_rules": [
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=update_role",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "update_role"
+                    }
+                ],
+                "description": "identity:update_role",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=update_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "update_user"
+                    }
+                ],
+                "description": "identity:update_user",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=get_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "get_group"
+                    }
+                ],
+                "description": "identity:get_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_users_in_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_users_in_group"
+                    }
+                ],
+                "description": "identity:list_users_in_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_users",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_users"
+                    }
+                ],
+                "description": "identity:list_users",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=create_role",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "create_role"
+                    }
+                ],
+                "description": "identity:create_role",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=get_role",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "get_role"
+                    }
+                ],
+                "description": "identity:get_role",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_roles",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_roles"
+                    }
+                ],
+                "description": "identity:list_roles",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=delete_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "delete_group"
+                    }
+                ],
+                "description": "identity:delete_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=update_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "update_group"
+                    }
+                ],
+                "description": "identity:update_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=remove_user_from_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "remove_user_from_group"
+                    }
+                ],
+                "description": "identity:remove_user_from_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=change_password",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "change_password"
+                    }
+                ],
+                "description": "identity:change_password:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "user_id",
+                        "description": "user_id=%(user_id)s",
+                        "operator": "=",
+                        "type": "v",
+                        "value": "%(user_id)s"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=change_password",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "change_password"
+                    }
+                ],
+                "description": "identity:change_password:1",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=delete_role",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "delete_role"
+                    }
+                ],
+                "description": "identity:delete_role",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=get_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "get_user"
+                    }
+                ],
+                "description": "identity:get_user",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=add_user_to_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "add_user_to_group"
+                    }
+                ],
+                "description": "identity:add_user_to_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_groups",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_groups"
+                    }
+                ],
+                "description": "identity:list_groups",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=create_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "create_user"
+                    }
+                ],
+                "description": "identity:create_user",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=delete_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "delete_user"
+                    }
+                ],
+                "description": "identity:delete_user",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=create_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "create_group"
+                    }
+                ],
+                "description": "identity:create_group",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_groups_for_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_groups_for_user"
+                    }
+                ],
+                "description": "identity:list_groups_for_user:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "user_id",
+                        "description": "user_id=%(user_id)s",
+                        "operator": "=",
+                        "type": "v",
+                        "value": "%(user_id)s"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=list_groups_for_user",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "list_groups_for_user"
+                    }
+                ],
+                "description": "identity:list_groups_for_user:1",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "service",
+                        "description": "service=identity",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "identity"
+                    },
+                    {
+                        "attribute": "role",
+                        "description": "role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=check_user_in_group",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "check_user_in_group"
+                    }
+                ],
+                "description": "identity:check_user_in_group",
+                "enabled": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,153 @@
+{
+    "policy": [
+        {
+            "Action": "iam:*",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:UpdateUser",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:GetGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:ListUsers",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:CreateRole",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:GetRole",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:ListRoles",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:DeleteGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:UpdateGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:RemoveUserFromGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:ChangePassword",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:ChangePassword",
+            "Effect": "Allow",
+            "Resource": "arn::iam:::user/${aws.username}"
+        },
+        {
+            "Action": "iam:DeleteRole",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:GetUser",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:AddUserToGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:ListGroups",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:CreateUser",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:DeleteUser",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        },
+        {
+            "Action": "iam:CreateGroup",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::iam:::*"
+        }
+    ]
+}

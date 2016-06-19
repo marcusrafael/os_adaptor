@@ -1,0 +1,78 @@
+{
+    "policy": [
+        {
+            "Action": "ec2:TerminateInstances",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:AttachNetworkInterface",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:StopInstances",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:AttachVolume",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:DetachNetworkInterface",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:CreateNetworkInterface",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:DetachVolume",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:DescribeInstances",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:BundleInstance",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:*",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:StartInstances",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123456:role/admin"
+            },
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:ModifyInstanceAttribute",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        },
+        {
+            "Action": "ec2:DescribeNetworkInterfaces",
+            "Effect": "Allow",
+            "Resource": "arn::ec2:::*"
+        }
+    ]
+}

@@ -1,0 +1,972 @@
+{
+    "dnf_policy": {
+        "and_rules": [
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Ontology user's role attribute",
+                            "name": "user.role",
+                            "policy": "BRGB"
+                        },
+                        "description": "role=admin",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "administrator"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=delete",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "delete"
+                    }
+                ],
+                "description": "compute:delete:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=attach_interface",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "add"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Parameter of an action",
+                            "name": "action.parameter",
+                            "policy": null
+                        },
+                        "description": "action=attach_interface",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_network_interface"
+                    }
+                ],
+                "description": "compute:attach_interface",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Ontology user's role attribute",
+                            "name": "user.role",
+                            "policy": "BRGB"
+                        },
+                        "description": "role=admin",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "administrator"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=stop",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "stop"
+                    }
+                ],
+                "description": "compute:stop:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=attach_volume",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "add"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Parameter of an action",
+                            "name": "action.parameter",
+                            "policy": null
+                        },
+                        "description": "action=attach_volume",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_hard_disk"
+                    }
+                ],
+                "description": "compute:attach_volume",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=detach_interface",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "remove"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Parameter of an action",
+                            "name": "action.parameter",
+                            "policy": null
+                        },
+                        "description": "action=detach_interface",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_network_interface"
+                    }
+                ],
+                "description": "compute:detach_interface",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_network_interface"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=create",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "create"
+                    }
+                ],
+                "description": "network:create",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=detach_volume",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "remove"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Parameter of an action",
+                            "name": "action.parameter",
+                            "policy": null
+                        },
+                        "description": "action=detach_volume",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_hard_disk"
+                    }
+                ],
+                "description": "compute:detach_volume",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=get",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "read"
+                    }
+                ],
+                "description": "compute:get",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=create",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "create"
+                    }
+                ],
+                "description": "compute:create",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=delete",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "delete"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_network_interface"
+                    }
+                ],
+                "description": "network:delete",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Ontology user's role attribute",
+                            "name": "user.role",
+                            "policy": "BRGB"
+                        },
+                        "description": "role=admin",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "administrator"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=start",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "start"
+                    }
+                ],
+                "description": "compute:start:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=update",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "update"
+                    }
+                ],
+                "description": "compute:update",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=network",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_network_interface"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=get",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "read"
+                    }
+                ],
+                "description": "network:get",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": "openstack",
+                            "description": null,
+                            "name": "project_id",
+                            "policy": null
+                        },
+                        "description": "project_id=%(project_id)s",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "%(project_id)s"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=delete",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "delete"
+                    }
+                ],
+                "description": "compute:delete:1",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": "openstack",
+                            "description": null,
+                            "name": "project_id",
+                            "policy": null
+                        },
+                        "description": "project_id=%(project_id)s",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "%(project_id)s"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=stop",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "stop"
+                    }
+                ],
+                "description": "compute:stop:1",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": {
+                            "cloud_technology": "openstack",
+                            "description": null,
+                            "name": "project_id",
+                            "policy": null
+                        },
+                        "description": "project_id=%(project_id)s",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "%(project_id)s"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Service in which the Resource is contained",
+                            "name": "resource.service",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "compute_service"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of a resource",
+                            "name": "resource.type",
+                            "policy": null
+                        },
+                        "description": "service=compute",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "virtual_machine"
+                    },
+                    {
+                        "attribute": {
+                            "cloud_technology": null,
+                            "description": "Type of an Action",
+                            "name": "action.type",
+                            "policy": null
+                        },
+                        "description": "action=start",
+                        "operator": {
+                            "cloud_technology": null,
+                            "description": "equals",
+                            "name": "="
+                        },
+                        "value": "start"
+                    }
+                ],
+                "description": "compute:start:1",
+                "enabled": true
+            }
+        ]
+    }
+}

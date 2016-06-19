@@ -1,0 +1,25 @@
+{
+    "policy": {
+        "identity:add_user_to_group": "role:admin",
+        "identity:change_password": "role:admin or user_id:%(user_id)s",
+        "identity:check_user_in_group": "role:admin",
+        "identity:create_group": "role:admin",
+        "identity:create_role": "role:admin",
+        "identity:create_user": "role:admin",
+        "identity:delete_group": "role:admin",
+        "identity:delete_role": "role:admin",
+        "identity:delete_user": "role:admin",
+        "identity:get_group": "role:admin",
+        "identity:get_role": "role:admin",
+        "identity:get_user": "role:admin",
+        "identity:list_groups": "role:admin",
+        "identity:list_groups_for_user": "role:admin or user_id:%(user_id)s",
+        "identity:list_roles": "role:admin",
+        "identity:list_users": "role:admin",
+        "identity:list_users_in_group": "role:admin",
+        "identity:remove_user_from_group": "role:admin",
+        "identity:update_group": "role:admin",
+        "identity:update_role": "role:admin",
+        "identity:update_user": "role:admin"
+    }
+}

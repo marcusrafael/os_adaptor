@@ -1,0 +1,17 @@
+{
+    "policy": {
+        "compute:attach_interface": "",
+        "compute:attach_volume": "",
+        "compute:create": "",
+        "compute:delete": "role:admin or project_id:%(project_id)s",
+        "compute:detach_interface": "",
+        "compute:detach_volume": "",
+        "compute:get": "",
+        "compute:start": "role:admin or project_id:%(project_id)s",
+        "compute:stop": "role:admin or project_id:%(project_id)s",
+        "compute:update": "",
+        "network:create": "",
+        "network:delete": "",
+        "network:get": ""
+    }
+}

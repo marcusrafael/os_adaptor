@@ -1,0 +1,392 @@
+{
+    "policy": {
+        "and_rules": [
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=TerminateInstances",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "TerminateInstances"
+                    },
+                    {
+                        "attribute": "principal_account",
+                        "description": "principal_account=123456",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "123456"
+                    },
+                    {
+                        "attribute": "principal_role",
+                        "description": "principal_role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    }
+                ],
+                "description": "compute:delete:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=AttachNetworkInterface",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "AttachNetworkInterface"
+                    }
+                ],
+                "description": "compute:attach_interface",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=StopInstances",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "StopInstances"
+                    },
+                    {
+                        "attribute": "principal_account",
+                        "description": "principal_account=123456",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "123456"
+                    },
+                    {
+                        "attribute": "principal_role",
+                        "description": "principal_role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    }
+                ],
+                "description": "compute:stop:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=AttachVolume",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "AttachVolume"
+                    }
+                ],
+                "description": "compute:attach_volume",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=DetachNetworkInterface",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "DetachNetworkInterface"
+                    }
+                ],
+                "description": "compute:detach_interface",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=CreateNetworkInterface",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "CreateNetworkInterface"
+                    }
+                ],
+                "description": "network:create",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=DetachVolume",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "DetachVolume"
+                    }
+                ],
+                "description": "compute:detach_volume",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=DescribeInstances",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "DescribeInstances"
+                    }
+                ],
+                "description": "compute:get",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=BundleInstance",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "BundleInstance"
+                    }
+                ],
+                "description": "compute:create",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    }
+                ],
+                "description": "network:delete",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=StartInstances",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "StartInstances"
+                    },
+                    {
+                        "attribute": "principal_account",
+                        "description": "principal_account=123456",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "123456"
+                    },
+                    {
+                        "attribute": "principal_role",
+                        "description": "principal_role=admin",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "admin"
+                    }
+                ],
+                "description": "compute:start:0",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=ModifyInstanceAttribute",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ModifyInstanceAttribute"
+                    }
+                ],
+                "description": "compute:update",
+                "enabled": true
+            },
+            {
+                "conditions": [
+                    {
+                        "attribute": "resource_service",
+                        "description": "resource_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action_service",
+                        "description": "action_service=ec2",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "ec2"
+                    },
+                    {
+                        "attribute": "action",
+                        "description": "action=DescribeNetworkInterfaces",
+                        "operator": "=",
+                        "type": "c",
+                        "value": "DescribeNetworkInterfaces"
+                    }
+                ],
+                "description": "network:get",
+                "enabled": true
+            }
+        ]
+    }
+}

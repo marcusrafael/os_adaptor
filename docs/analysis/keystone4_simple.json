@@ -1,0 +1,33 @@
+{
+    "admin_required": "role:admin",
+    "service_role": "role:service",
+    "service_or_admin": "rule:admin_required or rule:service_role",
+    "owner" : "user_id:%(user_id)s",
+    "admin_or_owner": "rule:admin_required or rule:owner",
+
+    "default": "rule:admin_required",
+
+    "identity:get_user": "rule:admin_required",
+    "identity:list_users": "rule:admin_required",
+    "identity:create_user": "rule:admin_required",
+    "identity:update_user": "rule:admin_required",
+    "identity:delete_user": "rule:admin_required",
+    "identity:change_password": "rule:admin_or_owner",
+
+    "identity:get_group": "rule:admin_required",
+    "identity:list_groups": "rule:admin_required",
+    "identity:list_groups_for_user": "rule:admin_required or rule:admin_or_owner",
+    "identity:create_group": "rule:admin_required",
+    "identity:update_group": "rule:admin_required",
+    "identity:delete_group": "rule:admin_required",
+    "identity:list_users_in_group": "rule:admin_required",
+    "identity:remove_user_from_group": "rule:admin_required",
+    "identity:check_user_in_group": "rule:admin_required",
+    "identity:add_user_to_group": "rule:admin_required",
+
+    "identity:get_role": "rule:admin_required",
+    "identity:list_roles": "rule:admin_required",
+    "identity:create_role": "rule:admin_required",
+    "identity:update_role": "rule:admin_required",
+    "identity:delete_role": "rule:admin_required"
+}
