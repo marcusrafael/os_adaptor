@@ -1,5 +1,5 @@
-from adaptor import openstack_parser
-from adaptor import semantic_parser
+from apps.adaptor import openstack_parser
+from apps.adaptor import semantic_parser
 import json
 
 def policy2dnf(policy, tenant, apf):

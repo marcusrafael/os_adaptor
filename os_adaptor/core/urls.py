@@ -17,7 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
-from adaptor import views, models
+from apps.adaptor import models
+from core import views
+
 
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:

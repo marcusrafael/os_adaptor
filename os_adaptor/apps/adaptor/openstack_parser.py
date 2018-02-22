@@ -1,5 +1,5 @@
-from adaptor import models
-from adaptor import serializers
+from apps.adaptor import models
+from apps.adaptor import serializers
 from pyeda.inter import *
 import json
 import re

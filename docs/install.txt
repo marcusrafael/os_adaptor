@@ -9,20 +9,31 @@ $ git clone https://github.com/ioram7/os_adaptor.git
 
 $ cd os_adaptor
 
-3. Create a virtual environment and activate it
+3. Install python3 for developers
+
+sudo apt-get install python3-dev
+
+4. Install mysql server, set root's password as 'password'
+
+sudo apt-get install mysql-server
+
+5. Create the 'os_adaptor' database on the mysql
+$ mysql -u root -p password
+sql> create database os_adaptor;
+sql> exit;
+
+6. Apply database migrations for create the tables
+$ python manage.py migrate
+
+5. Create a virtual environment and activate it
 
 $ virtualenv -p python3 env
 $ source env/bin/activate
 
-4. Install libraries into this virtual environoment
+6. Install libraries into this virtual environoment
 
-$ pip3 install django
-$ pip3 install djangorestframework
-$ pip3 install markdown
-$ pip3 install django-filter
-$ pip3 install pyeda
-$ pip3 install pyparsing
+pip install -r requirements.txt
 
-5. Start the server
+7. Start the server
 
 $ env/bin/python manage.py runserver 0.0.0.0:8001

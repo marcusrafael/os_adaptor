@@ -1,0 +1,8 @@
+Django==1.8.2
+Markdown==2.6.2
+PyMySQL==0.6.7
+django-filter==0.10.0
+djangorestframework==3.3.2
+mysql-connector-python
+pyeda==0.27.4
+pyparsing==2.0.3

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from adaptor import models
+from apps.adaptor import models
 
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:
